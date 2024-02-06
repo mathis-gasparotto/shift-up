@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -16,6 +19,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[UniqueEntity(fields: ["email"])]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/register',
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection',
+                'groups' => [
+                    'user:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::PUBLIC_ACCESS . '")',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'register'
+                ]
+            ],
+            processor: UserPostDataPersister::class
+        ),
+    ]
+)]
+
 class User implements UserInterface
 {
     use TracingAwareTrait;
@@ -24,18 +50,23 @@ class User implements UserInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[Groups(['user:read'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 60, nullable: true)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

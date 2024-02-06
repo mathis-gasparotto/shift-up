@@ -15,10 +15,14 @@ final class GlobalHelper
     /** @var string  */
     public const ROLE_USER = 'ROLE_USER';
 
+    /** @var string  */
+    public const PUBLIC_ACCESS = 'PUBLIC_ACCESS';
+
     /** @var string[]  */
     public const ROLES = [
         self::ROLE_ADMIN,
         self::ROLE_USER,
+        self::PUBLIC_ACCESS,
     ];
 
     /**
