@@ -5,12 +5,15 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
+use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\UserRepository;
+use App\StateProcessor\User\UserPostDataPersister;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -42,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ]
 )]
 
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TracingAwareInterface
 {
     use TracingAwareTrait;
 
@@ -54,19 +57,31 @@ class User implements UserInterface
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(
+        ['user:read', 'user:write']),
+        Assert\NotBlank(groups: ['register'])
+    ]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(
+        ['user:read', 'user:write']),
+        Assert\NotBlank(groups: ['register'])
+    ]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 60, nullable: true)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(
+        ['user:read', 'user:write']),
+        Assert\NotBlank(groups: ['register'])
+    ]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[
+        Groups(['user:read', 'user:write']),
+        Assert\NotBlank(groups: ['register'])
+    ]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -101,6 +116,14 @@ class User implements UserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Assert\Type("\DateTimeInterface")]
     private ?\DateTimeInterface $resetPasswordAt = null;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->enabled = false;
+    }
 
 
     public function getId(): ?Uuid

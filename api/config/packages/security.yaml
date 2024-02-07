@@ -54,6 +54,7 @@ security:
     access_control:
         - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/authenticate$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
+        - { path: ^/register$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/token/refresh$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/users$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

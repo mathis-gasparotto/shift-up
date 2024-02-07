@@ -24,5 +24,11 @@ services:
         resource: '../src/Controller/'
         tags: [ 'controller.service_arguments' ]
 
+    App\Command\Serve:
+        arguments:
+            $apiIp: '%env(API_IP)%'
+            $apiPort: '%env(API_PORT)%'
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
