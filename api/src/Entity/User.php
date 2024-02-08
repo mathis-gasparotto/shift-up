@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
+use App\Controller\User\GetMeAction;
 use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
@@ -42,6 +44,21 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             processor: UserPostDataPersister::class
         ),
+        new Get(
+            uriTemplate: '/users/me',
+            status: 200,
+            controller: GetMeAction::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'UserMeItem',
+                'groups' => [
+                    'user:read',
+                    'user:item:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            read: false,
+            name: 'get_user_me'
+        )
     ]
 )]
 
