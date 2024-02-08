@@ -21,18 +21,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[AsController]
 class VerifyEmailController extends AbstractController
 {
-    /** @var EntityManagerInterface */
-    private EntityManagerInterface $entityManager;
-
     /**
      * VerifyEmailController constructor.
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        EntityManagerInterface $entityManager
-    ) {
-        $this->entityManager = $entityManager;
-    }
+        private EntityManagerInterface $entityManager
+    ) {}
 
     /**
      * @param Request $request
@@ -44,7 +39,7 @@ class VerifyEmailController extends AbstractController
         requirements: ['token' => '.+'],
         methods: ['GET']
     )]
-    public function confirmationRegisterAction(Request $request): RedirectResponse|JsonResponse
+    public function __invoke(Request $request): RedirectResponse|JsonResponse
     {
         // Get the request content
         $token = $request->get('token');

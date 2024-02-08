@@ -58,6 +58,8 @@ security:
         - { path: ^/register$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/token/refresh$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/verify_email_register, methods: [ 'GET' ], roles: PUBLIC_ACCESS }
+        - { path: ^/send_reset_password, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
+        - { path: ^/reset_password/, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/users$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 

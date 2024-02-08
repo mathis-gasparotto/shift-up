@@ -6,6 +6,9 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Controller\User\GetMeAction;
+use App\Controller\User\ResetPasswordController;
+use App\Controller\User\SendResetPasswordController;
+use App\Controller\User\VerifyEmailController;
 use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
@@ -58,7 +61,93 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
             read: false,
             name: 'get_user_me'
+        ),
+        new Get(
+            uriTemplate: '/verify_email_register/{token}',
+            requirements: [
+                'token' => '.+'
+            ],
+            status: 200,
+            controller: VerifyEmailController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'email' => [
+                                        'type' => 'string'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'SendResetPasswordCollection'
+            ],
+            name: 'app_verify_email_register'
+        ),
+        new Post(
+            uriTemplate: '/send_reset_password',
+            status: 200,
+            controller: SendResetPasswordController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'email' => [
+                                        'type' => 'string'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'SendResetPasswordCollection'
+            ],
+            name: 'app_send_reset_password'
+        ),
+        new Post(
+            uriTemplate: '/reset_password/{token}',
+            requirements: [
+                'token' => '.+'
+            ],
+            status: 200,
+            controller: ResetPasswordController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'password' => [
+                                        'type' => 'string'
+                                    ],
+                                    'confirmPassword' => [
+                                        'type' => 'string'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'ResetPasswordCollection'
+            ],
+            read: false,
+            name: 'app_reset_password'
         )
+
     ]
 )]
 
