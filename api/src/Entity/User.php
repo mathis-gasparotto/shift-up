@@ -85,16 +85,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $password = null;
-
     #[
-        SerializedName("password"),
         Assert\NotBlank(groups: ['register']),
         Assert\Length(min: 8, max: 32),
-        Assert\Regex(pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])(?!.*\s).*$/', message: 'Password must contain at least one lowercase letter, one uppercase letter, one number and one special character'),
-        Groups(['user:write'])
+        Assert\Regex(pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])(?!.*\s).*$/', message: 'Password must contain at least one lowercase letter, one uppercase letter, one number and one special character')
     ]
-    private ?string $plainPassword = null;
+    private ?string $password = null;
 
     #[ORM\Column]
     private ?bool $enabled = null;
@@ -226,25 +222,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param string $plainPassword
-     * @return $this
-     */
-    public function setPlainPassword(string $plainPassword): self
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
     }
 
     /**

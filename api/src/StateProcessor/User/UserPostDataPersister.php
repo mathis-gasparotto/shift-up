@@ -35,8 +35,10 @@ class UserPostDataPersister implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
+        $plainPassword = $data->getPassword();
+
         $data->setPassword(
-            $this->userPasswordEncoder->hashPassword($data, $data->getPlainPassword())
+            $this->userPasswordEncoder->hashPassword($data, $plainPassword)
         );
         $data->eraseCredentials();
         $data->setRoles([GlobalHelper::ROLE_USER]);
