@@ -1,0 +1,342 @@
+<?php
+
+namespace App\Entity;
+
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
+use App\Helper\TeamHelper;
+use App\Model\ManagerAwareInterface;
+use App\Repository\TeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ *
+ */
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/teams',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'name' => [
+                                        'type' => 'string'
+                                    ],
+                                    'description' => [
+                                        'type' => 'string'
+                                    ],
+                                    'subject' => [
+                                        'type' => 'string'
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
+        ),
+    ]
+)]
+class Team implements ManagerAwareInterface
+{
+    /**
+     * @var Uuid|null
+     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[Groups(['teams:read'])]
+    private ?Uuid $id = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['teams:admin:read'])]
+    private ?string $stripeCustomerId = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['teams:admin:read'])]
+    private ?string $stripeSubscriptionId = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[
+        Assert\Choice(
+            choices: TeamHelper::STATUS,
+            message: 'Invalid status, valid status are: {{ choices }}'
+        ),
+        Groups(['teams:read'])
+    ]
+    private ?string $status = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[Groups(['teams:read', 'team:write'])]
+    private ?string $name = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['teams:read', 'team:write'])]
+    private ?string $description = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[Groups(['teams:read', 'team:write'])]
+    private ?string $subject = null;
+
+    /**
+     * @var \DateTimeImmutable|null
+     */
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[Groups(['teams:read'])]
+    private ?\DateTimeImmutable $subscriptionEndAt = null;
+
+    /**
+     * @var User|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'teamsManaged')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['teams:read'])]
+    private ?User $manager = null;
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
+    #[Groups(['teams:read'])]
+    private Collection $users;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->status = TeamHelper::STATUS_ACTIVE;
+    }
+
+    /**
+     * @return Uuid|null
+     */
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStripeCustomerId(): ?string
+    {
+        return $this->stripeCustomerId;
+    }
+
+    /**
+     * @param string|null $stripeCustomerId
+     * @return $this
+     */
+    public function setStripeCustomerId(?string $stripeCustomerId): static
+    {
+        $this->stripeCustomerId = $stripeCustomerId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStripeSubscriptionId(): ?string
+    {
+        return $this->stripeSubscriptionId;
+    }
+
+    /**
+     * @param string|null $stripeSubscriptionId
+     * @return $this
+     */
+    public function setStripeSubscriptionId(?string $stripeSubscriptionId): static
+    {
+        $this->stripeSubscriptionId = $stripeSubscriptionId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return $this
+     */
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     * @return $this
+     */
+    public function setSubject(string $subject): static
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getSubscriptionEndAt(): ?\DateTimeImmutable
+    {
+        return $this->subscriptionEndAt;
+    }
+
+    /**
+     * @param \DateTimeImmutable|null $subscriptionEndAt
+     * @return $this
+     */
+    public function setSubscriptionEndAt(?\DateTimeImmutable $subscriptionEndAt): static
+    {
+        $this->subscriptionEndAt = $subscriptionEndAt;
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getManager(): ?User
+    {
+        return $this->manager;
+    }
+
+    /**
+     * @param User|null $manager
+     * @return $this
+     */
+    public function setManager(?User $manager): static
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeTeam($this);
+        }
+
+        return $this;
+    }
+}
