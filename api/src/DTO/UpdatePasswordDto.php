@@ -7,8 +7,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  *
  */
-class ResetPasswordDto
+class UpdatePasswordDto
 {
+    /**
+     * @var string|null
+     */
+    #[
+        Assert\NotBlank(),
+        Assert\Type('string')
+    ]
+    private ?string $currentPassword;
     /**
      * @var string|null
      */
@@ -19,7 +27,6 @@ class ResetPasswordDto
         Assert\Type('string')
     ]
     private ?string $newPassword;
-
     /**
      * @var string|null
      */
@@ -29,6 +36,24 @@ class ResetPasswordDto
         Assert\Type('string')
     ]
     private ?string $confirmPassword;
+
+    /**
+     * @return string|null
+     */
+    public function getCurrentPassword(): ?string
+    {
+        return $this->currentPassword;
+    }
+
+    /**
+     * @param string|null $currentPassword
+     * @return $this
+     */
+    public function setCurrentPassword(?string $currentPassword): self
+    {
+        $this->currentPassword = $currentPassword;
+        return $this;
+    }
 
     /**
      * @return string|null

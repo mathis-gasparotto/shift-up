@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\User\GetMeAction;
 use App\Controller\User\ResetPasswordController;
 use App\Controller\User\SendResetPasswordController;
+use App\Controller\User\UpdateUserPasswordController;
 use App\Controller\User\VerifyEmailController;
 use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
@@ -89,6 +90,38 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'openapi_definition_name' => 'SendResetPasswordCollection'
             ],
             name: 'app_verify_email_register'
+        ),
+        new Post(
+            uriTemplate: '/users/update_password',
+            status: 200,
+            controller: UpdateUserPasswordController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'currentPassword' => [
+                                        'type' => 'string'
+                                    ],
+                                    'newPassword' => [
+                                        'type' => 'string'
+                                    ],
+                                    'confirmPassword' => [
+                                        'type' => 'string'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'UpdateUserPasswordCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            name: 'app_update_user_password'
         ),
         new Post(
             uriTemplate: '/send_reset_password',
@@ -193,7 +226,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     #[ORM\Column(length: 255)]
     #[
         Assert\NotBlank(groups: ['register']),
-        Assert\Length(min: 8, max: 32),
+        Assert\Length(min: 8, max: 150),
         Assert\Regex(pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])(?!.*\s).*$/', message: 'Password must contain at least one lowercase letter, one uppercase letter, one number and one special character')
     ]
     private ?string $password = null;
