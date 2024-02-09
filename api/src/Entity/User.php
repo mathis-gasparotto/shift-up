@@ -211,7 +211,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'team:read'])]
     private ?Uuid $id = null;
 
     /**

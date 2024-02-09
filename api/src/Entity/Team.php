@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
 use App\Helper\TeamHelper;
 use App\Model\ManagerAwareInterface;
 use App\Repository\TeamRepository;
+use App\StateProviders\TeamMeCollectionDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -52,6 +54,18 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
         ),
+        new GetCollection(
+            uriTemplate: '/teams',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetCollection',
+                'groups' => [
+                    'team:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: TeamMeCollectionDataProvider::class
+        ),
+
     ]
 )]
 class Team implements ManagerAwareInterface
@@ -63,21 +77,21 @@ class Team implements ManagerAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['teams:read'])]
+    #[Groups(['team:read'])]
     private ?Uuid $id = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['teams:admin:read'])]
+    #[Groups(['team:admin:read'])]
     private ?string $stripeCustomerId = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['teams:admin:read'])]
+    #[Groups(['team:admin:read'])]
     private ?string $stripeSubscriptionId = null;
 
     /**
@@ -89,7 +103,7 @@ class Team implements ManagerAwareInterface
             choices: TeamHelper::STATUS,
             message: 'Invalid status, valid status are: {{ choices }}'
         ),
-        Groups(['teams:read'])
+        Groups(['team:read'])
     ]
     private ?string $status = null;
 
@@ -97,28 +111,28 @@ class Team implements ManagerAwareInterface
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    #[Groups(['teams:read', 'team:write'])]
+    #[Groups(['team:read', 'team:write'])]
     private ?string $name = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['teams:read', 'team:write'])]
+    #[Groups(['team:read', 'team:write'])]
     private ?string $description = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    #[Groups(['teams:read', 'team:write'])]
+    #[Groups(['team:read', 'team:write'])]
     private ?string $subject = null;
 
     /**
      * @var \DateTimeImmutable|null
      */
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
-    #[Groups(['teams:read'])]
+    #[Groups(['team:read'])]
     private ?\DateTimeImmutable $subscriptionEndAt = null;
 
     /**
@@ -126,14 +140,14 @@ class Team implements ManagerAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'teamsManaged')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['teams:read'])]
+    #[Groups(['team:read'])]
     private ?User $manager = null;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
-    #[Groups(['teams:read'])]
+    #[Groups(['team:read'])]
     private Collection $users;
 
     /**
