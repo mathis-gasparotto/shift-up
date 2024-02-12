@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Controller\User\GetMeAction;
 use App\Controller\User\ResetPasswordController;
 use App\Controller\User\SendResetPasswordController;
@@ -53,6 +54,16 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ]
             ],
             processor: UserPostDataPersister::class
+        ),
+        new Put(
+            uriTemplate: '/users/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PutItem'
+            ],
+            securityPostDenormalize: "is_granted('" . GlobalHelper::ROLE_ADMIN . "') or (is_granted('" . GlobalHelper::ROLE_USER . "') and object.getId() === user.getId() and previous_object.getId() === user.getId())"
         ),
         new GetCollection(
             uriTemplate: '/users',
