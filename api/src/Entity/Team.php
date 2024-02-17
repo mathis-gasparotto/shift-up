@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
@@ -65,7 +66,20 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
             provider: TeamMeCollectionDataProvider::class
         ),
-
+        new Get(
+            uriTemplate: '/teams/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'teams:read',
+                    'teams:item:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '") or (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object))'
+        ),
     ]
 )]
 class Team implements ManagerAwareInterface

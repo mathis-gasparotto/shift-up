@@ -33,6 +33,10 @@ services:
         bind:
             $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
 
+    App\Serializer\GroupsContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: [ '@App\Serializer\GroupsContextBuilder.inner' ]
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

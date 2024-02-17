@@ -4,7 +4,6 @@ namespace App\StateProviders;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use ApiPlatform\Validator\ValidatorInterface;
 use App\Helper\GlobalHelper;
 use App\Helper\RepositoryHelper;
 use App\Service\RepositoryService;
@@ -18,12 +17,10 @@ class TeamMeCollectionDataProvider implements ProviderInterface
     /**
      * @param Security $security
      * @param RepositoryService $repositoryService
-     * @param ValidatorInterface $validator
      */
     public function __construct(
         private Security $security,
-        private RepositoryService $repositoryService,
-        private ValidatorInterface $validator
+        private RepositoryService $repositoryService
     ) {
     }
 

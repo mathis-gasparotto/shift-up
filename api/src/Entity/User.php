@@ -656,4 +656,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
 
         return $this;
     }
+
+    /**
+     * @param Team $team
+     * @return bool
+     */
+    public function isInTeam(Team $team): bool
+    {
+        return $this->teams->contains($team);
+    }
 }
