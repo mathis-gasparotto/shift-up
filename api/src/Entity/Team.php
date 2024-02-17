@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: '
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
-                (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object)) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getUsers().contains(user)) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
             '
         ),
@@ -106,7 +106,7 @@ class Team implements ManagerAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['team:read'])]
+    #[Groups(['team:read', 'project:read'])]
     private ?Uuid $id = null;
 
     /**
@@ -140,7 +140,7 @@ class Team implements ManagerAwareInterface
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    #[Groups(['team:read', 'team:write'])]
+    #[Groups(['team:read', 'team:write', 'project:read'])]
     private ?string $name = null;
 
     /**
@@ -169,7 +169,7 @@ class Team implements ManagerAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'teamsManaged')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['team:read'])]
+    #[Groups(['team:read', 'project:read'])]
     private ?User $manager = null;
 
     /**
@@ -180,12 +180,20 @@ class Team implements ManagerAwareInterface
     private Collection $users;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Project::class, orphanRemoval: true)]
+    #[Groups(['team:read'])]
+    private Collection $projects;
+
+    /**
      *
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->status = TeamHelper::STATUS_ACTIVE;
+        $this->projects = new ArrayCollection();
     }
 
     /**
@@ -378,6 +386,44 @@ class Team implements ManagerAwareInterface
     {
         if ($this->users->removeElement($user)) {
             $user->removeTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    /**
+     * @param Project $project
+     * @return $this
+     */
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Project $project
+     * @return $this
+     */
+    public function removeProject(Project $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            // set the owning side to null (unless already changed)
+            if ($project->getTeam() === $this) {
+                $project->setTeam(null);
+            }
         }
 
         return $this;

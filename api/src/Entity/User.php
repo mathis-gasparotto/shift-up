@@ -222,7 +222,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['user:read', 'team:read'])]
+    #[Groups(['user:read', 'team:read', 'project:read'])]
     private ?Uuid $id = null;
 
     /**
@@ -230,7 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
      */
     #[ORM\Column(length: 255)]
     #[Groups(
-        ['user:read', 'user:write']),
+        ['user:read', 'user:write', 'project:read']),
         Assert\NotBlank(groups: ['register'])
     ]
     private ?string $lastName = null;
@@ -240,7 +240,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
      */
     #[ORM\Column(length: 255)]
     #[Groups(
-        ['user:read', 'user:write']),
+        ['user:read', 'user:write', 'project:read']),
         Assert\NotBlank(groups: ['register'])
     ]
     private ?string $firstName = null;
@@ -655,14 +655,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
         $this->teams->removeElement($team);
 
         return $this;
-    }
-
-    /**
-     * @param Team $team
-     * @return bool
-     */
-    public function isInTeam(Team $team): bool
-    {
-        return $this->teams->contains($team);
     }
 }

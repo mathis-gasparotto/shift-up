@@ -34,7 +34,7 @@ class TeamMeCollectionDataProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array|null|object
     {
 
-        $isAdmin = $this->security->getUser() && in_array(GlobalHelper::ROLE_ADMIN, $this->security->getUser()->getRoles());
+        $isAdmin = GlobalHelper::isAdmin($this->security->getUser());
 
         if ($isAdmin) {
             return $this->repositoryService->createQueryBuilder($operation->getClass(), RepositoryHelper::createParamDql('t'), $operation, $context);

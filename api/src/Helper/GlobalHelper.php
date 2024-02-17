@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Entity\User;
 use DateTime;
 
 /**
@@ -52,5 +53,14 @@ final class GlobalHelper
         shuffle($array);
 
         return implode($array);
+    }
+
+    /**
+     * @param User|null $user
+     * @return bool
+     */
+    public static function isAdmin(?User $user): bool
+    {
+        return $user && in_array(GlobalHelper::ROLE_ADMIN, $user->getRoles());
     }
 }
