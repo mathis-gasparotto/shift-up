@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -107,6 +108,16 @@ use Symfony\Component\Validator\Constraints as Assert;
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getTeam().getManager() === user)
             '
         ),
+        new Delete(
+            normalizationContext: [
+                'openapi_definition_name' => 'DeleteItem'
+            ],
+            security: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getTeam().getUsers().contains(user)) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getTeam().getManager() === user)
+            '
+        )
     ]
 )]
 #[ApiResource(
