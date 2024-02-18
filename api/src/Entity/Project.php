@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use App\Repository\ProjectRepository;
 use App\StateProcessor\Project\ProjectPostDataPersister;
+use App\StateProviders\ProjectByTeamCollectionDataProvider;
 use App\StateProviders\ProjectMeCollectionDataProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -65,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'GetCollection',
                 'groups' => [
-                    'team:read'
+                    'project:read'
                 ]
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
@@ -73,6 +75,24 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ]
 )]
+#[ApiResource(
+    uriTemplate: '/teams/{id}/projects',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'id' => new Link(
+            toProperty: 'team',
+            fromClass: Team::class
+        )
+    ],
+    normalizationContext: [
+        'groups' => [
+            'project:read'
+        ]
+    ],
+    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+    provider: ProjectByTeamCollectionDataProvider::class
+)]
+
 class Project
 {
     /**
