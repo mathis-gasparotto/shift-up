@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
 use App\Helper\TeamHelper;
 use App\Model\ManagerAwareInterface;
@@ -80,6 +81,20 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ]
             ],
             security: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getUsers().contains(user)) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
+            '
+        ),
+        new Put(
+            uriTemplate: '/teams/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PutItem'
+            ],
+            securityPostDenormalize: '
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getUsers().contains(user)) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
