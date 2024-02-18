@@ -23,7 +23,6 @@ class ProjectPostDataPersister implements ProcessorInterface
      *
      * @param Security $security
      * @param EntityManagerInterface $entityManager
-     * @param UserPasswordHasherInterface $userPasswordEncoder
      */
     public function __construct(
         private Security $security,
