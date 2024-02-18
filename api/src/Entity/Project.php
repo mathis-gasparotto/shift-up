@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
@@ -72,6 +73,24 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
             provider: ProjectMeCollectionDataProvider::class
+        ),
+        new Get(
+            uriTemplate: '/projects/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'project:read',
+                    'project:item:read'
+                ]
+            ],
+            security: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getTeam().getUsers().contains(user)) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getTeam().getManager() === user)
+            '
         ),
     ]
 )]
