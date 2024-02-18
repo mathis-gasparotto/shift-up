@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use App\Repository\ProjectRepository;
 use App\StateProcessor\Project\ProjectPostDataPersister;
+use App\StateProviders\ProjectMeCollectionDataProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -57,6 +59,17 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
             processor: ProjectPostDataPersister::class
+        ),
+        new GetCollection(
+            uriTemplate: '/projects',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetCollection',
+                'groups' => [
+                    'team:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: ProjectMeCollectionDataProvider::class
         ),
     ]
 )]
