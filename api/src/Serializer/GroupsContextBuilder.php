@@ -45,9 +45,19 @@ final class GroupsContextBuilder implements SerializerContextBuilderInterface
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
         $isAdmin = $this->authorizationChecker->isGranted('ROLE_ADMIN');
 
+        if (isset($context['operation']) === false) {
+            return $context;
+        }
         $resourceClass = $context['resource_class'] ?? null;
-        $shortName = (new \ReflectionClass($resourceClass))->getShortName();
-        $classAlias = strtolower(preg_replace('/[A-Z]/', '_\\0', lcfirst($shortName)));
+        $classAlias = $context['operation']->getShortName() ?? strtolower(
+            preg_replace(
+                '/[A-Z][a-z]/',
+                '_\\0',
+                lcfirst(
+                    (new \ReflectionClass($resourceClass))->getShortName()
+                )
+            )
+        );
         $context['groups'] = $context['groups'] ?? [];
         $context['groups'][] = sprintf('%s:%s', $classAlias, $normalization ? 'read' : 'write');
 
