@@ -49,15 +49,7 @@ final class GroupsContextBuilder implements SerializerContextBuilderInterface
             return $context;
         }
         $resourceClass = $context['resource_class'] ?? null;
-        $classAlias = $context['operation']->getShortName() ?? strtolower(
-            preg_replace(
-                '/[A-Z][a-z]/',
-                '_\\0',
-                lcfirst(
-                    (new \ReflectionClass($resourceClass))->getShortName()
-                )
-            )
-        );
+        $classAlias = strtolower(preg_replace('/[A-Z][a-z]/', '_\\0', lcfirst($context['operation']->getShortName())));
         $context['groups'] = $context['groups'] ?? [];
         $context['groups'][] = sprintf('%s:%s', $classAlias, $normalization ? 'read' : 'write');
 

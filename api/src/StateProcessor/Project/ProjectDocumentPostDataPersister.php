@@ -47,7 +47,7 @@ class ProjectDocumentPostDataPersister implements ProcessorInterface
             throw new AccessDeniedException();
         }
 
-        $class = $context['operation']->getShortName();
+        $class = GlobalHelper::getClassShortName($context['operation']->getClass());
         $addMethod = 'add' . $class;
 
         $data->getProject()->$addMethod($data);

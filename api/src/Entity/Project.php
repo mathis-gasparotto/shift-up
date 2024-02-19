@@ -139,7 +139,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectByTeamCollectionDataProvider::class
 )]
-
 class Project
 {
     /**

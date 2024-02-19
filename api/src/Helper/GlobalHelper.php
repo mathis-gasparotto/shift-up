@@ -63,4 +63,18 @@ final class GlobalHelper
     {
         return $user && in_array(GlobalHelper::ROLE_ADMIN, $user->getRoles());
     }
+
+    /**
+     * @param string|object $class
+     * @return string
+     * @throws \ReflectionException
+     */
+    public static function getClassShortName(string|object $class): string
+    {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
+        return (new \ReflectionClass($class))->getShortName();
+    }
 }
