@@ -1,0 +1,179 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\SWOTRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ *
+ */
+#[ORM\Entity(repositoryClass: SWOTRepository::class)]
+class SWOT
+{
+    /**
+     * @var Uuid|null
+     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[Groups(['swot:read'])]
+    private ?Uuid $id = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['swot:read', 'swot:write'])
+    ]
+    private ?string $strengths = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['swot:read', 'swot:write'])
+    ]
+    private ?string $weaknesses = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['swot:read', 'swot:write'])
+    ]
+    private ?string $opportunities = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['swot:read', 'swot:write'])
+    ]
+    private ?string $threats = null;
+
+    /**
+     * @var Project|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'SWOTs')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['swot:read', 'swot:write'])]
+    private ?Project $project = null;
+
+    /**
+     * @return Uuid|null
+     */
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStrengths(): ?string
+    {
+        return $this->strengths;
+    }
+
+    /**
+     * @param string $strengths
+     * @return $this
+     */
+    public function setStrengths(string $strengths): static
+    {
+        $this->strengths = $strengths;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getWeaknesses(): ?string
+    {
+        return $this->weaknesses;
+    }
+
+    /**
+     * @param string $weaknesses
+     * @return $this
+     */
+    public function setWeaknesses(string $weaknesses): static
+    {
+        $this->weaknesses = $weaknesses;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOpportunities(): ?string
+    {
+        return $this->opportunities;
+    }
+
+    /**
+     * @param string $opportunities
+     * @return $this
+     */
+    public function setOpportunities(string $opportunities): static
+    {
+        $this->opportunities = $opportunities;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getThreats(): ?string
+    {
+        return $this->threats;
+    }
+
+    /**
+     * @param string $threats
+     * @return $this
+     */
+    public function setThreats(string $threats): static
+    {
+        $this->threats = $threats;
+
+        return $this;
+    }
+
+    /**
+     * @return Project|null
+     */
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project|null $project
+     * @return $this
+     */
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+}

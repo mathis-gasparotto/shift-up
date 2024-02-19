@@ -15,6 +15,8 @@ use App\Repository\ProjectRepository;
 use App\StateProcessor\Project\ProjectPostDataPersister;
 use App\StateProviders\ProjectByTeamCollectionDataProvider;
 use App\StateProviders\ProjectMeCollectionDataProvider;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -199,12 +201,16 @@ class Project
     #[Groups(['project:read', 'project:write'])]
     private ?Team $team = null;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: SWOT::class, orphanRemoval: true)]
+    private Collection $SWOTs;
+
     /**
      *
      */
     public function __construct()
     {
         $this->status = ProjectHelper::STATUS_ACTIVE;
+        $this->SWOTs = new ArrayCollection();
     }
 
     /**
@@ -325,6 +331,36 @@ class Project
     public function setTeam(?Team $team): static
     {
         $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SWOT>
+     */
+    public function getSWOTs(): Collection
+    {
+        return $this->SWOTs;
+    }
+
+    public function addSWOT(SWOT $sWOT): static
+    {
+        if (!$this->SWOTs->contains($sWOT)) {
+            $this->SWOTs->add($sWOT);
+            $sWOT->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSWOT(SWOT $sWOT): static
+    {
+        if ($this->SWOTs->removeElement($sWOT)) {
+            // set the owning side to null (unless already changed)
+            if ($sWOT->getProject() === $this) {
+                $sWOT->setProject(null);
+            }
+        }
 
         return $this;
     }
