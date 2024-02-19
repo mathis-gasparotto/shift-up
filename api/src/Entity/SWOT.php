@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
@@ -60,6 +61,24 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Get(
+            uriTemplate: '/swots/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'swot:read',
+                    'swot:item:read'
+                ]
+            ],
+            security: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
+            '
         ),
     ]
 )]

@@ -82,7 +82,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: '
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
-                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getUsers().contains(user)) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object)) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
             '
         ),
@@ -96,7 +96,6 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             securityPostDenormalize: '
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
-                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getUsers().contains(user)) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
             '
         ),
