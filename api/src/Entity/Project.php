@@ -11,6 +11,8 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
+use App\Model\TracingAwareInterface;
+use App\Model\Traits\TracingAwareTrait;
 use App\Repository\ProjectRepository;
 use App\StateProcessor\Project\ProjectPostDataPersister;
 use App\StateProviders\ProjectByTeamCollectionDataProvider;
@@ -139,8 +141,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectByTeamCollectionDataProvider::class
 )]
-class Project
+class Project implements TracingAwareInterface
 {
+    use TracingAwareTrait;
+
     /**
      * @var Uuid|null
      */

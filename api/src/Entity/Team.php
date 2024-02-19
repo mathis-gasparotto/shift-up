@@ -11,6 +11,8 @@ use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
 use App\Helper\TeamHelper;
 use App\Model\ManagerAwareInterface;
+use App\Model\TracingAwareInterface;
+use App\Model\Traits\TracingAwareTrait;
 use App\Repository\TeamRepository;
 use App\StateProviders\TeamMeCollectionDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -111,8 +113,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
     ]
 )]
-class Team implements ManagerAwareInterface
+class Team implements ManagerAwareInterface, TracingAwareInterface
 {
+    use TracingAwareTrait;
+
     /**
      * @var Uuid|null
      */

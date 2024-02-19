@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
+use App\Model\TracingAwareInterface;
+use App\Model\Traits\TracingAwareTrait;
 use App\Repository\SWOTRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
@@ -100,8 +102,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectDocumentByProjectCollectionDataProvider::class
 )]
-class SWOT
+class SWOT implements TracingAwareInterface
 {
+    use TracingAwareTrait;
+
     /**
      * @var Uuid|null
      */
