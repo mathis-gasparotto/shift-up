@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\BusinessModelCanvasRepository;
+use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -16,6 +20,62 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 #[ORM\Entity(repositoryClass: BusinessModelCanvasRepository::class)]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/business_model_canvases',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ],
+                                    'keyPartners' => [
+                                        'type' => 'string'
+                                    ],
+                                    'keyActivities' => [
+                                        'type' => 'string'
+                                    ],
+                                    'keyResources' => [
+                                        'type' => 'string'
+                                    ],
+                                    'valuePropositions' => [
+                                        'type' => 'string'
+                                    ],
+                                    'customerRelationships' => [
+                                        'type' => 'string'
+                                    ],
+                                    'channels' => [
+                                        'type' => 'string'
+                                    ],
+                                    'customerSegments' => [
+                                        'type' => 'string'
+                                    ],
+                                    'costStructure' => [
+                                        'type' => 'string'
+                                    ],
+                                    'revenueStreams' => [
+                                        'type' => 'string'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: ProjectDocumentPostDataPersister::class
+        ),
+    ]
+)]
 class BusinessModelCanvas implements TracingAwareInterface
 {
     use TracingAwareTrait;
