@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new Post(
-            uriTemplate: '/business_model_canvases',
+            uriTemplate: '/business_model_canvas',
             openapiContext: [
                 'requestBody' => [
                     'content' => [
@@ -80,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             processor: ProjectDocumentPostDataPersister::class
         ),
         new Get(
-            uriTemplate: '/business_model_canvases/{id}',
+            uriTemplate: '/business_model_canvas/{id}',
             requirements: [
                 'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
             ],
@@ -98,7 +99,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             '
         ),
         new Put(
-            uriTemplate: '/business_model_canvases/{id}',
+            uriTemplate: '/business_model_canvas/{id}',
             requirements: [
                 'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
             ],
@@ -111,6 +112,16 @@ use Symfony\Component\Validator\Constraints as Assert;
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
             '
         ),
+        new Delete(
+            normalizationContext: [
+                'openapi_definition_name' => 'DeleteItem'
+            ],
+            security: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
+            '
+        )
     ]
 )]
 #[ApiResource(
