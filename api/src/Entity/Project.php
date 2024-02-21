@@ -204,8 +204,17 @@ class Project implements TracingAwareInterface
     #[Groups(['project:read', 'project:write'])]
     private ?Team $team = null;
 
+    /**
+     * @var Collection|ArrayCollection
+     */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: SWOT::class, orphanRemoval: true)]
     private Collection $SWOTs;
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: BusinessModelCanvas::class, orphanRemoval: true)]
+    private Collection $businessModelCanvases;
 
     /**
      *
@@ -214,6 +223,7 @@ class Project implements TracingAwareInterface
     {
         $this->status = ProjectHelper::STATUS_ACTIVE;
         $this->SWOTs = new ArrayCollection();
+        $this->businessModelCanvases = new ArrayCollection();
     }
 
     /**
@@ -346,6 +356,10 @@ class Project implements TracingAwareInterface
         return $this->SWOTs;
     }
 
+    /**
+     * @param SWOT $sWOT
+     * @return $this
+     */
     public function addSWOT(SWOT $sWOT): static
     {
         if (!$this->SWOTs->contains($sWOT)) {
@@ -356,12 +370,54 @@ class Project implements TracingAwareInterface
         return $this;
     }
 
+    /**
+     * @param SWOT $sWOT
+     * @return $this
+     */
     public function removeSWOT(SWOT $sWOT): static
     {
         if ($this->SWOTs->removeElement($sWOT)) {
             // set the owning side to null (unless already changed)
             if ($sWOT->getProject() === $this) {
                 $sWOT->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BusinessModelCanvas>
+     */
+    public function getBusinessModelCanvases(): Collection
+    {
+        return $this->businessModelCanvases;
+    }
+
+    /**
+     * @param BusinessModelCanvas $businessModelCanvas
+     * @return $this
+     */
+    public function addBusinessModelCanvas(BusinessModelCanvas $businessModelCanvas): static
+    {
+        if (!$this->businessModelCanvases->contains($businessModelCanvas)) {
+            $this->businessModelCanvases->add($businessModelCanvas);
+            $businessModelCanvas->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param BusinessModelCanvas $businessModelCanvas
+     * @return $this
+     */
+    public function removeBusinessModelCanvas(BusinessModelCanvas $businessModelCanvas): static
+    {
+        if ($this->businessModelCanvases->removeElement($businessModelCanvas)) {
+            // set the owning side to null (unless already changed)
+            if ($businessModelCanvas->getProject() === $this) {
+                $businessModelCanvas->setProject(null);
             }
         }
 
