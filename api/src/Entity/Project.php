@@ -217,6 +217,12 @@ class Project implements TracingAwareInterface
     private Collection $businessModelCanvases;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: SMART::class, orphanRemoval: true)]
+    private Collection $SMARTs;
+
+    /**
      *
      */
     public function __construct()
@@ -224,6 +230,7 @@ class Project implements TracingAwareInterface
         $this->status = ProjectHelper::STATUS_ACTIVE;
         $this->SWOTs = new ArrayCollection();
         $this->businessModelCanvases = new ArrayCollection();
+        $this->SMARTs = new ArrayCollection();
     }
 
     /**
@@ -418,6 +425,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($businessModelCanvas->getProject() === $this) {
                 $businessModelCanvas->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SMART>
+     */
+    public function getSMARTs(): Collection
+    {
+        return $this->SMARTs;
+    }
+
+    /**
+     * @param SMART $sMART
+     * @return $this
+     */
+    public function addSMART(SMART $sMART): static
+    {
+        if (!$this->SMARTs->contains($sMART)) {
+            $this->SMARTs->add($sMART);
+            $sMART->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param SMART $sMART
+     * @return $this
+     */
+    public function removeSMART(SMART $sMART): static
+    {
+        if ($this->SMARTs->removeElement($sMART)) {
+            // set the owning side to null (unless already changed)
+            if ($sMART->getProject() === $this) {
+                $sMART->setProject(null);
             }
         }
 
