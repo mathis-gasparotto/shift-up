@@ -223,6 +223,12 @@ class Project implements TracingAwareInterface
     private Collection $SMARTs;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: BuyerPersona::class, orphanRemoval: true)]
+    private Collection $buyerPersonas;
+
+    /**
      *
      */
     public function __construct()
@@ -231,6 +237,7 @@ class Project implements TracingAwareInterface
         $this->SWOTs = new ArrayCollection();
         $this->businessModelCanvases = new ArrayCollection();
         $this->SMARTs = new ArrayCollection();
+        $this->buyerPersonas = new ArrayCollection();
     }
 
     /**
@@ -463,6 +470,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($sMART->getProject() === $this) {
                 $sMART->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BuyerPersona>
+     */
+    public function getBuyerPersonas(): Collection
+    {
+        return $this->buyerPersonas;
+    }
+
+    /**
+     * @param BuyerPersona $buyerPersona
+     * @return $this
+     */
+    public function addBuyerPersona(BuyerPersona $buyerPersona): static
+    {
+        if (!$this->buyerPersonas->contains($buyerPersona)) {
+            $this->buyerPersonas->add($buyerPersona);
+            $buyerPersona->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param BuyerPersona $buyerPersona
+     * @return $this
+     */
+    public function removeBuyerPersona(BuyerPersona $buyerPersona): static
+    {
+        if ($this->buyerPersonas->removeElement($buyerPersona)) {
+            // set the owning side to null (unless already changed)
+            if ($buyerPersona->getProject() === $this) {
+                $buyerPersona->setProject(null);
             }
         }
 
