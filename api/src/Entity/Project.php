@@ -229,6 +229,12 @@ class Project implements TracingAwareInterface
     private Collection $buyerPersonas;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: PESTEL::class, orphanRemoval: true)]
+    private Collection $PESTELs;
+
+    /**
      *
      */
     public function __construct()
@@ -238,6 +244,7 @@ class Project implements TracingAwareInterface
         $this->businessModelCanvases = new ArrayCollection();
         $this->SMARTs = new ArrayCollection();
         $this->buyerPersonas = new ArrayCollection();
+        $this->PESTELs = new ArrayCollection();
     }
 
     /**
@@ -508,6 +515,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($buyerPersona->getProject() === $this) {
                 $buyerPersona->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PESTEL>
+     */
+    public function getPESTELs(): Collection
+    {
+        return $this->PESTELs;
+    }
+
+    /**
+     * @param PESTEL $pESTEL
+     * @return $this
+     */
+    public function addPESTEL(PESTEL $pESTEL): static
+    {
+        if (!$this->PESTELs->contains($pESTEL)) {
+            $this->PESTELs->add($pESTEL);
+            $pESTEL->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param PESTEL $pESTEL
+     * @return $this
+     */
+    public function removePESTEL(PESTEL $pESTEL): static
+    {
+        if ($this->PESTELs->removeElement($pESTEL)) {
+            // set the owning side to null (unless already changed)
+            if ($pESTEL->getProject() === $this) {
+                $pESTEL->setProject(null);
             }
         }
 
