@@ -7,7 +7,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
+use App\Model\TracingAwareInterface;
+use App\Model\Traits\TracingAwareTrait;
 use App\Repository\BuyerPersonaRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
@@ -85,6 +88,20 @@ use Symfony\Component\Validator\Constraints as Assert;
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
             '
         ),
+        new Put(
+            uriTemplate: '/buyer_personas/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PutItem'
+            ],
+            securityPostDenormalize: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
+            '
+        ),
     ]
 )]
 #[ApiResource(
@@ -105,8 +122,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectDocumentByProjectCollectionDataProvider::class
 )]
-class BuyerPersona
+class BuyerPersona implements TracingAwareInterface
 {
+    use TracingAwareTrait;
+
     /**
      * @var Uuid|null
      */
