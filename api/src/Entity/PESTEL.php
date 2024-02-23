@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\PESTELRepository;
+use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -16,6 +20,54 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 #[ORM\Entity(repositoryClass: PESTELRepository::class)]
+#[ApiResource(
+    shortName: 'pestel',
+    operations: [
+        new Post(
+            uriTemplate: '/pestels',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ],
+                                    'political' => [
+                                        'type' => 'string'
+                                    ],
+                                    'economic' => [
+                                        'type' => 'string'
+                                    ],
+                                    'social' => [
+                                        'type' => 'string'
+                                    ],
+                                    'technological' => [
+                                        'type' => 'string'
+                                    ],
+                                    'environmental' => [
+                                        'type' => 'string'
+                                    ],
+                                    'legal' => [
+                                        'type' => 'string'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: ProjectDocumentPostDataPersister::class
+        ),
+    ]
+)]
 class PESTEL implements TracingAwareInterface
 {
     use TracingAwareTrait;
