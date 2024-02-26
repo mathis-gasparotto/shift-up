@@ -235,6 +235,12 @@ class Project implements TracingAwareInterface
     private Collection $PESTELs;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: MarketingMix5::class, orphanRemoval: true)]
+    private Collection $marketingMix5s;
+
+    /**
      *
      */
     public function __construct()
@@ -245,6 +251,7 @@ class Project implements TracingAwareInterface
         $this->SMARTs = new ArrayCollection();
         $this->buyerPersonas = new ArrayCollection();
         $this->PESTELs = new ArrayCollection();
+        $this->marketingMix5s = new ArrayCollection();
     }
 
     /**
@@ -553,6 +560,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($pESTEL->getProject() === $this) {
                 $pESTEL->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MarketingMix5>
+     */
+    public function getMarketingMix5s(): Collection
+    {
+        return $this->marketingMix5s;
+    }
+
+    /**
+     * @param MarketingMix5 $marketingMix5
+     * @return $this
+     */
+    public function addMarketingMix5(MarketingMix5 $marketingMix5): static
+    {
+        if (!$this->marketingMix5s->contains($marketingMix5)) {
+            $this->marketingMix5s->add($marketingMix5);
+            $marketingMix5->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MarketingMix5 $marketingMix5
+     * @return $this
+     */
+    public function removeMarketingMix5(MarketingMix5 $marketingMix5): static
+    {
+        if ($this->marketingMix5s->removeElement($marketingMix5)) {
+            // set the owning side to null (unless already changed)
+            if ($marketingMix5->getProject() === $this) {
+                $marketingMix5->setProject(null);
             }
         }
 
