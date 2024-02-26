@@ -212,7 +212,10 @@ class BuyerPersona implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'buyerPersonas')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['buyer_persona:read', 'buyer_persona:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['buyer_persona:read', 'buyer_persona:write'])
+    ]
     private ?Project $project = null;
 
     /**

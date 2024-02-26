@@ -213,7 +213,10 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'PESTELs')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['pestel:read', 'pestel:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['pestel:read', 'pestel:write'])
+    ]
     private ?Project $project = null;
 
     /**

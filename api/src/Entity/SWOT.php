@@ -187,7 +187,10 @@ class SWOT implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'SWOTs')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['swot:read', 'swot:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['swot:read', 'swot:write'])
+    ]
     private ?Project $project = null;
 
     /**

@@ -200,7 +200,10 @@ class SMART implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'SMARTs')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['smart:read', 'smart:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['smart:read', 'smart:write'])
+    ]
     private ?Project $project = null;
 
     /**

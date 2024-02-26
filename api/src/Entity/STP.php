@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\STPRepository;
+use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -16,6 +20,45 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 #[ORM\Entity(repositoryClass: STPRepository::class)]
+#[ApiResource(
+    shortName: 'stp',
+    operations: [
+        new Post(
+            uriTemplate: '/stps',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ],
+                                    'segmentation' => [
+                                        'type' => 'string'
+                                    ],
+                                    'targeting' => [
+                                        'type' => 'string'
+                                    ],
+                                    'positioning' => [
+                                        'type' => 'string'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: ProjectDocumentPostDataPersister::class
+        ),
+    ]
+)]
 class STP implements TracingAwareInterface
 {
     use TracingAwareTrait;
@@ -65,7 +108,10 @@ class STP implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'STPs')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['stp:read', 'stp:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['stp:read', 'stp:write'])
+    ]
     private ?Project $project = null;
 
     /**

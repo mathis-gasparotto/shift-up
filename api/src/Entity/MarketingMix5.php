@@ -200,7 +200,10 @@ class MarketingMix5 implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'marketingMix5s')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['marketing_mix_5:read', 'marketing_mix_5:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['marketing_mix_5:read', 'marketing_mix_5:write'])
+    ]
     private ?Project $project = null;
 
     /**

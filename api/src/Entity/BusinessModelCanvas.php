@@ -249,7 +249,10 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'businessModelCanvases')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['business_model_canvas:read', 'business_model_canvas:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['business_model_canvas:read', 'business_model_canvas:write'])
+    ]
     private ?Project $project = null;
 
     /**

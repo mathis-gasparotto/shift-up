@@ -159,21 +159,30 @@ class Project implements TracingAwareInterface
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    #[Groups(['project:read', 'project:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['project:read', 'project:write'])
+    ]
     private ?string $name = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['project:read', 'project:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['project:read', 'project:write'])
+    ]
     private ?string $description = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    #[Groups(['project:read', 'project:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['project:read', 'project:write'])
+    ]
     private ?string $subject = null;
 
     /**
@@ -201,7 +210,10 @@ class Project implements TracingAwareInterface
      */
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['project:read', 'project:write'])]
+    #[
+        Assert\NotBlank,
+        Groups(['project:read', 'project:write'])
+    ]
     private ?Team $team = null;
 
     /**
