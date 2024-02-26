@@ -265,6 +265,12 @@ class Project implements TracingAwareInterface
     private Collection $marketingMix4s;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: GoldenTriangle::class, orphanRemoval: true)]
+    private Collection $goldenTriangles;
+
+    /**
      *
      */
     public function __construct()
@@ -278,6 +284,7 @@ class Project implements TracingAwareInterface
         $this->marketingMix5s = new ArrayCollection();
         $this->STPs = new ArrayCollection();
         $this->marketingMix4s = new ArrayCollection();
+        $this->goldenTriangles = new ArrayCollection();
     }
 
     /**
@@ -700,6 +707,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($marketingMix4->getProject() === $this) {
                 $marketingMix4->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GoldenTriangle>
+     */
+    public function getGoldenTriangles(): Collection
+    {
+        return $this->goldenTriangles;
+    }
+
+    /**
+     * @param GoldenTriangle $goldenTriangle
+     * @return $this
+     */
+    public function addGoldenTriangle(GoldenTriangle $goldenTriangle): static
+    {
+        if (!$this->goldenTriangles->contains($goldenTriangle)) {
+            $this->goldenTriangles->add($goldenTriangle);
+            $goldenTriangle->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param GoldenTriangle $goldenTriangle
+     * @return $this
+     */
+    public function removeGoldenTriangle(GoldenTriangle $goldenTriangle): static
+    {
+        if ($this->goldenTriangles->removeElement($goldenTriangle)) {
+            // set the owning side to null (unless already changed)
+            if ($goldenTriangle->getProject() === $this) {
+                $goldenTriangle->setProject(null);
             }
         }
 
