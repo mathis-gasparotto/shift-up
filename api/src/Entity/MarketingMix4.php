@@ -1,0 +1,186 @@
+<?php
+
+namespace App\Entity;
+
+use App\Model\TracingAwareInterface;
+use App\Model\Traits\TracingAwareTrait;
+use App\Repository\MarketingMix4Repository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ *
+ */
+#[ORM\Entity(repositoryClass: MarketingMix4Repository::class)]
+class MarketingMix4 implements TracingAwareInterface
+{
+    use TracingAwareTrait;
+
+    /**
+     * @var Uuid|null
+     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[Groups(['marketing_mix_4:read'])]
+    private ?Uuid $id = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['marketing_mix_4:read', 'marketing_mix_4:write'])
+    ]
+    private ?string $product = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['marketing_mix_4:read', 'marketing_mix_4:write'])
+    ]
+    private ?string $price = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['marketing_mix_4:read', 'marketing_mix_4:write'])
+    ]
+    private ?string $place = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['marketing_mix_4:read', 'marketing_mix_4:write'])
+    ]
+    private ?string $promotion = null;
+
+    /**
+     * @var Project|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'marketingMix4s')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[
+        Assert\NotBlank,
+        Groups(['marketing_mix_4:read', 'marketing_mix_4:write'])
+    ]
+    private ?Project $project = null;
+
+    /**
+     * @return Uuid|null
+     */
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProduct(): ?string
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param string $product
+     * @return $this
+     */
+    public function setProduct(string $product): static
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param string $price
+     * @return $this
+     */
+    public function setPrice(string $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlace(): ?string
+    {
+        return $this->place;
+    }
+
+    /**
+     * @param string $place
+     * @return $this
+     */
+    public function setPlace(string $place): static
+    {
+        $this->place = $place;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPromotion(): ?string
+    {
+        return $this->promotion;
+    }
+
+    /**
+     * @param string $promotion
+     * @return $this
+     */
+    public function setPromotion(string $promotion): static
+    {
+        $this->promotion = $promotion;
+
+        return $this;
+    }
+
+    /**
+     * @return Project|null
+     */
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    /**
+     * @param Project|null $project
+     * @return $this
+     */
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+}
