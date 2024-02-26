@@ -117,7 +117,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/buyer_personas',
-    shortName: 'buyer_persona',
     operations: [new GetCollection()],
     uriVariables: [
         'id' => new Link(

@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: MarketingMix5Repository::class)]
 #[ApiResource(
-    shortName: 'marketing_mix_5',
+    shortName: 'MarketingMix_5',
     operations: [
         new Post(
             uriTemplate: '/marketing_mix_5s',
@@ -115,7 +115,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/marketing_mix_5s',
-    shortName: 'marketing_mix_5',
+    shortName: 'MarketingMix_5',
     operations: [new GetCollection()],
     uriVariables: [
         'id' => new Link(
