@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\GoldenTriangleRepository;
+use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -16,6 +20,67 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 #[ORM\Entity(repositoryClass: GoldenTriangleRepository::class)]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/golden_triangles',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ],
+                                    'topLabel' => [
+                                        'type' => 'string'
+                                    ],
+                                    'leftLabel' => [
+                                        'type' => 'string'
+                                    ],
+                                    'rightLabel' => [
+                                        'type' => 'string'
+                                    ],
+                                    'brands' => [
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'object',
+                                            'properties' => [
+                                                'name' => [
+                                                    'type' => 'string'
+                                                ],
+                                                'topPosition' => [
+                                                    'type' => 'number',
+                                                    'format' => 'float'
+                                                ],
+                                                'leftPosition' => [
+                                                    'type' => 'number',
+                                                    'format' => 'float'
+                                                ],
+                                                'rightPosition' => [
+                                                    'type' => 'number',
+                                                    'format' => 'float'
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: ProjectDocumentPostDataPersister::class
+        ),
+    ]
+)]
 class GoldenTriangle implements TracingAwareInterface
 {
     use TracingAwareTrait;
@@ -64,16 +129,8 @@ class GoldenTriangle implements TracingAwareInterface
     private ?string $rightLabel = null;
 
     /**
-     * @var Project|null
+     * @var array
      */
-    #[ORM\ManyToOne(inversedBy: 'goldenTriangles')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[
-        Assert\NotBlank,
-        Groups(['golden_triangle:read', 'golden_triangle:write'])
-    ]
-    private ?Project $project = null;
-
     #[ORM\Column(type: Types::JSON)]
     #[
         Assert\All([
@@ -99,6 +156,17 @@ class GoldenTriangle implements TracingAwareInterface
         Groups(['golden_triangle:read', 'golden_triangle:write'])
     ]
     private array $brands = [];
+
+    /**
+     * @var Project|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'goldenTriangles')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[
+        Assert\NotBlank,
+        Groups(['golden_triangle:read', 'golden_triangle:write'])
+    ]
+    private ?Project $project = null;
 
     /**
      * @return Uuid|null
@@ -166,6 +234,25 @@ class GoldenTriangle implements TracingAwareInterface
     }
 
     /**
+     * @return array
+     */
+    public function getBrands(): array
+    {
+        return $this->brands;
+    }
+
+    /**
+     * @param array $brands
+     * @return $this
+     */
+    public function setBrands(array $brands): static
+    {
+        $this->brands = $brands;
+
+        return $this;
+    }
+
+    /**
      * @return Project|null
      */
     public function getProject(): ?Project
@@ -180,18 +267,6 @@ class GoldenTriangle implements TracingAwareInterface
     public function setProject(?Project $project): static
     {
         $this->project = $project;
-
-        return $this;
-    }
-
-    public function getBrands(): array
-    {
-        return $this->brands;
-    }
-
-    public function setBrands(array $brands): static
-    {
-        $this->brands = $brands;
 
         return $this;
     }
