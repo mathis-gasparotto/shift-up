@@ -241,6 +241,12 @@ class Project implements TracingAwareInterface
     private Collection $marketingMix5s;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: STP::class, orphanRemoval: true)]
+    private Collection $STPs;
+
+    /**
      *
      */
     public function __construct()
@@ -252,6 +258,7 @@ class Project implements TracingAwareInterface
         $this->buyerPersonas = new ArrayCollection();
         $this->PESTELs = new ArrayCollection();
         $this->marketingMix5s = new ArrayCollection();
+        $this->STPs = new ArrayCollection();
     }
 
     /**
@@ -598,6 +605,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($marketingMix5->getProject() === $this) {
                 $marketingMix5->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, STP>
+     */
+    public function getSTPs(): Collection
+    {
+        return $this->STPs;
+    }
+
+    /**
+     * @param STP $sTP
+     * @return $this
+     */
+    public function addSTP(STP $sTP): static
+    {
+        if (!$this->STPs->contains($sTP)) {
+            $this->STPs->add($sTP);
+            $sTP->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param STP $sTP
+     * @return $this
+     */
+    public function removeSTP(STP $sTP): static
+    {
+        if ($this->STPs->removeElement($sTP)) {
+            // set the owning side to null (unless already changed)
+            if ($sTP->getProject() === $this) {
+                $sTP->setProject(null);
             }
         }
 
