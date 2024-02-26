@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\MarketingMix5Repository;
+use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -17,6 +20,51 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 #[ORM\Entity(repositoryClass: MarketingMix5Repository::class)]
+#[ApiResource(
+    shortName: 'marketing_mix_5',
+    operations: [
+        new Post(
+            uriTemplate: '/marketing_mix_5s',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ],
+                                    'product' => [
+                                        'type' => 'string'
+                                    ],
+                                    'price' => [
+                                        'type' => 'string'
+                                    ],
+                                    'place' => [
+                                        'type' => 'string'
+                                    ],
+                                    'promotion' => [
+                                        'type' => 'string'
+                                    ],
+                                    'people' => [
+                                        'type' => 'string'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: ProjectDocumentPostDataPersister::class
+        ),
+    ]
+)]
 class MarketingMix5 implements TracingAwareInterface
 {
     use TracingAwareTrait;
