@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
@@ -96,6 +97,20 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ]
             ],
             security: '
+                is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
+                (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
+            '
+        ),
+        new Put(
+            uriTemplate: '/golden_triangles/{id}',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PutItem'
+            ],
+            securityPostDenormalize: '
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
