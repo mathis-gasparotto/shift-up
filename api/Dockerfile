@@ -1,0 +1,40 @@
+# Utiliser l'image PHP Alpine 8.2.15
+FROM php:8.2.15-alpine as api_php
+
+ENV APP_ENV=dev XDEBUG_MODE=off
+
+WORKDIR /srv/api
+
+# Installer Composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Installer Imagick et ses dépendances
+RUN apk add --no-cache autoconf g++ imagemagick-dev libtool make pcre-dev && \
+    pecl install imagick && \
+    docker-php-ext-enable imagick && \
+    apk del autoconf g++ libtool make pcre-dev
+
+# Définir le fuseau horaire
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
+    echo "Europe/Paris" > /etc/timezone
+
+# Copier le fichier composer.json (assurez-vous qu'il est dans le même répertoire que votre Dockerfile)
+COPY composer.* symfony.* ./
+
+# Installer les dépendances du projet
+RUN set -eux; \
+	composer install --prefer-dist --no-scripts --no-progress; \
+	composer clear-cache
+
+# copy sources
+COPY --link . .
+RUN rm -Rf docker/
+
+# Exposer le port 8000
+EXPOSE 80
+
+# Démarrer le serveur Symfony
+CMD ["php", "-S", "0.0.0.0:80", "-t", "/srv/api/public/"]

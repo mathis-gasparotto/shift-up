@@ -1,0 +1,18 @@
+# Read the documentation at https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md
+flysystem:
+    storages:
+        media.storage.local:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/public/media/uploads'
+                permissions:
+                    file:
+                        public: 777
+                        private: 777
+                    dir:
+                        public: 777
+                        private: 777
+        media.storage:
+            adapter: 'lazy'
+            options:
+                source: '%env(MEDIA_STORAGE)%'

@@ -1,0 +1,4 @@
+vendor/
+var/
+docker/db
+.git

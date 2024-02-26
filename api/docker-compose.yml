@@ -1,0 +1,39 @@
+services:
+  php:
+    build:
+      context: .
+      target: api_php
+      args:
+        DOCKER_BUILDKIT: 1
+    container_name: shift-up_app_api_php
+    depends_on:
+      - smtp
+      - db
+    volumes:
+      - .:/srv/api:rw
+    ports:
+      - "8080:80"
+  db:
+    image: mysql:5.7
+    container_name: shift-up_app_api_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=api
+      - MYSQL_USER=api
+      - MYSQL_PASSWORD=password
+    volumes:
+      - ./docker/db/data:/var/lib/mysql:rw
+    ports:
+      - '3306:3306'
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: root_app_api_pma
+    depends_on:
+      - db
+    ports:
+      - 8085:80
+  smtp:
+    image: mailhog/mailhog:latest
+    container_name: root_app_api_smtp
+    ports:
+      - "8025:8025"

@@ -37,6 +37,19 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: [ '@App\Serializer\GroupsContextBuilder.inner' ]
 
+    App\Serializer\MediaObjectNormalizer:
+        arguments:
+            $prefixUrl: '%env(MEDIA_STORAGE_PREFIX_URL)%'
+
+    App\EventSubscribers\MediaObjectSubscriber:
+        arguments:
+            $filterService: '@liip_imagine.service.filter'
+
+    Vich\UploaderBundle\Naming\SlugNamer:
+        public: true
+        arguments:
+            $service: '@App\Repository\MediaObjectRepository'
+            $method: findOneByFilePath
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

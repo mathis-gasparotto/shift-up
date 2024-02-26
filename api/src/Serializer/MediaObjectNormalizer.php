@@ -1,0 +1,79 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Serializer;
+
+use App\Entity\MediaObject;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Vich\UploaderBundle\Storage\StorageInterface;
+
+/**
+ *
+ */
+class MediaObjectNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface
+{
+    use NormalizerAwareTrait;
+
+    /**
+     *
+     */
+    private const ALREADY_CALLED = 'MEDIA_OBJECT_NORMALIZER_ALREADY_CALLED';
+
+    /**
+     * @var StorageInterface
+     */
+    private StorageInterface $storage;
+
+    /**
+     * MediaNormalizer constructor.
+     * @param StorageInterface $storage
+     * @param string $prefixUrl
+     */
+    public function __construct(StorageInterface $storage, private readonly string $prefixUrl)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
+     * @param $object
+     * @param string|null $format
+     * @param array $context
+     * @return array
+     * @throws ExceptionInterface
+     */
+    public function normalize($object, ?string $format = null, array $context = []): array
+    {
+        $context[self::ALREADY_CALLED] = true;
+
+        if (($path = $this->storage->resolvePath($object, 'file')) !== null) {
+            $object->setContentUrl($this->prefixUrl . '/cache/picture_thumb/' . $path);
+            $object->pictures = [
+                'thumb' => $this->prefixUrl . '/cache/picture_thumb/' . $path,
+                'medium' => $this->prefixUrl . '/cache/picture_small/' . $path,
+                'large' => $this->prefixUrl . '/cache/picture_large/' . $path
+            ];
+        }
+
+        return $this->normalizer->normalize($object, $format, $context);
+    }
+
+    /**
+     * @param $data
+     * @param string|null $format
+     * @param array $context
+     * @return bool
+     */
+    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
+    {
+        if (isset($context[self::ALREADY_CALLED])) {
+            return false;
+        }
+
+
+        return $data instanceof MediaObject;
+    }
+}
