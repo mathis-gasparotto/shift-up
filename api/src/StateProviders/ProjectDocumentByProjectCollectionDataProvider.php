@@ -46,7 +46,12 @@ class ProjectDocumentByProjectCollectionDataProvider implements ProviderInterfac
         }
 
         $class = GlobalHelper::getClassShortName($context['operation']->getClass());
-        $getMethod = 'get' . $class . (str_ends_with($class, 's') ? 'es' : 's');
+        if (str_ends_with($class, 'is')) {
+            $class = substr($class, 0, strlen($class)-2);
+            $getMethod = 'get' . $class . 'es';
+        } else {
+            $getMethod = 'get' . $class . (str_ends_with($class, 's') ? 'es' : 's');
+        }
 
         return $project->$getMethod()->toArray();
     }
