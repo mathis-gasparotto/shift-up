@@ -271,6 +271,12 @@ class Project implements TracingAwareInterface
     private Collection $goldenTriangles;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: CompetitorAnalysis::class, orphanRemoval: true)]
+    private Collection $competitorAnalyses;
+
+    /**
      *
      */
     public function __construct()
@@ -285,6 +291,7 @@ class Project implements TracingAwareInterface
         $this->STPs = new ArrayCollection();
         $this->marketingMix4s = new ArrayCollection();
         $this->goldenTriangles = new ArrayCollection();
+        $this->competitorAnalyses = new ArrayCollection();
     }
 
     /**
@@ -745,6 +752,44 @@ class Project implements TracingAwareInterface
             // set the owning side to null (unless already changed)
             if ($goldenTriangle->getProject() === $this) {
                 $goldenTriangle->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompetitorAnalysis>
+     */
+    public function getCompetitorAnalyses(): Collection
+    {
+        return $this->competitorAnalyses;
+    }
+
+    /**
+     * @param CompetitorAnalysis $competitorAnalysis
+     * @return $this
+     */
+    public function addCompetitorAnalysis(CompetitorAnalysis $competitorAnalysis): static
+    {
+        if (!$this->competitorAnalyses->contains($competitorAnalysis)) {
+            $this->competitorAnalyses->add($competitorAnalysis);
+            $competitorAnalysis->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param CompetitorAnalysis $competitorAnalysis
+     * @return $this
+     */
+    public function removeCompetitorAnalysis(CompetitorAnalysis $competitorAnalysis): static
+    {
+        if ($this->competitorAnalyses->removeElement($competitorAnalysis)) {
+            // set the owning side to null (unless already changed)
+            if ($competitorAnalysis->getProject() === $this) {
+                $competitorAnalysis->setProject(null);
             }
         }
 
