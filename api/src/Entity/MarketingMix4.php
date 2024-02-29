@@ -14,6 +14,7 @@ use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\MarketingMix4Repository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
+use App\StateProviders\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -127,6 +128,24 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectDocumentByProjectCollectionDataProvider::class
+)]
+#[ApiResource(
+    uriTemplate: '/projects/{id}/marketing_mix_4s/last',
+    shortName: 'MarketingMix_4',
+    operations: [new Get()],
+    uriVariables: [
+        'id' => new Link(
+            toProperty: 'project',
+            fromClass: Project::class
+        )
+    ],
+    normalizationContext: [
+        'groups' => [
+            'marketing_mix_4:read'
+        ]
+    ],
+    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+    provider: LastProjectDocumentByProjectGetDataProvider::class
 )]
 class MarketingMix4 implements TracingAwareInterface
 {

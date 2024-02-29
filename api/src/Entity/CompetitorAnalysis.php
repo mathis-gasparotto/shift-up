@@ -14,6 +14,7 @@ use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\CompetitorAnalysisRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
+use App\StateProviders\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -112,6 +113,23 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectDocumentByProjectCollectionDataProvider::class
+)]
+#[ApiResource(
+    uriTemplate: '/projects/{id}/competitor_analyses/last',
+    operations: [new Get()],
+    uriVariables: [
+        'id' => new Link(
+            toProperty: 'project',
+            fromClass: Project::class
+        )
+    ],
+    normalizationContext: [
+        'groups' => [
+            'competitor_analysis:read'
+        ]
+    ],
+    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+    provider: LastProjectDocumentByProjectGetDataProvider::class
 )]
 class CompetitorAnalysis implements TracingAwareInterface
 {

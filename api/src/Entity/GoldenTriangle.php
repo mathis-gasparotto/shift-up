@@ -14,6 +14,7 @@ use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\GoldenTriangleRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
+use App\StateProviders\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -145,6 +146,23 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectDocumentByProjectCollectionDataProvider::class
+)]
+#[ApiResource(
+    uriTemplate: '/projects/{id}/golden_triangles/last',
+    operations: [new Get()],
+    uriVariables: [
+        'id' => new Link(
+            toProperty: 'project',
+            fromClass: Project::class
+        )
+    ],
+    normalizationContext: [
+        'groups' => [
+            'golden_triangle:read'
+        ]
+    ],
+    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+    provider: LastProjectDocumentByProjectGetDataProvider::class
 )]
 class GoldenTriangle implements TracingAwareInterface
 {

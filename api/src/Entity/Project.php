@@ -425,29 +425,46 @@ class Project implements TracingAwareInterface
     }
 
     /**
-     * @param SWOT $sWOT
+     * @return SWOT|null
+     */
+    public function getLastSWOT(): SWOT|null
+    {
+        $data =  $this->SWOTs->last();
+        return $data ?: null;
+//        $array = $this->SWOTs->toArray();
+//        if (count($array) === 0) {
+//            return null;
+//        }
+//        usort($array, function ($a, $b) {
+//            return $a->getCreatedAt() > $b->getCreatedAt() ? 1 : -1;
+//        });
+//        return $array[count($array) - 1];
+    }
+
+    /**
+     * @param SWOT $SWOT
      * @return $this
      */
-    public function addSWOT(SWOT $sWOT): static
+    public function addSWOT(SWOT $SWOT): static
     {
-        if (!$this->SWOTs->contains($sWOT)) {
-            $this->SWOTs->add($sWOT);
-            $sWOT->setProject($this);
+        if (!$this->SWOTs->contains($SWOT)) {
+            $this->SWOTs->add($SWOT);
+            $SWOT->setProject($this);
         }
 
         return $this;
     }
 
     /**
-     * @param SWOT $sWOT
+     * @param SWOT $SWOT
      * @return $this
      */
-    public function removeSWOT(SWOT $sWOT): static
+    public function removeSWOT(SWOT $SWOT): static
     {
-        if ($this->SWOTs->removeElement($sWOT)) {
+        if ($this->SWOTs->removeElement($SWOT)) {
             // set the owning side to null (unless already changed)
-            if ($sWOT->getProject() === $this) {
-                $sWOT->setProject(null);
+            if ($SWOT->getProject() === $this) {
+                $SWOT->setProject(null);
             }
         }
 
@@ -460,6 +477,15 @@ class Project implements TracingAwareInterface
     public function getBusinessModelCanvases(): Collection
     {
         return $this->businessModelCanvases;
+    }
+
+    /**
+     * @return BusinessModelCanvas|null
+     */
+    public function getLastBusinessModelCanvas(): BusinessModelCanvas|null
+    {
+        $data =  $this->businessModelCanvases->last();
+        return $data ?: null;
     }
 
     /**
@@ -501,29 +527,38 @@ class Project implements TracingAwareInterface
     }
 
     /**
-     * @param SMART $sMART
+     * @return SMART|null
+     */
+    public function getLastSMART(): SMART|null
+    {
+        $data =  $this->SMARTs->last();
+        return $data ?: null;
+    }
+
+    /**
+     * @param SMART $SMART
      * @return $this
      */
-    public function addSMART(SMART $sMART): static
+    public function addSMART(SMART $SMART): static
     {
-        if (!$this->SMARTs->contains($sMART)) {
-            $this->SMARTs->add($sMART);
-            $sMART->setProject($this);
+        if (!$this->SMARTs->contains($SMART)) {
+            $this->SMARTs->add($SMART);
+            $SMART->setProject($this);
         }
 
         return $this;
     }
 
     /**
-     * @param SMART $sMART
+     * @param SMART $SMART
      * @return $this
      */
-    public function removeSMART(SMART $sMART): static
+    public function removeSMART(SMART $SMART): static
     {
-        if ($this->SMARTs->removeElement($sMART)) {
+        if ($this->SMARTs->removeElement($SMART)) {
             // set the owning side to null (unless already changed)
-            if ($sMART->getProject() === $this) {
-                $sMART->setProject(null);
+            if ($SMART->getProject() === $this) {
+                $SMART->setProject(null);
             }
         }
 
@@ -536,6 +571,15 @@ class Project implements TracingAwareInterface
     public function getBuyerPersonas(): Collection
     {
         return $this->buyerPersonas;
+    }
+
+    /**
+     * @return BuyerPersona|null
+     */
+    public function getLastBuyerPersona(): BuyerPersona|null
+    {
+        $data =  $this->buyerPersonas->last();
+        return $data ?: null;
     }
 
     /**
@@ -577,29 +621,38 @@ class Project implements TracingAwareInterface
     }
 
     /**
-     * @param PESTEL $pESTEL
+     * @return PESTEL|null
+     */
+    public function getLastPESTEL(): PESTEL|null
+    {
+        $data =  $this->PESTELs->last();
+        return $data ?: null;
+    }
+
+    /**
+     * @param PESTEL $PESTEL
      * @return $this
      */
-    public function addPESTEL(PESTEL $pESTEL): static
+    public function addPESTEL(PESTEL $PESTEL): static
     {
-        if (!$this->PESTELs->contains($pESTEL)) {
-            $this->PESTELs->add($pESTEL);
-            $pESTEL->setProject($this);
+        if (!$this->PESTELs->contains($PESTEL)) {
+            $this->PESTELs->add($PESTEL);
+            $PESTEL->setProject($this);
         }
 
         return $this;
     }
 
     /**
-     * @param PESTEL $pESTEL
+     * @param PESTEL $PESTEL
      * @return $this
      */
-    public function removePESTEL(PESTEL $pESTEL): static
+    public function removePESTEL(PESTEL $PESTEL): static
     {
-        if ($this->PESTELs->removeElement($pESTEL)) {
+        if ($this->PESTELs->removeElement($PESTEL)) {
             // set the owning side to null (unless already changed)
-            if ($pESTEL->getProject() === $this) {
-                $pESTEL->setProject(null);
+            if ($PESTEL->getProject() === $this) {
+                $PESTEL->setProject(null);
             }
         }
 
@@ -612,6 +665,15 @@ class Project implements TracingAwareInterface
     public function getMarketingMix5s(): Collection
     {
         return $this->marketingMix5s;
+    }
+
+    /**
+     * @return MarketingMix5|null
+     */
+    public function getLastMarketingMix5(): MarketingMix5|null
+    {
+        $data =  $this->marketingMix5s->last();
+        return $data ?: null;
     }
 
     /**
@@ -653,29 +715,38 @@ class Project implements TracingAwareInterface
     }
 
     /**
-     * @param STP $sTP
+     * @return STP|null
+     */
+    public function getLastSTP(): STP|null
+    {
+        $data =  $this->STPs->last();
+        return $data ?: null;
+    }
+
+    /**
+     * @param STP $STP
      * @return $this
      */
-    public function addSTP(STP $sTP): static
+    public function addSTP(STP $STP): static
     {
-        if (!$this->STPs->contains($sTP)) {
-            $this->STPs->add($sTP);
-            $sTP->setProject($this);
+        if (!$this->STPs->contains($STP)) {
+            $this->STPs->add($STP);
+            $STP->setProject($this);
         }
 
         return $this;
     }
 
     /**
-     * @param STP $sTP
+     * @param STP $STP
      * @return $this
      */
-    public function removeSTP(STP $sTP): static
+    public function removeSTP(STP $STP): static
     {
-        if ($this->STPs->removeElement($sTP)) {
+        if ($this->STPs->removeElement($STP)) {
             // set the owning side to null (unless already changed)
-            if ($sTP->getProject() === $this) {
-                $sTP->setProject(null);
+            if ($STP->getProject() === $this) {
+                $STP->setProject(null);
             }
         }
 
@@ -688,6 +759,15 @@ class Project implements TracingAwareInterface
     public function getMarketingMix4s(): Collection
     {
         return $this->marketingMix4s;
+    }
+
+    /**
+     * @return MarketingMix4|null
+     */
+    public function getLastMarketingMix4(): MarketingMix4|null
+    {
+        $data =  $this->marketingMix4s->last();
+        return $data ?: null;
     }
 
     /**
@@ -729,6 +809,15 @@ class Project implements TracingAwareInterface
     }
 
     /**
+     * @return GoldenTriangle|null
+     */
+    public function getLastGoldenTriangle(): GoldenTriangle|null
+    {
+        $data =  $this->goldenTriangles->last();
+        return $data ?: null;
+    }
+
+    /**
      * @param GoldenTriangle $goldenTriangle
      * @return $this
      */
@@ -764,6 +853,15 @@ class Project implements TracingAwareInterface
     public function getCompetitorAnalyses(): Collection
     {
         return $this->competitorAnalyses;
+    }
+
+    /**
+     * @return CompetitorAnalysis|null
+     */
+    public function getLastCompetitorAnalysis(): CompetitorAnalysis|null
+    {
+        $data =  $this->competitorAnalyses->last();
+        return $data ?: null;
     }
 
     /**
