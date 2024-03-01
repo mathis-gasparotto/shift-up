@@ -45,6 +45,11 @@ services:
         arguments:
             $filterService: '@liip_imagine.service.filter'
 
+    App\Service\OpenAIService:
+        arguments:
+            $openAIModel: '%env(OPENAI_MODEL)%'
+            $openAIInstructModel: '%env(OPENAI_INSTRUCT_MODEL)%'
+
     Vich\UploaderBundle\Naming\SlugNamer:
         public: true
         arguments:
