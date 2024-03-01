@@ -4,8 +4,7 @@ namespace App\StateProviders;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
-use App\Helper\GlobalHelper;
+use App\Helper\TeamHelper;
 use App\Repository\TeamRepository;
 use Symfony\Component\Security\Core\Security;
 
@@ -38,11 +37,7 @@ class ProjectByTeamCollectionDataProvider implements ProviderInterface
             return [];
         }
 
-        $user = $this->security->getUser();
-
-        if (!GlobalHelper::isAdmin($user) && !$user->isInTeam($team) && $team->getManager() !==  $user) {
-            throw new AccessDeniedException();
-        }
+        TeamHelper::checkIfUserIsInTeam($this->security->getUser(), $team);
 
         return $team->getProjects()->toArray();
     }

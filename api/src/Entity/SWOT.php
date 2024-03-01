@@ -14,6 +14,7 @@ use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\SWOTRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
+use App\StateProcessor\Project\GenerateProjectDocumentDataPersister;
 use App\StateProviders\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
 use Doctrine\DBAL\Types\Types;
@@ -65,7 +66,38 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'openapi_definition_name' => 'PostCollection'
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'person:write'
+                ]
+            ],
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/swots/generate',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: GenerateProjectDocumentDataPersister::class
         ),
         new Get(
             uriTemplate: '/swots/{id}',
@@ -97,7 +129,13 @@ use Symfony\Component\Validator\Constraints as Assert;
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
-            '
+            ',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'person:write'
+                ]
+            ]
         ),
         new Delete(
             normalizationContext: [
@@ -166,7 +204,7 @@ class SWOT implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['swot:read', 'swot:write'])
     ]
     private ?string $strengths = null;
@@ -176,7 +214,7 @@ class SWOT implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['swot:read', 'swot:write'])
     ]
     private ?string $weaknesses = null;
@@ -186,7 +224,7 @@ class SWOT implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['swot:read', 'swot:write'])
     ]
     private ?string $opportunities = null;
@@ -196,7 +234,7 @@ class SWOT implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['swot:read', 'swot:write'])
     ]
     private ?string $threats = null;

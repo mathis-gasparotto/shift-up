@@ -6,8 +6,8 @@ namespace App\StateProcessor\Project;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
 use App\Helper\GlobalHelper;
+use App\Helper\ProjectHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Security\Core\Security;
@@ -39,13 +39,7 @@ class ProjectDocumentPostDataPersister implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        $user = $this->security->getUser();
-
-        $isAdmin = GlobalHelper::isAdmin($user);
-
-        if (!$isAdmin && $data->getProject()->getTeam()->getManager() !== $user && !$user->isInTeam($data->getProject()->getTeam())) {
-            throw new AccessDeniedException();
-        }
+        ProjectHelper::checkIfUserIsInProjectTeam($this->security->getUser(), $data->getProject());
 
         $class = GlobalHelper::getClassShortName($context['operation']->getClass());
         $addMethod = 'add' . $class;
