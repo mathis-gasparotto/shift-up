@@ -4,6 +4,7 @@ namespace App\Service;
 
 
 use App\Entity\BusinessModelCanvas;
+use App\Entity\BuyerPersona;
 use App\Entity\Project;
 use App\Entity\SWOT;
 use App\Helper\OpenAIHelper;
@@ -97,5 +98,43 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $businessModelCanvas;
+    }
+
+    /**
+     * @param Project $project
+     * @return BuyerPersona
+     * @throws ORMException
+     */
+    public function generateBuyerPersona(Project $project): BuyerPersona
+    {
+        [
+            "Personal Info" => $personalInfo,
+            "Professional Info" => $professionalInfo,
+            "Goals Challenges" => $goalsChallenges,
+            "Communication Channels" => $communicationChannels,
+            "Values Fears" => $valuesFears,
+            "Negative Info" => $negativeInfo
+        ] = OpenAIHelper::getResultFromBuyerPersonaPrompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForBuyerPersona($project->getDescription())
+            )
+        );
+
+        $buyerPersona = new BuyerPersona();
+        $buyerPersona->setPersonalInfo($personalInfo);
+        $buyerPersona->setProfessionalInfo($professionalInfo);
+        $buyerPersona->setGoalsChallenges($goalsChallenges);
+        $buyerPersona->setCommunicationChannels($communicationChannels);
+        $buyerPersona->setValuesFears($valuesFears);
+        $buyerPersona->setNegativeInfo($negativeInfo);
+        $buyerPersona->setProject($project);
+
+        $project->addBuyerPersona($buyerPersona);
+
+        $this->entityManager->persist($buyerPersona);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $buyerPersona;
     }
 }

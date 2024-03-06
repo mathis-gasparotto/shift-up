@@ -49,4 +49,22 @@ final class OpenAIHelper
     {
         return GlobalHelper::splitStringByMarkdownTitle1($result);
     }
+
+    /**
+     * @param string $projectDescription
+     * @return string
+     */
+    public static function promptForBuyerPersona(string $projectDescription): string
+    {
+        return "Fait moi un Buyer Persona, en séparant les 6 parties par un titre de niveau 1 avec 'Personal Info', 'Professional Info', 'Goals Challenges', 'Communication Channels', 'Values Fears', 'Negative Info', du projet suivant : $projectDescription";
+    }
+
+    /**
+     * @param string $result
+     * @return array
+     */
+    public static function getResultFromBuyerPersonaPrompt(string $result): array
+    {
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
+    }
 }
