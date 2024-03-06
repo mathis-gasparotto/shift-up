@@ -3,6 +3,7 @@
 namespace App\Service;
 
 
+use App\Entity\BusinessModelCanvas;
 use App\Entity\Project;
 use App\Entity\SWOT;
 use App\Helper\OpenAIHelper;
@@ -52,5 +53,49 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $swot;
+    }
+
+    /**
+     * @param Project $project
+     * @return BusinessModelCanvas
+     * @throws ORMException
+     */
+    public function generateBusinessModelCanvas(Project $project): BusinessModelCanvas
+    {
+        [
+            "Key Partners" => $keyPartners,
+            "Key Activities" => $keyActivities,
+            "Key Resources" => $keyResources,
+            "Value Propositions" => $valuePropositions,
+            "Customer Relationships" => $customerRelationships,
+            "Channels" => $channels,
+            "Customer Segments" => $customerSegments,
+            "Cost Structure" => $costStructure,
+            "Revenue Streams" => $revenueStreams
+        ] = OpenAIHelper::getResultFromBusinessModelCanvasPrompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForBusinessModelCanvas($project->getDescription())
+            )
+        );
+
+        $businessModelCanvas = new BusinessModelCanvas();
+        $businessModelCanvas->setKeyPartners($keyPartners);
+        $businessModelCanvas->setKeyActivities($keyActivities);
+        $businessModelCanvas->setKeyResources($keyResources);
+        $businessModelCanvas->setValuePropositions($valuePropositions);
+        $businessModelCanvas->setCustomerRelationships($customerRelationships);
+        $businessModelCanvas->setChannels($channels);
+        $businessModelCanvas->setCustomerSegments($customerSegments);
+        $businessModelCanvas->setCostStructure($costStructure);
+        $businessModelCanvas->setRevenueStreams($revenueStreams);
+        $businessModelCanvas->setProject($project);
+
+        $project->addBusinessModelCanvas($businessModelCanvas);
+
+        $this->entityManager->persist($businessModelCanvas);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $businessModelCanvas;
     }
 }

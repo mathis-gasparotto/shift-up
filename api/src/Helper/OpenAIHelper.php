@@ -29,11 +29,24 @@ final class OpenAIHelper
      */
     public static function getResultFromSWOTPrompt(string $result): array
     {
-        $resultArray = preg_split('/^# (.*)/m', $result, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        $resultArray = array_map('trim', $resultArray);
-        $resultArray = array_map(fn($item) => str_replace("\r\n", "\n", $item), $resultArray);
-        $resultArray = array_map(fn($item) => str_replace("\n\n", "\n", $item), $resultArray);
-        $resultArray = array_chunk($resultArray, 2);
-        return array_combine(array_column($resultArray, 0), array_column($resultArray, 1));
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
+    }
+
+    /**
+     * @param string $projectDescription
+     * @return string
+     */
+    public static function promptForBusinessModelCanvas(string $projectDescription): string
+    {
+        return "Fait moi un Business Model Canvas, en séparant les 9 parties par un titre de niveau 1 avec 'Key Partners', 'Key Activities', 'Key Resources', 'Value Propositions', 'Customer Relationships', 'Channels', 'Customer Segments', 'Cost Structure', 'Revenue Streams', du projet suivant : $projectDescription";
+    }
+
+    /**
+     * @param string $result
+     * @return array
+     */
+    public static function getResultFromBusinessModelCanvasPrompt(string $result): array
+    {
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
     }
 }

@@ -77,4 +77,18 @@ final class GlobalHelper
 
         return (new \ReflectionClass($class))->getShortName();
     }
+
+    /**
+     * @param string $str
+     * @return array
+     */
+    public static function splitStringByMarkdownTitle1(string $str): array
+    {
+        $resultArray = preg_split('/^# (.*)/m', $str, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $resultArray = array_map('trim', $resultArray);
+        $resultArray = array_map(fn($item) => str_replace("\r\n", "\n", $item), $resultArray);
+        $resultArray = array_map(fn($item) => str_replace("\n\n", "\n", $item), $resultArray);
+        $resultArray = array_chunk($resultArray, 2);
+        return array_combine(array_column($resultArray, 0), array_column($resultArray, 1));
+    }
 }

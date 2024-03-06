@@ -13,6 +13,7 @@ use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\BusinessModelCanvasRepository;
+use App\StateProcessor\Project\GenerateProjectDocumentDataPersister;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use App\StateProviders\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
@@ -79,7 +80,38 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'openapi_definition_name' => 'PostCollection'
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'person:write'
+                ]
+            ],
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/business_model_canvas/generate',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: GenerateProjectDocumentDataPersister::class
         ),
         new Get(
             uriTemplate: '/business_model_canvas/{id}',
@@ -111,7 +143,13 @@ use Symfony\Component\Validator\Constraints as Assert;
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
-            '
+            ',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'person:write'
+                ]
+            ]
         ),
         new Delete(
             normalizationContext: [
@@ -177,7 +215,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $keyPartners = null;
@@ -187,7 +225,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $keyActivities = null;
@@ -197,7 +235,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $keyResources = null;
@@ -207,7 +245,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $valuePropositions = null;
@@ -217,7 +255,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $customerRelationships = null;
@@ -227,7 +265,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $channels = null;
@@ -237,7 +275,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $customerSegments = null;
@@ -247,7 +285,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $costStructure = null;
@@ -257,7 +295,7 @@ class BusinessModelCanvas implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
     private ?string $revenueStreams = null;
