@@ -67,4 +67,22 @@ final class OpenAIHelper
     {
         return GlobalHelper::splitStringByMarkdownTitle1($result);
     }
+
+    /**
+     * @param string $projectDescription
+     * @return string
+     */
+    public static function promptForSMART(string $projectDescription): string
+    {
+        return "Fait moi un Buyer Persona, en séparant les 5 parties par un titre de niveau 1 avec 'Specific', 'Measurable', 'Achievable', 'Relevant', 'Timed', du projet suivant : $projectDescription";
+    }
+
+    /**
+     * @param string $result
+     * @return array
+     */
+    public static function getResultFromSMARTPrompt(string $result): array
+    {
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
+    }
 }

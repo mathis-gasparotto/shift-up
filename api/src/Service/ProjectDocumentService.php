@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Entity\BusinessModelCanvas;
 use App\Entity\BuyerPersona;
 use App\Entity\Project;
+use App\Entity\SMART;
 use App\Entity\SWOT;
 use App\Helper\OpenAIHelper;
 use Doctrine\ORM\EntityManager;
@@ -136,5 +137,41 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $buyerPersona;
+    }
+
+    /**
+     * @param Project $project
+     * @return SMART
+     * @throws ORMException
+     */
+    public function generateSMART(Project $project): SMART
+    {
+        [
+            "Specific" => $specific,
+            "Measurable" => $measurable,
+            "Achievable" => $achievable,
+            "Relevant" => $relevant,
+            "Timed" => $timed
+        ] = OpenAIHelper::getResultFromSMARTPrompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForSMART($project->getDescription())
+            )
+        );
+
+        $smart = new SMART();
+        $smart->setKeySpecific($specific);
+        $smart->setKeyMeasurable($measurable);
+        $smart->setKeyAchievable($achievable);
+        $smart->setKeyRelevant($relevant);
+        $smart->setKeyTimed($timed);
+        $smart->setProject($project);
+
+        $project->addSMART($smart);
+
+        $this->entityManager->persist($smart);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $smart;
     }
 }
