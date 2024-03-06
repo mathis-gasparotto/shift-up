@@ -13,6 +13,7 @@ use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\PESTELRepository;
+use App\StateProcessor\Project\GenerateProjectDocumentDataPersister;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use App\StateProviders\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\ProjectDocumentByProjectCollectionDataProvider;
@@ -71,7 +72,38 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'openapi_definition_name' => 'PostCollection'
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'person:write'
+                ]
+            ],
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/pestels/generate',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'project' => [
+                                        'type' => 'string',
+                                        'example' =>'/projects/{id}'
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: GenerateProjectDocumentDataPersister::class
         ),
         new Get(
             uriTemplate: '/pestels/{id}',
@@ -103,7 +135,13 @@ use Symfony\Component\Validator\Constraints as Assert;
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and user.isInTeam(object.getProject().getTeam())) or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getProject().getTeam().getManager() === user)
-            '
+            ',
+            validationContext: [
+                'groups' => [
+                    'Default',
+                    'person:write'
+                ]
+            ]
         ),
         new Delete(
             normalizationContext: [
@@ -172,7 +210,7 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['pestel:read', 'pestel:write'])
     ]
     private ?string $political = null;
@@ -182,7 +220,7 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['pestel:read', 'pestel:write'])
     ]
     private ?string $economic = null;
@@ -192,7 +230,7 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['pestel:read', 'pestel:write'])
     ]
     private ?string $social = null;
@@ -202,7 +240,7 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['pestel:read', 'pestel:write'])
     ]
     private ?string $technological = null;
@@ -212,7 +250,7 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['pestel:read', 'pestel:write'])
     ]
     private ?string $environmental = null;
@@ -222,7 +260,7 @@ class PESTEL implements TracingAwareInterface
      */
     #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\NotBlank,
+        Assert\NotBlank(groups: ['person:write']),
         Groups(['pestel:read', 'pestel:write'])
     ]
     private ?string $legal = null;

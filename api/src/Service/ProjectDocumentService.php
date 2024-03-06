@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Entity\BusinessModelCanvas;
 use App\Entity\BuyerPersona;
+use App\Entity\PESTEL;
 use App\Entity\Project;
 use App\Entity\SMART;
 use App\Entity\SWOT;
@@ -173,5 +174,43 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $smart;
+    }
+
+    /**
+     * @param Project $project
+     * @return PESTEL
+     * @throws ORMException
+     */
+    public function generatePESTEL(Project $project): PESTEL
+    {
+        [
+            "Political" => $political,
+            "Economic" => $economic,
+            "Social" => $social,
+            "Technological" => $technological,
+            "Environmental" => $environmental,
+            "Legal" => $legal
+        ] = OpenAIHelper::getResultFromPESTELPrompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForPESTEL($project->getDescription())
+            )
+        );
+
+        $pestel = new PESTEL();
+        $pestel->setPolitical($political);
+        $pestel->setEconomic($economic);
+        $pestel->setSocial($social);
+        $pestel->setTechnological($technological);
+        $pestel->setEnvironmental($environmental);
+        $pestel->setLegal($legal);
+        $pestel->setProject($project);
+
+        $project->addPESTEL($pestel);
+
+        $this->entityManager->persist($pestel);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $pestel;
     }
 }

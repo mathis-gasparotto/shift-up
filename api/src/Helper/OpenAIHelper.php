@@ -74,7 +74,7 @@ final class OpenAIHelper
      */
     public static function promptForSMART(string $projectDescription): string
     {
-        return "Fait moi un Buyer Persona, en séparant les 5 parties par un titre de niveau 1 avec 'Specific', 'Measurable', 'Achievable', 'Relevant', 'Timed', du projet suivant : $projectDescription";
+        return "Fait moi un SMART, en séparant les 5 parties par un titre de niveau 1 avec 'Specific', 'Measurable', 'Achievable', 'Relevant', 'Timed', du projet suivant : $projectDescription";
     }
 
     /**
@@ -82,6 +82,24 @@ final class OpenAIHelper
      * @return array
      */
     public static function getResultFromSMARTPrompt(string $result): array
+    {
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
+    }
+
+    /**
+     * @param string $projectDescription
+     * @return string
+     */
+    public static function promptForPESTEL(string $projectDescription): string
+    {
+        return "Fait moi un PESTEL, en séparant les 6 parties par un titre de niveau 1 avec 'Political', 'Economic', 'Social', 'Technological', 'Environmental', 'Legal', du projet suivant : $projectDescription";
+    }
+
+    /**
+     * @param string $result
+     * @return array
+     */
+    public static function getResultFromPESTELPrompt(string $result): array
     {
         return GlobalHelper::splitStringByMarkdownTitle1($result);
     }
