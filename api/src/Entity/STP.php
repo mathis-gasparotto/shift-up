@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Project\ProjectGenerateDocumentController;
 use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
@@ -63,6 +64,18 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/projects/{id}/stps/generate',
+            requirements: [
+                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            controller: ProjectGenerateDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
         ),
         new Get(
             uriTemplate: '/stps/{id}',

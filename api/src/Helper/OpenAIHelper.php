@@ -103,4 +103,22 @@ final class OpenAIHelper
     {
         return GlobalHelper::splitStringByMarkdownTitle1($result);
     }
+
+    /**
+     * @param string $projectDescription
+     * @return string
+     */
+    public static function promptForSTP(string $projectDescription): string
+    {
+        return "Fait moi un STP, en séparant les 3 parties par un titre de niveau 1 avec 'Segmentation', 'Targeting', 'Positioning', du projet suivant : $projectDescription";
+    }
+
+    /**
+     * @param string $result
+     * @return array
+     */
+    public static function getResultFromSTPPrompt(string $result): array
+    {
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
+    }
 }

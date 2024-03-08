@@ -8,6 +8,7 @@ use App\Entity\BuyerPersona;
 use App\Entity\PESTEL;
 use App\Entity\Project;
 use App\Entity\SMART;
+use App\Entity\STP;
 use App\Entity\SWOT;
 use App\Helper\OpenAIHelper;
 use Doctrine\ORM\EntityManager;
@@ -212,5 +213,37 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $pestel;
+    }
+
+    /**
+     * @param Project $project
+     * @return STP
+     * @throws ORMException
+     */
+    public function generateSTP(Project $project): STP
+    {
+        [
+            "Segmentation" => $segmentation,
+            "Targeting" => $targeting,
+            "Positioning" => $positioning
+        ] = OpenAIHelper::getResultFromSTPPrompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForSTP($project->getDescription())
+            )
+        );
+
+        $stp = new STP();
+        $stp->setSegmentation($segmentation);
+        $stp->setTargeting($targeting);
+        $stp->setPositioning($positioning);
+        $stp->setProject($project);
+
+        $project->addSTP($stp);
+
+        $this->entityManager->persist($stp);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $stp;
     }
 }
