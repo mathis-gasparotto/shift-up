@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use App\Helper\GlobalHelper;
 use App\Helper\SubscriptionHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
@@ -18,6 +21,42 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  */
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/subscriptions',
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'label' => [
+                                        'type' => 'string'
+                                    ],
+                                    'description' => [
+                                        'type' => 'string'
+                                    ],
+                                    'price' => [
+                                        'type' => 'integer'
+                                    ],
+                                    'recurrence' => [
+                                        'type' => 'string'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")'
+        ),
+    ]
+)]
 class Subscription implements TracingAwareInterface
 {
     use TracingAwareTrait;
