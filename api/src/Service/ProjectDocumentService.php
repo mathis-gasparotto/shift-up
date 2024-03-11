@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Entity\BusinessModelCanvas;
 use App\Entity\BuyerPersona;
 use App\Entity\MarketingMix4;
+use App\Entity\MarketingMix5;
 use App\Entity\PESTEL;
 use App\Entity\Project;
 use App\Entity\SMART;
@@ -280,5 +281,41 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $marketingMix4;
+    }
+
+    /**
+     * @param Project $project
+     * @return MarketingMix5
+     * @throws ORMException
+     */
+    public function generateMarketingMix5(Project $project): MarketingMix5
+    {
+        [
+            "Product" => $product,
+            "Price" => $price,
+            "Place" => $place,
+            "Promotion" => $promotion,
+            "People" => $people
+        ] = OpenAIHelper::getResultFromMarketingMix5Prompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForMarketingMix5($project->getDescription())
+            )
+        );
+
+        $marketingMix5 = new MarketingMix5();
+        $marketingMix5->setProduct($product);
+        $marketingMix5->setPrice($price);
+        $marketingMix5->setPlace($place);
+        $marketingMix5->setPromotion($promotion);
+        $marketingMix5->setPeople($people);
+        $marketingMix5->setProject($project);
+
+        $project->addMarketingMix5($marketingMix5);
+
+        $this->entityManager->persist($marketingMix5);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $marketingMix5;
     }
 }
