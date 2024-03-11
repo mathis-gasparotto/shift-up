@@ -1,0 +1,191 @@
+<?php
+
+namespace App\Entity;
+
+use App\Helper\SubscriptionHelper;
+use App\Model\TracingAwareInterface;
+use App\Model\Traits\TracingAwareTrait;
+use App\Repository\SubscriptionRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
+
+/**
+ *
+ */
+#[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
+class Subscription implements TracingAwareInterface
+{
+    use TracingAwareTrait;
+
+    /**
+     * @var Uuid|null
+     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[Groups(['subscription:read'])]
+    private ?Uuid $id = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[
+        Assert\NotBlank,
+        Assert\Length(min: 3, max: 255),
+        Groups(['subscription:read', 'subscription:write'])
+    ]
+    private ?string $label = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, unique: true)]
+    #[Gedmo\Slug(fields: ['label'])]
+    #[Groups(['subscription:read'])]
+    private ?string $slug = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(type: Types::TEXT)]
+    #[
+        Assert\NotBlank,
+        Groups(['subscription:read', 'subscription:write'])
+    ]
+    private ?string $description = null;
+
+    /**
+     * @var int|null
+     */
+    #[ORM\Column]
+    #[
+        Assert\NotNull,
+        Assert\Type(type: 'integer'),
+        Groups(['subscription:read', 'subscription:write'])
+    ]
+    private ?int $price = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[
+        Assert\NotBlank,
+        Assert\Choice(
+            choices: SubscriptionHelper::SUBSCRIPTION_RECURRENCES,
+            message: 'Invalid recurrence, valid recurrences are: {{ choices }}'
+        ),
+        Groups(['subscription:read', 'subscription:write'])
+    ]
+    private ?string $recurrence = null;
+
+    /**
+     * @return Uuid|null
+     */
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     * @return $this
+     */
+    public function setLabel(string $label): static
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int $price
+     * @return $this
+     */
+    public function setPrice(int $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRecurrence(): ?string
+    {
+        return $this->recurrence;
+    }
+
+    /**
+     * @param string $recurrence
+     * @return $this
+     */
+    public function setRecurrence(string $recurrence): static
+    {
+        $this->recurrence = $recurrence;
+
+        return $this;
+    }
+}
