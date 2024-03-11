@@ -5,6 +5,7 @@ namespace App\Service;
 
 use App\Entity\BusinessModelCanvas;
 use App\Entity\BuyerPersona;
+use App\Entity\MarketingMix4;
 use App\Entity\PESTEL;
 use App\Entity\Project;
 use App\Entity\SMART;
@@ -245,5 +246,39 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $stp;
+    }
+
+    /**
+     * @param Project $project
+     * @return MarketingMix4
+     * @throws ORMException
+     */
+    public function generateMarketingMix4(Project $project): MarketingMix4
+    {
+        [
+            "Product" => $product,
+            "Price" => $price,
+            "Place" => $place,
+            "Promotion" => $promotion
+        ] = OpenAIHelper::getResultFromMarketingMix4Prompt(
+            $this->openAIService->prompt(
+                OpenAIHelper::promptForMarketingMix4($project->getDescription())
+            )
+        );
+
+        $marketingMix4 = new MarketingMix4();
+        $marketingMix4->setProduct($product);
+        $marketingMix4->setPrice($price);
+        $marketingMix4->setPlace($place);
+        $marketingMix4->setPromotion($promotion);
+        $marketingMix4->setProject($project);
+
+        $project->addMarketingMix4($marketingMix4);
+
+        $this->entityManager->persist($marketingMix4);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $marketingMix4;
     }
 }

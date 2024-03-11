@@ -121,4 +121,22 @@ final class OpenAIHelper
     {
         return GlobalHelper::splitStringByMarkdownTitle1($result);
     }
+
+    /**
+     * @param string $projectDescription
+     * @return string
+     */
+    public static function promptForMarketingMix4(string $projectDescription): string
+    {
+        return "Fait moi un 4P, en séparant les 4 parties par un titre de niveau 1 avec 'Product', 'Price', 'Place', 'Promotion', du projet suivant : $projectDescription";
+    }
+
+    /**
+     * @param string $result
+     * @return array
+     */
+    public static function getResultFromMarketingMix4Prompt(string $result): array
+    {
+        return GlobalHelper::splitStringByMarkdownTitle1($result);
+    }
 }
