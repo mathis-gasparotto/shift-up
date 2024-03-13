@@ -71,7 +71,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             uriTemplate: '/projects/{id}/marketing_mix_4s/generate',
             requirements: [
-                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             controller: ProjectGenerateDocumentController::class,
             normalizationContext: [
@@ -83,7 +83,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/marketing_mix_4s/{id}',
             requirements: [
-                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             normalizationContext: [
                 'openapi_definition_name' => 'GetItem',
@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/marketing_mix_4s/{id}',
             requirements: [
-                'id' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             normalizationContext: [
                 'openapi_definition_name' => 'PutItem'

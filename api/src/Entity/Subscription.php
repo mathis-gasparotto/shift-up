@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Helper\GlobalHelper;
 use App\Helper\SubscriptionHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\SubscriptionRepository;
+use App\StateProviders\SlugEntityProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -57,6 +60,21 @@ use Gedmo\Mapping\Annotation as Gedmo;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")'
         ),
+        new Get(
+            uriTemplate: '/subscriptions/{slug}',
+            requirements: [
+                'slug' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'subscription:read',
+                    'subscription:item:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::PUBLIC_ACCESS . '")',
+            provider: SlugEntityProvider::class
+        ),
     ]
 )]
 class Subscription implements TracingAwareInterface
@@ -71,6 +89,7 @@ class Subscription implements TracingAwareInterface
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[Groups(['subscription:read'])]
+    #[ApiProperty(identifier: false)]
     private ?Uuid $id = null;
 
     /**
@@ -90,6 +109,7 @@ class Subscription implements TracingAwareInterface
     #[ORM\Column(length: 255, unique: true)]
     #[Gedmo\Slug(fields: ['label'])]
     #[Groups(['subscription:read'])]
+    #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     /**
