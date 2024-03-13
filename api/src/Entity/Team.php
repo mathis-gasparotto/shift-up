@@ -205,6 +205,13 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     private Collection $projects;
 
     /**
+     * @var Subscription|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'teams')]
+    #[Groups(['team:read'])]
+    private ?Subscription $subscription = null;
+
+    /**
      *
      */
     public function __construct()
@@ -443,6 +450,25 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
                 $project->setTeam(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Subscription|null
+     */
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    /**
+     * @param Subscription|null $subscription
+     * @return $this
+     */
+    public function setSubscription(?Subscription $subscription): static
+    {
+        $this->subscription = $subscription;
 
         return $this;
     }

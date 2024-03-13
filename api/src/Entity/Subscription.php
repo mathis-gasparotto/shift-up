@@ -9,6 +9,8 @@ use App\Helper\SubscriptionHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\SubscriptionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -126,6 +128,20 @@ class Subscription implements TracingAwareInterface
     private ?string $recurrence = null;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: Team::class)]
+    private Collection $teams;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->teams = new ArrayCollection();
+    }
+
+    /**
      * @return Uuid|null
      */
     public function getId(): ?Uuid
@@ -224,6 +240,44 @@ class Subscription implements TracingAwareInterface
     public function setRecurrence(string $recurrence): static
     {
         $this->recurrence = $recurrence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Team>
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    /**
+     * @param Team $team
+     * @return $this
+     */
+    public function addTeam(Team $team): static
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+            $team->setSubscription($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Team $team
+     * @return $this
+     */
+    public function removeTeam(Team $team): static
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getSubscription() === $this) {
+                $team->setSubscription(null);
+            }
+        }
 
         return $this;
     }
