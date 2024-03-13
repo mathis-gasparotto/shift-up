@@ -7,13 +7,13 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
 use App\Helper\SubscriptionHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\SubscriptionRepository;
 use App\StateProviders\SlugEntityProvider;
-use App\StateProviders\TeamMeCollectionDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -85,6 +85,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
                 ]
             ],
             security: 'is_granted("' . GlobalHelper::PUBLIC_ACCESS . '")',
+            provider: SlugEntityProvider::class
+        ),
+        new Put(
+            uriTemplate: '/subscriptions/{slug}',
+            requirements: [
+                'slug' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PutItem'
+            ],
+            securityPostDenormalize: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             provider: SlugEntityProvider::class
         ),
     ]
