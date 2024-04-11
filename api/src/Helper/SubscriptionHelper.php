@@ -2,13 +2,11 @@
 
 namespace App\Helper;
 
-use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
-use App\Entity\Team;
-use App\Entity\User;
-use Symfony\Component\Security\Core\User\UserInterface;
-
 final class SubscriptionHelper
 {
+    /** @var string  */
+    public const CURRENCY_EUR = 'eur';
+
     /** @var string  */
     public const SUBSCRIPTION_RECURRENCE_MONTH = 'MONTH';
 
@@ -20,4 +18,14 @@ final class SubscriptionHelper
         self::SUBSCRIPTION_RECURRENCE_MONTH,
         self::SUBSCRIPTION_RECURRENCE_YEAR,
     ];
+
+    /**
+     * @param string $label
+     * @return string
+     */
+    public static function getStripeSubscriptionDescription(string $label): string
+    {
+        return 'Souscription à l\'abonnement "' . $label . '"';
+    }
+
 }

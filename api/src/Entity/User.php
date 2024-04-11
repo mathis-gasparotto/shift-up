@@ -261,6 +261,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     #[ORM\Column(length: 255)]
     #[
         Groups(['user:read', 'user:write']),
+        Assert\Email,
+        Assert\Unique,
         Assert\NotBlank(groups: ['register'])
     ]
     private ?string $email = null;

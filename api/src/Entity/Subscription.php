@@ -52,6 +52,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
                                     'recurrence' => [
                                         'type' => 'string'
                                     ],
+                                    'stripeProductId' => [
+                                        'type' => 'string'
+                                    ],
+                                    'stripePriceId' => [
+                                        'type' => 'string'
+                                    ],
                                 ],
                             ],
                         ],
@@ -187,6 +193,26 @@ class Subscription implements TracingAwareInterface
      */
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: Team::class)]
     private Collection $teams;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[
+        Assert\NotBlank,
+        Groups(['subscription:read', 'subscription:write'])
+    ]
+    private ?string $stripeProductId = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[
+        Assert\NotBlank,
+        Groups(['subscription:read', 'subscription:write'])
+    ]
+    private ?string $stripePriceId = null;
 
     /**
      *
@@ -333,6 +359,44 @@ class Subscription implements TracingAwareInterface
                 $team->setSubscription(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStripeProductId(): ?string
+    {
+        return $this->stripeProductId;
+    }
+
+    /**
+     * @param string $stripeProductId
+     * @return $this
+     */
+    public function setStripeProductId(string $stripeProductId): static
+    {
+        $this->stripeProductId = $stripeProductId;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStripePriceId(): ?string
+    {
+        return $this->stripePriceId;
+    }
+
+    /**
+     * @param string $stripePriceId
+     * @return $this
+     */
+    public function setStripePriceId(string $stripePriceId): static
+    {
+        $this->stripePriceId = $stripePriceId;
 
         return $this;
     }

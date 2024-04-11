@@ -10,6 +10,10 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $appBackUrl: '%env(APP_BACK_URL)%'
+            $appFrontUrl: '%env(APP_FRONT_URL)%'
+
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -49,6 +53,12 @@ services:
         arguments:
             $openAIModel: '%env(OPENAI_MODEL)%'
             $openAIInstructModel: '%env(OPENAI_INSTRUCT_MODEL)%'
+
+    App\Service\StripeService:
+        arguments:
+            $stripeSk: '%env(STRIPE_SECRET_KEY)%'
+            $stripeWk: '%env(STRIPE_WEBHOOK_KEY)%'
+            $stripeApiVersion: '%env(STRIPE_API_VERSION)%'
 
     Vich\UploaderBundle\Naming\SlugNamer:
         public: true

@@ -5,6 +5,7 @@ namespace App\Helper;
 use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
 use App\Entity\Team;
 use App\Entity\User;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class TeamHelper
@@ -50,6 +51,17 @@ final class TeamHelper
 
         if (!$isAdmin && $team->getManager() !== $user && !$user->isInTeam($team)) {
             throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * @param Team $team
+     * @return void
+     */
+    public static function checkIfTeamHasAlreadySubscription(Team $team): void
+    {
+        if ($team->getStripeSubscriptionId()) {
+            throw new UnprocessableEntityHttpException('This team has already a subscription');
         }
     }
 }

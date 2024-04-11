@@ -8,6 +8,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Team\TeamChoiceSubscriptionController;
+use App\DTO\TeamChoiceSubscriptionDto;
 use App\Helper\GlobalHelper;
 use App\Helper\TeamHelper;
 use App\Model\ManagerAwareInterface;
@@ -47,7 +49,10 @@ use Symfony\Component\Validator\Constraints as Assert;
                                     ],
                                     'subject' => [
                                         'type' => 'string'
-                                    ]
+                                    ],
+                                    'billingEmail' => [
+                                        'type' => 'string'
+                                    ],
                                 ],
                             ],
                         ],
@@ -109,8 +114,34 @@ use Symfony\Component\Validator\Constraints as Assert;
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
             '
-        )
-
+        ),
+        new Post(
+            uriTemplate: '/teams/{id}/choice_subscription',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: TeamChoiceSubscriptionController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'subscription' => [
+                                        'type' => 'string'
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'ChoiceTeamSubscription'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
+        ),
     ]
 )]
 class Team implements ManagerAwareInterface, TracingAwareInterface
@@ -176,11 +207,11 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     private ?string $subject = null;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var \DateTime|null
      */
-    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     #[Groups(['team:read'])]
-    private ?\DateTimeImmutable $subscriptionEndAt = null;
+    private ?\DateTime $subscriptionEndAt = null;
 
     /**
      * @var User|null
@@ -210,6 +241,18 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     #[ORM\ManyToOne(inversedBy: 'teams')]
     #[Groups(['team:read'])]
     private ?Subscription $subscription = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[
+        Assert\NotBlank,
+        Assert\Email,
+        Assert\Unique,
+        Groups(['team:read', 'team:write']),
+    ]
+    private ?string $billingEmail = null;
 
     /**
      *
@@ -344,18 +387,18 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return \DateTime|null
      */
-    public function getSubscriptionEndAt(): ?\DateTimeImmutable
+    public function getSubscriptionEndAt(): ?\DateTime
     {
         return $this->subscriptionEndAt;
     }
 
     /**
-     * @param \DateTimeImmutable|null $subscriptionEndAt
+     * @param \DateTime|null $subscriptionEndAt
      * @return $this
      */
-    public function setSubscriptionEndAt(?\DateTimeImmutable $subscriptionEndAt): static
+    public function setSubscriptionEndAt(?\DateTime $subscriptionEndAt): static
     {
         $this->subscriptionEndAt = $subscriptionEndAt;
 
@@ -469,6 +512,25 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     public function setSubscription(?Subscription $subscription): static
     {
         $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBillingEmail(): ?string
+    {
+        return $this->billingEmail;
+    }
+
+    /**
+     * @param string $billingEmail
+     * @return $this
+     */
+    public function setBillingEmail(string $billingEmail): static
+    {
+        $this->billingEmail = $billingEmail;
 
         return $this;
     }
