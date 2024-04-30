@@ -35,7 +35,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ["email"])]
+#[
+    UniqueEntity(fields: ["email"]),
+    UniqueEntity(fields: ["confirmationToken"]),
+    UniqueEntity(fields: ["resetPasswordToken"])
+]
 #[ApiResource(
     operations: [
         new Post(
@@ -90,32 +94,18 @@ use Symfony\Component\Validator\Constraints as Assert;
             read: false,
             name: 'get_user_me'
         ),
-        new Get(
+        new Post(
             uriTemplate: '/verify_email_register/{token}',
             requirements: [
                 'token' => '.+'
             ],
             status: 200,
             controller: VerifyEmailController::class,
-            openapiContext: [
-                'requestBody' => [
-                    'content' => [
-                        'application/ld+json' => [
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'email' => [
-                                        'type' => 'string'
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ],
             normalizationContext: [
-                'openapi_definition_name' => 'SendResetPasswordCollection'
+                'openapi_definition_name' => 'VerifyEmailRegisterCollection'
             ],
+            input: false,
+            read: false,
             name: 'app_verify_email_register'
         ),
         new Post(
@@ -210,7 +200,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
     ]
 )]
-
 class User implements UserInterface, PasswordAuthenticatedUserInterface, TracingAwareInterface
 {
     use TracingAwareTrait;

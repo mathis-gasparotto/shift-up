@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class VerifyEmailController
@@ -31,19 +30,11 @@ class VerifyEmailController extends AbstractController
 
     /**
      * @param Request $request
+     * @param string $token
      * @return RedirectResponse|JsonResponse
      */
-    #[Route(
-        path: '/verify_email_register/{token}',
-        name: 'app_verify_email_register',
-        requirements: ['token' => '.+'],
-        methods: ['GET']
-    )]
-    public function __invoke(Request $request): RedirectResponse|JsonResponse
+    public function __invoke(string $token, Request $request): RedirectResponse|JsonResponse
     {
-        // Get the request content
-        $token = $request->get('token');
-
         if (empty($token)) {
 //            return new RedirectResponse($request->server->get('APP_FRONT_URL') . '/?redirect=accountActivationCodeInvalid');
             throw new BadRequestHttpException('Token is empty');
@@ -70,7 +61,7 @@ class VerifyEmailController extends AbstractController
 
         $this->entityManager->flush();
 
-        return new JsonResponse(['message' => 'User activated']);
+        return $this->json(['message' => 'User activated']);
 //        return new RedirectResponse($request->server->get('APP_FRONT_URL') . '/?redirect=accountActivated');
     }
 }

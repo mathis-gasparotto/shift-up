@@ -22,3 +22,5 @@
 /docker-compose.override.yml
 
 #src/Controller/Test/
+
+swagger_docs.json
