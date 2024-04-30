@@ -1,0 +1,45 @@
+{
+  "name": "shift-up",
+  "version": "0.0.1",
+  "description": "Raise your brand",
+  "productName": "ShiftUp",
+  "author": "Mathis Gasparotto <mathis.gasparotto@hotmail.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ./",
+    "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "npx quasar dev",
+    "build": "npx quasar build",
+    "build:web": "yarn build:pwa",
+    "build:android": "yarn build:capacitor:android:ide",
+    "build:pwa": "npx quasar build -m pwa",
+    "build:capacitor:android": "npx quasar build -m capacitor -T android",
+    "build:capacitor:android:ide": "npx quasar build -m capacitor -T android --ide",
+    "cap:open:android": "cd src-capacitor && npx cap open android"
+  },
+  "dependencies": {
+    "@ionic/pwa-elements": "^3.2.2",
+    "@quasar/extras": "^1.16.4",
+    "axios": "^1.2.1",
+    "dotenv-flow": "^4.1.0",
+    "quasar": "^2.8.0",
+    "vue": "^3.4.18",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^1.8.0",
+    "autoprefixer": "^10.4.2",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "postcss": "^8.4.14",
+    "prettier": "^2.5.1",
+    "vite-plugin-checker": "^0.6.4"
+  },
+  "engines": {
+    "node": "^20 || ^18 || ^16",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}
