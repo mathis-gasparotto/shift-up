@@ -249,7 +249,6 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     #[
         Assert\NotBlank,
         Assert\Email,
-        Assert\Unique,
         Groups(['team:read', 'team:write']),
     ]
     private ?string $billingEmail = null;
