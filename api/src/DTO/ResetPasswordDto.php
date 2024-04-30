@@ -25,7 +25,7 @@ class ResetPasswordDto
      */
     #[
         Assert\NotBlank(),
-        Assert\EqualTo(null, 'newPassword'),
+        Assert\EqualTo(null, 'newPassword', message: 'The new password must be confirmed'),
         Assert\Type('string')
     ]
     private ?string $confirmPassword;

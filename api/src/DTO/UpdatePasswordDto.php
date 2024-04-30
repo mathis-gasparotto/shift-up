@@ -32,7 +32,7 @@ class UpdatePasswordDto
      */
     #[
         Assert\NotBlank(),
-        Assert\EqualTo(null, 'newPassword'),
+        Assert\EqualTo(null, 'newPassword', message: 'The password must be confirmed'),
         Assert\Type('string')
     ]
     private ?string $confirmPassword;
