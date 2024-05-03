@@ -26,5 +26,30 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
+  Router.beforeEach(async (to, from, next) => {
+    const isAuthenticated = true
+
+    if (!isAuthenticated && to.name !== 'login' && to.name !== 'signup') {
+      return next({
+        name: 'login'
+      })
+    } else if (isAuthenticated && (to.name === 'login' || to.name === 'signup')) {
+      return next({
+        name: from.name === 'login' || from.name === 'signup' ? 'index' : from.name
+      })
+      // } else if (to.name === 'exercises') {
+      //   const workout = getWorkout(to.params.workoutId)
+      //   if (!workout) {
+      //     return next({
+      //       name: 'workouts',
+      //     })
+      //   } else {
+      //     return next()
+      //   }
+    } else {
+      return next()
+    }
+  })
+
   return Router
 })
