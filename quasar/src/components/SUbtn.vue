@@ -1,6 +1,6 @@
 <template>
   <q-btn @click="$emit('click')" :label="label" :icon="icon" :color="color !== 'gradient' ? color : 'white'" :to="to"
-    :rounded="rounded" :outline="outline" flat :class="'btn-' + color" />
+    :rounded="rounded" :outline="outline" flat :class="'btn-' + color" class="q-py-sm" no-caps />
 </template>
 
 <script>

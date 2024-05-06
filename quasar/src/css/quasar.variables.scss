@@ -12,6 +12,12 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
+// Import font from google font
+@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
+
+// Set the default font-family
+$typography-font-family : 'Onest', sans-serif !default;
+
 $primary   : #4263D8;
 $grey-light: #DCDDE5;
 $grey      : #7F8190;

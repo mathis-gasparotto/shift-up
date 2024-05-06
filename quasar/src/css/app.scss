@@ -1,39 +1,38 @@
 // app global css in SCSS form
-.w {
-  &-10 {
-    width: 10%;
+$sizes: (
+  0: 0,
+  5: 5%,
+  10: 10%,
+  15: 15%,
+  20: 20%,
+  25: 25%,
+  30: 30%,
+  35: 35%,
+  40: 40%,
+  45: 45%,
+  50: 50%,
+  55: 55%,
+  60: 60%,
+  65: 65%,
+  70: 70%,
+  75: 75%,
+  80: 80%,
+  85: 85%,
+  90: 90%,
+  95: 95%,
+  100: 100%,
+  auto: auto,
+  content: fit-content
+);
+
+@each $key, $value in $sizes {
+  .w-#{$key} {
+    width: $value;
   }
-  &-20 {
-    width: 20%;
+  .h-#{$key} {
+    height: $value;
   }
-  &-30 {
-    width: 30%;
-  }
-  &-40 {
-    width: 40%;
-  }
-  &-50 {
-    width: 50%;
-  }
-  &-60 {
-    width: 60%;
-  }
-  &-70 {
-    width: 70%;
-  }
-  &-80 {
-    width: 80%;
-  }
-  &-90 {
-    width: 90%;
-  }
-  &-100 {
-    width: 100%;
-  }
-  &-auto {
-    width: auto;
-  }
-  &-content {
-    width: fit-content;
+  .mh-#{$key} {
+    max-height: $value;
   }
 }

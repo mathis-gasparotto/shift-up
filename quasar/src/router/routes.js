@@ -7,6 +7,11 @@ const routes = [
         path: '',
         name: 'index',
         component: () => import('pages/IndexPage.vue')
+      },
+      {
+        path: 'test',
+        name: 'test',
+        component: () => import('pages/ErrorNotFound.vue')
       }
     ]
   },
