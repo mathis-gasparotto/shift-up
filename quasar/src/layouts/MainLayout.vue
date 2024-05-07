@@ -5,6 +5,10 @@
       showNavBtn = false
       $refs.navbarDesktop.toggleNav()
     }" />
+    <q-avatar class="fixed-top-right z-top q-ma-md cursor-pointer">
+      <img src="https://cdn.quasar.dev/img/avatar.png">
+      <AvatarMenu />
+    </q-avatar>
 
 
     <NavbarDesktop ref="navbarDesktop" @hideNav="showNavBtn = true" />
@@ -17,11 +21,13 @@
 
 <script>
 import NavbarDesktop from 'components/NavbarDesktop.vue'
+import AvatarMenu from 'components/AvatarMenu.vue'
 
 export default {
   name: 'MainLayout',
   components: {
-    NavbarDesktop
+    NavbarDesktop,
+    AvatarMenu
   },
   data () {
     return {
