@@ -1,7 +1,7 @@
 <template>
-  <q-drawer v-model="open" show-if-above bordered>
-    <q-tabs vertical class="nav-bar nav-bar--desktop q-pa-xl q-mx-auto" align="justify" indicator-color="transparent"
-      active-color="primary">
+  <q-drawer v-model="visible" show-if-above bordered>
+    <q-tabs vertical class="nav-bar nav-bar--desktop q-py-lg q-px-xl q-mx-auto" align="justify"
+      indicator-color="transparent" active-color="primary">
       <q-item-label header class="h-15">
         <a href="/" @click.prevent="$router.push({ name: 'index' })">
           <q-img src="~assets/shift-up-logo.png" class="logo"></q-img>
@@ -22,7 +22,10 @@
       <div class="h-15">
         <SUbtn label="Upgrade Plan" rounded color="gradient" class="w-100 q-mb-md" />
         <q-btn label="Réduire" no-caps flat icon="sym_o_keyboard_tab_rtl" color="grey" class="w-100" align="left"
-          rounded @click="open = !open" />
+          rounded @click="() => {
+    $emit('hideNav')
+    toggleNav()
+  }" />
       </div>
     </q-tabs>
 
@@ -34,12 +37,13 @@ import SUbtn from 'src/components/SUbtn.vue'
 
 export default {
   name: 'NavbarDesktop',
+  emits: ['hideNav'],
   components: {
     SUbtn
   },
   data() {
     return {
-      open: true,
+      visible: true,
       navItems: [
         {
           title: 'Dashboard',
@@ -55,6 +59,9 @@ export default {
     }
   },
   methods: {
+    toggleNav() {
+      this.visible = !this.visible
+    },
     isCurrentRoute(route) {
       return route.name === this.$route.name
     }
@@ -67,6 +74,6 @@ export default {
   width: 128px;
 }
 .nav-title {
-  font-size: 20px;
+  font-size: 18px;
 }
 </style>
