@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="relative">
+  <q-layout view="lHh Lpr lFf" class="relative bg-main">
     <q-btn v-if="showNavBtn" class="fixed-top-left z-top q-ma-md" clickable flat dense icon="menu" aria-label="Menu"
       @click="() => {
       showNavBtn = false

@@ -36,3 +36,10 @@ $sizes: (
     max-height: $value;
   }
 }
+
+
+.bg {
+  &-main {
+    background-color: $background;
+  }
+}
