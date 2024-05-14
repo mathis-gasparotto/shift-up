@@ -20,6 +20,12 @@ export const useAuthStore = defineStore('auth', {
         return this.loadUserData()
       })
     },
+    signup(payload) {
+      return api.post('/register', payload).then((res) => {
+        this.setMe(res.data)
+        return res.data
+      })
+    },
     logout() {
       this.token = null
       this.me = null

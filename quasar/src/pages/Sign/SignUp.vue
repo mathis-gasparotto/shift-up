@@ -73,6 +73,7 @@
 import SUbtn from 'src/components/SUbtn.vue'
 import 'vue3-q-tel-input/dist/vue3-q-tel-input.esm.css'
 import Vue3QTelInput from 'vue3-q-tel-input'
+import { successNotify, errorNotify } from 'src/helpers/notifyHelper'
 
 export default {
   name: 'SignUp',
@@ -99,16 +100,33 @@ export default {
   },
   methods: {
     submit() {
-      const payload = {
-        firstName: this.firstName.trim(),
-        lastName: this.lastName.trim(),
-        phone: this.phone.trim().replace(/\s/g, ''),
-        email: this.email.trim(),
-        confirmPassword: this.confirmPassword.value.trim(),
-        password: this.password.value.trim()
-      }
-      console.log(payload)
+      this.loading = true
 
+      this.firstName = this.firstName.trim()
+      this.lastName = this.lastName.trim()
+      this.phone = this.phone.trim()
+      this.email = this.email.trim()
+      this.password.value = this.password.value.trim()
+      this.confirmPassword.value = this.confirmPassword.value.trim()
+
+      const payload = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        phone: this.phone.replace(/\s/g, ''),
+        email: this.email,
+        password: this.password.value,
+        confirmPassword: this.confirmPassword.value
+      }
+
+      this.$auth.signup(payload)
+        .then(() => {
+          this.$router.push({ name: 'signin' })
+          successNotify('Account created successfully')
+        })
+        .catch((error) => {
+          this.loading = false
+          errorNotify('Something went wrong')
+        })
     }
   }
 }
