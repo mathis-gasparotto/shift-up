@@ -25,6 +25,38 @@ $sizes: (
   content: fit-content
 );
 
+$gaps: (
+  0: 0,
+  1: 1px,
+  2: 2px,
+  3: 3px,
+  4: 4px,
+  5: 5px,
+  6: 6px,
+  7: 7px,
+  8: 8px,
+  9: 9px,
+  10: 10px,
+  15: 15px,
+  20: 20px,
+  25: 25px,
+  30: 30px,
+  35: 35px,
+  40: 40px,
+  45: 45px,
+  50: 50px,
+  55: 55px,
+  60: 60px,
+  65: 65px,
+  70: 70px,
+  75: 75px,
+  80: 80px,
+  85: 85px,
+  90: 90px,
+  95: 95px,
+  100: 100px
+);
+
 @each $key, $value in $sizes {
   .w-#{$key} {
     width: $value;
@@ -37,9 +69,24 @@ $sizes: (
   }
 }
 
+@each $key, $value in $gaps {
+  .gap-#{$key} {
+    gap: $value;
+  }
+}
 
 .bg {
   &-main {
     background-color: $background;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: map-get($map: $text-weights, $key: medium) !important;
+}
+
+.label-required {
+  &::after {
+    content: '*';
   }
 }

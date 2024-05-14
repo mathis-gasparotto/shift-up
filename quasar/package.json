@@ -25,7 +25,8 @@
     "dotenv-flow": "^4.1.0",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue3-q-tel-input": "^1.1.7"
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.8.0",

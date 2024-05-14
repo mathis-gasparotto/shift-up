@@ -1,6 +1,7 @@
 <template>
   <q-btn @click="$emit('click')" :label="label" :icon="icon" :color="color !== 'gradient' ? color : 'white'" :to="to"
-    :rounded="rounded" :outline="outline" flat :class="'btn-' + color" class="q-py-sm" no-caps />
+    :rounded="rounded" :outline="outline" flat :class="'btn-' + color" class="q-py-sm" no-caps :type="type"
+    :loading="loading" />
 </template>
 
 <script>
@@ -29,6 +30,14 @@ export default {
       default: false
     },
     outline: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: 'button'
+    },
+    loading: {
       type: Boolean,
       default: false
     }
