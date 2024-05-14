@@ -38,7 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     UniqueEntity(fields: ["email"]),
     UniqueEntity(fields: ["confirmationToken"]),
-    UniqueEntity(fields: ["resetPasswordToken"])
+    UniqueEntity(fields: ["resetPasswordToken"]),
+    UniqueEntity(fields: ["phone"])
 ]
 #[ApiResource(
     operations: [
@@ -237,9 +238,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 60, nullable: true)]
-    #[Groups(
-        ['user:read', 'user:write']),
+    #[ORM\Column(length: 60, unique: true)]
+    #[
+        Groups(['user:read', 'user:write']),
         Assert\NotBlank(groups: ['register'])
     ]
     private ?string $phone = null;
@@ -247,11 +248,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[
         Groups(['user:read', 'user:write']),
         Assert\Email,
-        Assert\Unique,
         Assert\NotBlank(groups: ['register'])
     ]
     private ?string $email = null;
@@ -261,6 +261,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
      */
     #[ORM\Column(length: 255)]
     #[
+        Groups(['user:write']),
         Assert\NotBlank(groups: ['register']),
         Assert\Length(min: 8, max: 150),
         Assert\Regex(pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])(?!.*\s).*$/', message: 'Password must contain at least one lowercase letter, one uppercase letter, one number and one special character')
@@ -268,9 +269,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     private ?string $password = null;
 
     /**
+     * @var string|null
+     */
+    #[
+        Groups(['user:write']),
+        Assert\NotBlank(groups: ['register']),
+        Assert\EqualTo(null, 'password', message: 'The password must be confirmed')
+    ]
+    private ?string $confirmPassword;
+
+    /**
      * @var bool|null
      */
     #[ORM\Column]
+    #[
+        Groups(['user:admin:read'])
+    ]
     private ?bool $enabled = null;
 
     /**
@@ -430,6 +444,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    /**
+     * @param string|null $confirmPassword
+     * @return void
+     */
+    public function setConfirmPassword(?string $confirmPassword): void
+    {
+        $this->confirmPassword = $confirmPassword;
     }
 
     /**
