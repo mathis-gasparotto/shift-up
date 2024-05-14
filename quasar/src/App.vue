@@ -4,6 +4,11 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    if (this.$auth.isAuthenticated) {
+      this.$auth.loadUserData(false)
+    }
+  }
 }
 </script>

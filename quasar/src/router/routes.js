@@ -1,7 +1,9 @@
-const isAuthenticated = false
+import { useAuthStore } from 'src/store/auth'
 
 const beforeSign = function (to, from, next) {
-  if (isAuthenticated) {
+  const auth = useAuthStore()
+
+  if (auth.isAuthenticated) {
     return next({
       name: from.name === 'signin' || from.name === 'signup' ? 'index' : from.name
     })
@@ -11,7 +13,9 @@ const beforeSign = function (to, from, next) {
 }
 
 const beforeNoSign = function (to, from, next) {
-  if (!isAuthenticated) {
+  const auth = useAuthStore()
+
+  if (!auth.isAuthenticated) {
     return next({
       name: 'signin'
     })
