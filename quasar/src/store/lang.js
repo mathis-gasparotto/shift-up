@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import { LocalStorage } from 'quasar'
-import { defaultLang } from 'src/helpers/langs'
+import { langs, defaultLang, langArray, langCodes } from 'src/helpers/langs'
 
 export const useLangStore = defineStore('lang', {
   state: () => ({
     currentLang: LocalStorage.getItem('lang') || defaultLang
   }),
   getters: {
-    getCurrentLang: (state) => state.currentLang
+    getCurrentLang: (state) => langs[state.currentLang]
   },
   actions: {
     setLang(lang) {
@@ -15,6 +15,15 @@ export const useLangStore = defineStore('lang', {
     },
     resetLang() {
       this.setLang(defaultLang)
+    },
+    getLangsAsArray() {
+      return langArray
+    },
+    getLangCodes() {
+      return langCodes
+    },
+    getLangs() {
+      return langs
     }
   }
 })

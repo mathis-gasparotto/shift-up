@@ -4,25 +4,29 @@
       <h2 class="text-h4 q-mb-sm q-mt-none">Sign Up</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
-    <q-form class="w-100 gap-15 column items-center" @submit.prevent="submit">
+    <q-form class="w-100 gap-10 column items-center" @submit.prevent="submit">
       <div class="row w-100 gap-15 no-wrap">
         <div>
           <label for="first_name" class="text-weight-medium label-required">First name</label>
           <q-input v-model="firstName" outlined for="first_name" placeholder="John" class="input" lazy-rules :rules="[
-      (val) => val.trim().length > 3 || 'First name must be at least 3 characters long',
-    ]" hide-bottom-space />
+      (val) => val.trim().length > 3 || 'First name required',
+    ]" />
         </div>
         <div>
           <label for="last_name" class="text-weight-medium label-required">Last name</label>
           <q-input v-model="lastName" outlined for="last_name" placeholder="Doe" class="input" lazy-rules :rules="[
-      (val) => val.trim().length > 3 || 'Last name must be at least 3 characters long',
-    ]" hide-bottom-space />
+      (val) => val.trim().length > 3 || 'Last name required',
+    ]" />
         </div>
       </div>
       <div class="w-100">
         <label for="phone" class="text-weight-medium label-required">Phone</label>
-        <Vue3QTelInput v-model:tel="phone" outlined for="phone" hide-bottom-space default-country="us" type="tel"
-          inputmode="tel" placeholder="000-0000000" />
+        <Vue3QTelInput v-model:tel="phone.value" outlined for="phone" :default-country="defaultPhoneCountry" type="tel"
+          inputmode="tel" :placeholder="phoneNumberPlaceholder" @country="updatePhoneCountry"
+          @error="(val) => phone.error = val" :rules="[
+      (val) => !!val || 'Phone number is required',
+      (val) => !phone.error || 'Phone number is invalid',
+    ]" />
       </div>
       <div class="w-100">
         <label for="email" class="text-weight-medium label-required">Email</label>
@@ -30,7 +34,7 @@
           type="email" lazy-rules :rules="[
       (val, rules) =>
         rules.email(val) || 'You must enter a valid email address'
-    ]" hide-bottom-space />
+    ]" />
       </div>
       <div class="w-100">
         <label for="password" class="text-weight-medium label-required">Password</label>
@@ -42,19 +46,17 @@
       (val) =>
         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) ||
         'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character'
-    ]" hide-bottom-space>
+    ]">
           <template v-slot:append>
             <q-icon :name="password.visible ? 'visibility' : 'visibility_off'" class="cursor-pointer"
               @click="password.visible = !password.visible" />
           </template>
         </q-input>
       </div>
-      <div class="w-100">
+      <div class="w-100 q-mb-sm">
         <label for="confirm_password" class="text-weight-medium label-required">Password confirmation</label>
         <q-input v-model="confirmPassword.value" outlined :type="confirmPassword.visible ? 'text' : 'password'"
-          for="confirm_password" placeholder="Your password again" class="input" lazy-rules
-          hint="8 characters minimum, one uppercase letter, one lowercase letter, one number and one special character"
-          hide-hint :rules="[
+          for="confirm_password" placeholder="Your password again" class="input" reactive-rules :rules="[
       (val) => val.trim().length > 0 || 'You must enter a password confirmation',
       (val) => val === password.value || 'Passwords do not match',
     ]">
@@ -64,7 +66,12 @@
           </template>
         </q-input>
       </div>
-      <SUbtn label="Sign Up" color="gradient" class="w-100 q-mt-md" rounded type="submit" :loading="loading" />
+      <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
+      <SUbtn label="Sign Up" color="gradient" class="w-100" rounded type="submit" :loading="loading" />
+      <p class="q-mt-lg">
+        Already have an account?
+        <router-link :to="{ name: 'signin' }" class="text-bold">Sign In</router-link>
+      </p>
     </q-form>
   </q-page>
 </template>
@@ -73,7 +80,9 @@
 import SUbtn from 'src/components/SUbtn.vue'
 import 'vue3-q-tel-input/dist/vue3-q-tel-input.esm.css'
 import Vue3QTelInput from 'vue3-q-tel-input'
-import { successNotify, errorNotify } from 'src/helpers/notifyHelper'
+import { successNotify } from 'src/helpers/notifyHelper'
+import { translateError } from 'src/helpers/translatting'
+import { phoneNumberPlaceholders } from 'src/helpers/phone'
 
 export default {
   name: 'SignUp',
@@ -85,7 +94,10 @@ export default {
     return {
       firstName: '',
       lastName: '',
-      phone: '',
+      phone: {
+        value: '',
+        error: false
+      },
       email: '',
       password: {
         value: '',
@@ -95,16 +107,28 @@ export default {
         value: '',
         visible: false
       },
-      loading: false
+      loading: false,
+      defaultPhoneCountry: 'US',
+      phoneNumberPlaceholder: '000-000-0000',
+      error: ''
     }
   },
+  created() {
+    if (this.$lang.getCurrentLang.countryCode) {
+      this.defaultPhoneCountry = this.$lang.getCurrentLang.countryCode
+    }
+  // this.phoneNumberPlaceholder = phoneNumberPlaceholders[this.defaultPhoneCountry]
+  },
   methods: {
+    updatePhoneCountry(country) {
+      this.phoneNumberPlaceholder = phoneNumberPlaceholders[country.iso2]
+    },
     submit() {
       this.loading = true
 
       this.firstName = this.firstName.trim()
       this.lastName = this.lastName.trim()
-      this.phone = this.phone.trim()
+      this.phone.value = this.phone.value.trim()
       this.email = this.email.trim()
       this.password.value = this.password.value.trim()
       this.confirmPassword.value = this.confirmPassword.value.trim()
@@ -112,7 +136,7 @@ export default {
       const payload = {
         firstName: this.firstName,
         lastName: this.lastName,
-        phone: this.phone.replace(/\s/g, ''),
+        phone: this.phone.value.replace(/\s/g, ''),
         email: this.email,
         password: this.password.value,
         confirmPassword: this.confirmPassword.value
@@ -125,7 +149,7 @@ export default {
         })
         .catch((error) => {
           this.loading = false
-          errorNotify('Something went wrong')
+          this.error = translateError(error)
         })
     }
   }
