@@ -21,6 +21,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -236,14 +238,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     private ?string $firstName = null;
 
     /**
-     * @var string|null
+     * @var PhoneNumber|null
      */
-    #[ORM\Column(length: 60, unique: true)]
+    #[ORM\Column(type: "phone_number", unique: true)]
     #[
         Groups(['user:read', 'user:write']),
-        Assert\NotBlank(groups: ['register'])
+        Assert\NotBlank(groups: ['register']),
+        AssertPhoneNumber(message: 'The given phone number is not valid.')
     ]
-    private ?string $phone = null;
+    private ?PhoneNumber $phone = null;
 
     /**
      * @var string|null
@@ -390,18 +393,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     }
 
     /**
-     * @return string|null
+     * @return PhoneNumber|null
      */
-    public function getPhone(): ?string
+    public function getPhone(): ?PhoneNumber
     {
         return $this->phone;
     }
 
     /**
-     * @param string|null $phone
+     * @param PhoneNumber|null $phone
      * @return $this
      */
-    public function setPhone(?string $phone): static
+    public function setPhone(?PhoneNumber $phone): static
     {
         $this->phone = $phone;
 
