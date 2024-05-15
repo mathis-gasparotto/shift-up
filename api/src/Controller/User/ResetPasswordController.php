@@ -43,7 +43,7 @@ class ResetPasswordController extends AbstractController
             $user->setResetPasswordToken(null);
             $user->setResetPasswordAt(null);
             $entityManager->flush();
-            throw new BadRequestHttpException('The token is expired');
+            throw new BadRequestHttpException('The token has expired');
         }
 
         // Update user password
