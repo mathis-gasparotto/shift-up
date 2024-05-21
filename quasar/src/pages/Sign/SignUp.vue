@@ -21,7 +21,7 @@
       </div>
       <div class="w-100">
         <label for="phone" class="text-weight-medium label-required">Phone</label>
-        <Vue3QTelInput v-model:tel="phone.value" outlined for="phone" :default-country="defaultPhoneCountry" type="tel"
+        <Vue3QTelInput v-model="phone.value" outlined for="phone" :default-country="defaultPhoneCountry" type="tel"
           inputmode="tel" :placeholder="phoneNumberPlaceholder" @country="updatePhoneCountry"
           @error="(val) => phone.error = val" :rules="[
       (val) => !!val || 'Phone number is required',
