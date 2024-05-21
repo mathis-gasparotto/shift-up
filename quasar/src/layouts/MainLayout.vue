@@ -1,17 +1,14 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="relative bg-main">
-    <q-btn v-if="showNavBtn" class="fixed-top-left z-top q-ma-md" clickable flat dense icon="menu" aria-label="Menu"
-      @click="() => {
-      showNavBtn = false
-      $refs.navbarDesktop.toggleNav()
-    }" />
-    <q-avatar class="fixed-top-right z-top q-ma-md cursor-pointer">
+    <q-btn class="fixed-top-left q-ma-md navbar-btn" clickable flat dense icon="menu" aria-label="Menu"
+      @click="$refs.navbarDesktop.toggleNav()" />
+
+    <NavbarDesktop ref="navbarDesktop" />
+
+    <q-avatar class="fixed-top-right q-ma-md cursor-pointer avatar">
       <img src="https://cdn.quasar.dev/img/avatar.png">
       <AvatarMenu />
     </q-avatar>
-
-
-    <NavbarDesktop ref="navbarDesktop" @hideNav="showNavBtn = true" />
 
     <q-page-container>
       <router-view />
@@ -28,11 +25,12 @@ export default {
   components: {
     NavbarDesktop,
     AvatarMenu
-  },
-  data () {
-    return {
-      showNavBtn: false
-    }
   }
 }
 </script>
+<style lang="scss" scoped>
+.avatar,
+.navbar-btn {
+  z-index: 1000;
+}
+</style>

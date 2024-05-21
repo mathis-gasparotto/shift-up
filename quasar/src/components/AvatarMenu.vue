@@ -25,14 +25,26 @@
       <q-item clickable>
         <q-item-section>Help &amp; Feedback</q-item-section>
       </q-item>
+      <q-item clickable @click="logout">
+        <q-item-section>Logout</q-item-section>
+      </q-item>
     </q-list>
   </q-menu>
 </template>
 
 <script>
+import { successNotify } from 'src/helpers/notifyHelper';
+
 
 export default {
   name: 'AvatarMenu',
+  methods: {
+    logout() {
+      this.$auth.logout()
+      this.$router.push({ name: 'signin' })
+      successNotify('You have successfully signed out!')
+    }
+  }
 }
 </script>
 

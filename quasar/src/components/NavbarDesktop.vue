@@ -1,5 +1,5 @@
 <template>
-  <q-drawer v-model="visible" show-if-above bordered @hide="$emit('hideNav')">
+  <q-drawer v-model="visible" show-if-above bordered>
 
     <q-tabs vertical class="nav-bar nav-bar--desktop q-pa-lg q-mx-auto bg-main" align="justify"
       indicator-color="transparent" active-color="primary">
@@ -75,10 +75,7 @@
       <div class="h-15">
         <SUbtn label="Upgrade Plan" rounded color="gradient" class="w-100 q-mb-md" />
         <q-btn label="Réduire" no-caps flat icon="sym_o_keyboard_tab_rtl" color="grey" class="w-100" align="left"
-          rounded @click="() => {
-    $emit('hideNav')
-    toggleNav()
-  }" />
+          rounded @click="toggleNav()" />
       </div>
     </q-tabs>
 
