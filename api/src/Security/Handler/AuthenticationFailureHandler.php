@@ -51,7 +51,7 @@ class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterf
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
 
-        $message = 'Invalid credentials.';
+        $message = 'Invalid credentials';
         if ($exception instanceof AccountExpiredException) {
             $message = $exception->getMessageKey();
         } elseif ($exception instanceof LockedException) {

@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', {
     loadUserData(cached = true) {
       return new Promise((resolve, reject) => {
         if (!cached || !this.me) {
-          return api.get('/me').then(
+          return api.get('/users/me').then(
             (res) => {
               this.setMe(res.data)
               return resolve(this.me)

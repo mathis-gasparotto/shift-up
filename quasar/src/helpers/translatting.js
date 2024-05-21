@@ -9,7 +9,9 @@ export function translateError(error, defaultMessage = null) {
   if (typeof error === 'string') {
     errorMessage = error
   } else {
-    errorMessage = error.response ? error.response.data['hydra:description'] || error.response.data.detail : ''
+    errorMessage = error.response
+      ? error.response.data['hydra:description'] || error.response.data.detail || error.response.data.message
+      : ''
   }
 
   switch (errorMessage) {
@@ -21,6 +23,15 @@ export function translateError(error, defaultMessage = null) {
           return 'Incorrect password'
         default:
           return 'Incorrect password'
+      }
+    case 'Invalid credentials':
+      switch (currentLang) {
+        case 'fr-FR':
+          return 'Identifiants incorrects'
+        case 'en-US':
+          return 'Invalid credentials'
+        default:
+          return 'Invalid credentials'
       }
     case 'Incorrect current password':
       switch (currentLang) {
