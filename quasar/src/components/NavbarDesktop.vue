@@ -1,5 +1,5 @@
 <template>
-  <q-drawer v-model="visible" show-if-above bordered>
+  <q-drawer v-model="visible" show-if-above bordered @hide="$emit('hideNav')">
 
     <q-tabs vertical class="nav-bar nav-bar--desktop q-pa-lg q-mx-auto bg-main" align="justify"
       indicator-color="transparent" active-color="primary">
