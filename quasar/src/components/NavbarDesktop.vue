@@ -74,7 +74,7 @@
 
       <div class="h-15">
         <SUbtn label="Upgrade Plan" rounded color="gradient" class="w-100 q-mb-md" />
-        <q-btn label="Réduire" no-caps flat icon="sym_o_keyboard_tab_rtl" color="grey" class="w-100" align="left"
+        <q-btn label="Minimize" no-caps flat icon="sym_o_keyboard_tab_rtl" color="grey" class="w-100" align="left"
           rounded @click="toggleNav()" />
       </div>
     </q-tabs>
