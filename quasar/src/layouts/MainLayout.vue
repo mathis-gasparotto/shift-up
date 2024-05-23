@@ -5,8 +5,9 @@
 
     <NavbarDesktop ref="navbarDesktop" />
 
-    <q-avatar class="fixed-top-right q-ma-md cursor-pointer avatar">
-      <img src="https://cdn.quasar.dev/img/avatar.png">
+    <q-avatar :class="'fixed-top-right q-ma-md cursor-pointer avatar avatar-' + avatarColor" v-if="firstLetter"
+      text-color="white" size="lg">
+      {{ firstLetter }}
       <AvatarMenu />
     </q-avatar>
 
@@ -19,12 +20,21 @@
 <script>
 import NavbarDesktop from 'components/NavbarDesktop.vue'
 import AvatarMenu from 'components/AvatarMenu.vue'
+import { getAvatarColor } from 'src/helpers/avatarHelper'
 
 export default {
   name: 'MainLayout',
   components: {
     NavbarDesktop,
     AvatarMenu
+  },
+  computed: {
+    firstLetter() {
+      return this.$auth.getUser ? this.$auth.getUser.firstName.charAt(0) : null
+    },
+    avatarColor() {
+      return getAvatarColor(this.firstLetter)
+    }
   }
 }
 </script>

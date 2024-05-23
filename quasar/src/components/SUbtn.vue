@@ -22,7 +22,7 @@ export default {
       default: 'gradient'
     },
     to: {
-      type: Object,
+      type: [String, Object],
       default: null
     },
     rounded: {

@@ -5,7 +5,7 @@ import { api } from 'src/boot/axios'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: LocalStorage.getItem('token'),
-    me: null
+    me: LocalStorage.getItem('me')
   }),
   getters: {
     isAuthenticated: (state) => Boolean(state.token),
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore('auth', {
       return LocalStorage.getItem('refreshToken')
     },
     setMe(me) {
-      this.me = me
+      LocalStorage.set('me', me)
     },
     setCacheDirty() {
       this.me = null

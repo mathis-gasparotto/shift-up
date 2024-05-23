@@ -11,7 +11,7 @@ final class EmailHelper
     public const DEFAULT_EMAIL_ADDRESS = 'no-reply@shift-up.ai';
 
     /** @var string  */
-    public const DEFAULT_EMAIL_ADDRESS_NAME = 'Shift Up';
+    public const DEFAULT_EMAIL_ADDRESS_NAME = 'ShiftUp';
 
     /** @var string  */
     public const EMAIL_TYPE_CONFIRM_EMAIL = 'confirm_email';
