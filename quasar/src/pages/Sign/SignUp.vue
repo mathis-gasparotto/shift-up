@@ -68,11 +68,24 @@
       </div>
       <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
       <SUbtn label="Sign Up" color="gradient" class="w-100" rounded type="submit" :loading="loading" />
-      <p class="q-mt-lg">
-        Already have an account?
-        <router-link :to="{ name: 'signin' }" class="text-bold">Sign In</router-link>
-      </p>
+      <q-card v-if="signedUp" class="w-100 q-mt-md">
+        <q-card-section class="flex flex-center">
+          <q-icon name="check_circle" class="text-positive q-mr-sm" size="2em" />
+          You've been signed up!
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          A confirmation email was sent to your email address.You cannot login to site while your email address isn't
+          confirmed. Please check your indox and your spams.
+        </q-card-section>
+        <q-card-actions align="center">
+          <q-btn flat rounded :to="{ name: 'signin' }">Go for Sign In</q-btn>
+        </q-card-actions>
+      </q-card>
     </q-form>
+    <p class="q-mt-lg">
+      Already have an account?
+      <router-link :to="{ name: 'signin' }" class="text-bold">Sign In</router-link>
+    </p>
   </q-page>
 </template>
 
@@ -110,7 +123,8 @@ export default {
       loading: false,
       defaultPhoneCountry: 'US',
       phoneNumberPlaceholder: '000-000-0000',
-      error: ''
+      error: '',
+      signedUp: false
     }
   },
   created() {
@@ -144,7 +158,7 @@ export default {
 
       this.$auth.signup(payload)
         .then(() => {
-          this.$router.push({ name: 'signin' })
+          this.signedUp = true
           successNotify('Account created successfully')
         })
         .catch((error) => {
