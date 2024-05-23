@@ -66,6 +66,9 @@ export const useAuthStore = defineStore('auth', {
     },
     setCacheDirty() {
       this.me = null
+    },
+    confirmEmail(token) {
+      return api.post('/verify_email_register/' + token)
     }
   }
 })

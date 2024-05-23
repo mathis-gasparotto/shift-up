@@ -43,6 +43,11 @@ const routes = [
     ]
   },
   {
+    path: '/verify-email/:token',
+    name: 'emailConfirmation',
+    component: () => import('pages/EmailConfirmation.vue')
+  },
+  {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     beforeEnter: beforeNoSign,

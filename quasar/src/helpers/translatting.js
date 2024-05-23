@@ -49,9 +49,18 @@ export function translateError(error, defaultMessage = null) {
         case 'en-US':
           return 'The link has expired'
         default:
-          return 'The token has expired'
+          return 'The link has expired'
       }
     case 'Invalid token':
+      switch (currentLang) {
+        case 'fr-FR':
+          return 'Le lien est invalide'
+        case 'en-US':
+          return 'Invalid link'
+        default:
+          return 'Invalid link'
+      }
+    case 'Invalid confirmation token':
       switch (currentLang) {
         case 'fr-FR':
           return 'Le lien est invalide'

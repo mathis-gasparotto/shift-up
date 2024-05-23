@@ -68,19 +68,13 @@
       </div>
       <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
       <SUbtn label="Sign Up" color="gradient" class="w-100" rounded type="submit" :loading="loading" />
-      <q-card v-if="signedUp" class="w-100 q-mt-md">
-        <q-card-section class="flex flex-center">
-          <q-icon name="check_circle" class="text-positive q-mr-sm" size="2em" />
-          You've been signed up!
-        </q-card-section>
-        <q-card-section class="q-pt-none">
+      <InfoCard v-if="signedUp" class="w-100 q-mt-md" type="success" title="You've been signed up!"
+        action-btn-label="Go for sign in" :action-btn-route="{ name: 'signin' }">
+        <template #content>
           A confirmation email was sent to your email address.You cannot login to site while your email address isn't
           confirmed. Please check your indox and your spams.
-        </q-card-section>
-        <q-card-actions align="center">
-          <q-btn flat rounded :to="{ name: 'signin' }">Go for Sign In</q-btn>
-        </q-card-actions>
-      </q-card>
+        </template>
+      </InfoCard>
     </q-form>
     <p class="q-mt-lg">
       Already have an account?
@@ -91,6 +85,7 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import InfoCard from 'src/components/InfoCard.vue'
 import 'vue3-q-tel-input/dist/vue3-q-tel-input.esm.css'
 import Vue3QTelInput from 'vue3-q-tel-input'
 import { successNotify } from 'src/helpers/notifyHelper'
@@ -101,7 +96,8 @@ export default {
   name: 'SignUp',
   components: {
     SUbtn,
-    Vue3QTelInput
+    Vue3QTelInput,
+    InfoCard
   },
   data() {
     return {
@@ -159,6 +155,8 @@ export default {
       this.$auth.signup(payload)
         .then(() => {
           this.signedUp = true
+          this.error = ''
+          this.loading = false
           successNotify('Account created successfully')
         })
         .catch((error) => {
