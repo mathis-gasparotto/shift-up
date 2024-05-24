@@ -12,7 +12,7 @@
     </q-avatar>
 
     <q-page-container>
-      <router-view />
+      <router-view class="q-pa-xl" />
     </q-page-container>
   </q-layout>
 </template>

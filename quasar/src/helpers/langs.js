@@ -2,12 +2,14 @@ export const langs = {
   'en-US': {
     code: 'en-US',
     name: 'English',
-    countryCode: 'US'
+    countryCode: 'US',
+    momentCode: 'en'
   },
   'fr-FR': {
     code: 'fr-FR',
     name: 'Français',
-    countryCode: 'FR'
+    countryCode: 'FR',
+    momentCode: 'fr'
   }
 }
 

@@ -1,9 +1,11 @@
 <template>
-  <q-page class="q-pa-xl flex gap-40 items-center">
-    <div class="section">
+  <q-page class="flex gap-40 items-center">
+    <div class="section teams-section">
       <h2 class="text-grey text-body1">Team</h2>
-      <div class="teams flex gap-20" v-if="teams && teams.length > 0">
-        <q-card v-for="team in teams" :key="team.id" class="team q-py-md q-px-lg flex justify-between items-center">
+      <div class="teams-list flex gap-20" v-if="teams && teams.length > 0">
+        <q-card v-for="team in teams" :key="team.id"
+          class="team-card q-py-md q-px-lg flex justify-between items-center cursor-pointer" clickable
+          @click="goToTeam(team.id)">
           <q-card-section horizontal>
             <q-icon size="40px" color="primary" :name="team.icon" class="q-mr-lg" />
             <div>
@@ -13,7 +15,25 @@
             </div>
           </q-card-section>
           <q-card-section class="q-pa-none">
-            <q-btn icon="more_horiz" text-color="grey-8" flat />
+            <q-btn icon="more_horiz" text-color="grey-8" flat @click.stop="openTeamSettings(team.id)" />
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+    <div class="section projects-section">
+      <h2 class="text-grey text-body1">Projects</h2>
+      <div class="prpjects-list flex gap-20" v-if="projects && projects.length > 0">
+        <q-card v-for="project in projects" :key="project.id" class="project-card q-pa-lg cursor-pointer"
+          @click="goToProject(project.id)">
+          <q-card-section class="q-pa-none q-mb-md">
+            <q-img :src="'/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
+              class="project-img w-100" />
+          </q-card-section>
+          <q-card-section class="q-pa-none">
+            <div>
+              <h3 class="text-body1 q-my-none">{{ strMaxLenght(project.title, 13) }}</h3>
+              <p class="text-caption q-my-none">Edited {{ durationFromDateTime(project.updatedAt) }}</p>
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -22,13 +42,14 @@
 </template>
 
 <script>
-import { strMaxLenght } from 'src/helpers/formatting'
+import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 
 export default {
   name: 'IndexPage',
   setup() {
     return {
       strMaxLenght,
+      durationFromDateTime
     }
   },
   data() {
@@ -65,13 +86,58 @@ export default {
           ],
         },
       ],
-    };
+      projects: [
+        {
+          id: 1,
+          title: 'Project 1',
+          updatedAt: '2024-04-30T07:36:16+00:00',
+          picture: {
+            contentUrl: 'project-illustration-1.jpg',
+          }
+        },
+        {
+          id: 2,
+          title: 'Project 2',
+          updatedAt: '2024-04-30T07:36:16+00:00',
+          picture: {
+            contentUrl: 'project-illustration-2.jpg',
+          }
+        },
+        {
+          id: 3,
+          title: 'Project 3',
+          updatedAt: '2024-04-30T07:36:16+00:00',
+          picture: {
+            contentUrl: 'project-illustration-3.jpg',
+          }
+        },
+      ]
+    }
   },
+  methods: {
+    openTeamSettings(teamId) {
+      console.log('Open team settings', teamId)
+    },
+    goToTeam(teamId) {
+      console.log('Go to team', teamId)
+    },
+    goToProject(projectId) {
+      console.log('Go to project', projectId)
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.team {
+.team-card {
   width: 300px;
+}
+
+.project-card {
+  width: 300px;
+}
+
+.project-img {
+  border-radius: 4px;
 }
 </style>
