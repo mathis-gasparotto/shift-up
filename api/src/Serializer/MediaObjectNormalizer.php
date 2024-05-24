@@ -49,7 +49,11 @@ class MediaObjectNormalizer implements ContextAwareNormalizerInterface, Normaliz
     {
         $context[self::ALREADY_CALLED] = true;
 
-        if (($path = $this->storage->resolvePath($object, 'file')) !== null) {
+        $path = $this->storage->resolvePath($object, 'file');
+
+        if ($context['root_operation_name'] === 'get_project_media_objects') {
+            $object->setContentUrl($object->getFilePath());
+        } else if ($path) {
             $object->setContentUrl($this->prefixUrl . '/cache/picture_thumb/' . $path);
             $object->pictures = [
                 'thumb' => $this->prefixUrl . '/cache/picture_thumb/' . $path,

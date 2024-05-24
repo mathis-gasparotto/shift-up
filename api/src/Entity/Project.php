@@ -277,6 +277,17 @@ class Project implements TracingAwareInterface
     private Collection $competitorAnalyses;
 
     /**
+     * @var MediaObject|null
+     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[
+        Assert\NotBlank,
+        Groups(['project:read', 'project:write'])
+    ]
+    private ?MediaObject $picture = null;
+
+    /**
      *
      */
     public function __construct()
@@ -890,6 +901,25 @@ class Project implements TracingAwareInterface
                 $competitorAnalysis->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return MediaObject|null
+     */
+    public function getPicture(): ?MediaObject
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param MediaObject|null $picture
+     * @return $this
+     */
+    public function setPicture(?MediaObject $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }

@@ -16,6 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class Serve extends Command
 {
+    /**
+     * @param string $apiIp
+     * @param string $apiPort
+     */
     public function __construct(
         private readonly string $apiIp,
         private readonly string $apiPort,

@@ -4,6 +4,7 @@ namespace App\Model\Traits;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -29,7 +30,8 @@ trait TracingAwareTrait
      */
     #[
         ORM\Column(type:"datetime"),
-        Gedmo\Timestampable(on:"update")
+        Gedmo\Timestampable(on:"update"),
+        Groups(['project:read'])
     ]
     private DateTimeInterface $updatedAt;
 

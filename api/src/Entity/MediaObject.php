@@ -15,6 +15,7 @@ use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\MediaObjectRepository;
+use App\StateProviders\ProjectMediaObjectProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\HttpFoundation\File\File;
@@ -93,7 +94,19 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'openapi_definition_name' => 'DeleteItem'
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")'
-        )
+        ),
+        new GetCollection(
+            uriTemplate: '/media_objects/project',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetCollection',
+                'groups' => [
+                    'media_object:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            name: 'get_project_media_objects',
+            provider: ProjectMediaObjectProvider::class
+        ),
     ],
     order: [
         'createdAt' => 'DESC'
@@ -152,6 +165,12 @@ class MediaObject implements TracingAwareInterface
      */
     #[Groups(['media_object:read'])]
     public array $pictures;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $category = null;
 
 
     /**
@@ -270,6 +289,25 @@ class MediaObject implements TracingAwareInterface
     public function setPictures(array $pictures): self
     {
         $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param string|null $category
+     * @return $this
+     */
+    public function setCategory(?string $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
