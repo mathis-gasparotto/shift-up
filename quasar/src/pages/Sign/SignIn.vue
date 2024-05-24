@@ -26,11 +26,11 @@
       </div>
       <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
       <SUbtn label="Sign In" color="gradient" class="w-100" rounded type="submit" :loading="loading" />
-      <p class="q-mt-lg">
-        Haven't an account yet?
-        <router-link :to="{ name: 'signup' }" class="text-bold">Sign Up</router-link>
-      </p>
     </q-form>
+    <p class="q-mt-lg">
+      Haven't an account yet?
+      <router-link :to="{ name: 'signup' }" class="text-bold">Sign Up</router-link>
+    </p>
   </q-page>
 </template>
 

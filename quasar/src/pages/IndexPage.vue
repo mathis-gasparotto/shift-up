@@ -10,6 +10,7 @@
           </div>
         </q-card-section>
       </q-card>
+      <CreateNewTeamModal ref="createNewTeamModal" />
     </div>
     <div class="section teams-section">
       <h2 class="text-grey text-body1">Team</h2>
@@ -21,7 +22,7 @@
             <div>
               <h3 class="text-body1 q-my-none">{{ strMaxLenght(team.title, 13) }}</h3>
               <p class="text-caption q-my-none">{{ team.projects.length + ' projet' + (team.projects.length > 1 ? 's' :
-        '') }}</p>
+  '') }}</p>
             </div>
           </q-card-section>
           <q-card-section class="q-pa-none">
@@ -53,9 +54,13 @@
 
 <script>
 import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
+import CreateNewTeamModal from 'src/components/Index/CreateNewTeamModal.vue'
 
 export default {
   name: 'IndexPage',
+  components: {
+    CreateNewTeamModal
+  },
   setup() {
     return {
       strMaxLenght,
@@ -135,7 +140,7 @@ export default {
       console.log('Go to project', projectId)
     },
     openCreateNewTeam() {
-      console.log('Create new team')
+      this.$refs.createNewTeamModal.openModal()
     }
   }
 }

@@ -33,8 +33,7 @@
 </template>
 
 <script>
-import { successNotify } from 'src/helpers/notifyHelper';
-
+import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
   name: 'AvatarMenu',

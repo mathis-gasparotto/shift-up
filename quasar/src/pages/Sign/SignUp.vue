@@ -9,13 +9,13 @@
         <div>
           <label for="first_name" class="text-weight-medium label-required">First name</label>
           <q-input v-model="firstName" outlined for="first_name" placeholder="John" class="input" lazy-rules :rules="[
-      (val) => val.trim().length > 3 || 'First name required',
+      (val) => val && val.trim().length > 3 || 'First name required',
     ]" />
         </div>
         <div>
           <label for="last_name" class="text-weight-medium label-required">Last name</label>
           <q-input v-model="lastName" outlined for="last_name" placeholder="Doe" class="input" lazy-rules :rules="[
-      (val) => val.trim().length > 3 || 'Last name required',
+      (val) => val && val.trim().length > 3 || 'Last name required',
     ]" />
         </div>
       </div>
@@ -42,7 +42,7 @@
           placeholder="Your password" class="input" lazy-rules
           hint="8 characters minimum, one uppercase letter, one lowercase letter, one number and one special character"
           hide-hint :rules="[
-      (val) => val.trim().length > 0 || 'You must enter a password',
+  (val) => val && val.trim().length > 0 || 'You must enter a password',
       (val) =>
         /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) ||
         'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character'
