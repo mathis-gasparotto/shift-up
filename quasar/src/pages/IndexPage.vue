@@ -1,11 +1,21 @@
 <template>
   <q-page class="flex gap-40 items-center">
+    <div class="section action-section">
+      <q-card class="action-card q-py-md q-px-lg cursor-pointer" @click="openCreateNewTeam">
+        <q-card-section horizontal class="items-center ">
+          <q-icon size="25px" color="black" name="sym_o_folder" class="q-mr-md" />
+          <div>
+            <h3 class="text-body1 q-my-none">Create a new team</h3>
+            <p class="text-caption q-my-none">Organize your projects</p>
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
     <div class="section teams-section">
       <h2 class="text-grey text-body1">Team</h2>
       <div class="teams-list flex gap-20" v-if="teams && teams.length > 0">
         <q-card v-for="team in teams" :key="team.id"
-          class="team-card q-py-md q-px-lg flex justify-between items-center cursor-pointer" clickable
-          @click="goToTeam(team.id)">
+          class="team-card q-py-md q-px-lg flex justify-between items-center cursor-pointer" @click="goToTeam(team.id)">
           <q-card-section horizontal>
             <q-icon size="40px" color="primary" :name="team.icon" class="q-mr-lg" />
             <div>
@@ -123,12 +133,18 @@ export default {
     },
     goToProject(projectId) {
       console.log('Go to project', projectId)
+    },
+    openCreateNewTeam() {
+      console.log('Create new team')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.action-card {
+  width: 300px;
+}
 .team-card {
   width: 300px;
 }
