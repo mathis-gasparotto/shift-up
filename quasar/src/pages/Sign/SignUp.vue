@@ -93,7 +93,6 @@ import { translateError } from 'src/helpers/translatting'
 import { phoneNumberPlaceholders } from 'src/helpers/phone'
 
 export default {
-  name: 'SignUp',
   components: {
     SUbtn,
     Vue3QTelInput,

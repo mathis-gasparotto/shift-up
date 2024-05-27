@@ -22,7 +22,7 @@
             <div>
               <h3 class="text-body1 q-my-none">{{ strMaxLenght(team.title, 13) }}</h3>
               <p class="text-caption q-my-none">{{ team.projects.length + ' projet' + (team.projects.length > 1 ? 's' :
-                '') }}</p>
+      '') }}</p>
             </div>
           </q-card-section>
           <q-card-section class="q-pa-none">
@@ -57,7 +57,6 @@ import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import CreateNewTeamModal from 'src/components/Index/CreateNewTeamModal.vue'
 
 export default {
-  name: 'IndexPage',
   components: {
     CreateNewTeamModal
   },
@@ -150,6 +149,7 @@ export default {
 .action-card {
   width: 300px;
 }
+
 .team-card {
   width: 300px;
 }

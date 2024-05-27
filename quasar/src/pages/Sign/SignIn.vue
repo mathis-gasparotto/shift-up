@@ -40,7 +40,6 @@ import { successNotify } from 'src/helpers/notifyHelper'
 import { translateError } from 'src/helpers/translatting'
 
 export default {
-  name: 'SignIn',
   components: {
     SUbtn
   },

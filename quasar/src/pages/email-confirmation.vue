@@ -19,7 +19,6 @@ import InfoCard from 'src/components/InfoCard.vue'
 import { translateError } from 'src/helpers/translatting'
 
 export default {
-  name: 'EmailConfirmation',
   components: {
     InfoCard
   },

@@ -33,19 +33,19 @@ const routes = [
       {
         path: 'signup',
         name: 'signup',
-        component: () => import('pages/Sign/SignUp.vue')
+        component: () => import('pages/sign/signup.vue')
       },
       {
         path: 'signin',
         name: 'signin',
-        component: () => import('pages/Sign/SignIn.vue')
+        component: () => import('pages/sign/signin.vue')
       }
     ]
   },
   {
     path: '/verify-email/:token',
     name: 'emailConfirmation',
-    component: () => import('pages/EmailConfirmation.vue')
+    component: () => import('pages/email-confirmation.vue')
   },
   {
     path: '/',
@@ -55,12 +55,12 @@ const routes = [
       {
         path: '',
         name: 'index',
-        component: () => import('pages/IndexPage.vue')
+        component: () => import('pages/index.vue')
       },
       {
         path: 'test',
         name: 'test',
-        component: () => import('pages/ErrorNotFound.vue')
+        component: () => import('pages/not-found.vue')
       }
     ]
   },
@@ -69,7 +69,7 @@ const routes = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
+    component: () => import('pages/not-found.vue')
   }
 ]
 
