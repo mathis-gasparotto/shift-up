@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex gap-40 items-center">
-    <div class="section action-section">
+    <div class="section action-section" v-if="false">
       <q-card class="action-card q-py-md q-px-lg cursor-pointer" @click="openCreateNewTeam">
         <q-card-section horizontal class="items-center ">
           <q-icon size="25px" color="black" name="sym_o_folder" class="q-mr-md" />
@@ -22,7 +22,7 @@
             <div>
               <h3 class="text-body1 q-my-none">{{ strMaxLenght(team.title, 13) }}</h3>
               <p class="text-caption q-my-none">{{ team.projects.length + ' projet' + (team.projects.length > 1 ? 's' :
-  '') }}</p>
+                '') }}</p>
             </div>
           </q-card-section>
           <q-card-section class="q-pa-none">
