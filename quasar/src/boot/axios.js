@@ -1,6 +1,7 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { useAuthStore } from 'src/store/auth'
+import resources from 'src/plugins/api-resources'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -52,9 +53,9 @@ export default boot(({ app, redirect, urlPath }) => {
     }
   )
 
-  app.config.globalProperties.$axios = axios
   app.config.globalProperties.$api = api
   app.config.globalProperties.$auth = auth
+  app.config.globalProperties.$resources = resources(api)
 })
 
 export { api }
