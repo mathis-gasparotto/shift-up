@@ -5,9 +5,12 @@
 
     <NavbarDesktop ref="navbarDesktop" />
 
-    <q-avatar :class="'fixed-top-right q-ma-md cursor-pointer avatar avatar-' + avatarColor" v-if="firstLetter"
-      text-color="white" size="lg">
-      {{ firstLetter }}
+    <q-avatar :class="'fixed-top-right q-ma-md cursor-pointer avatar avatar-' + avatarColor" text-color="white"
+      size="lg">
+      <q-spinner v-if="$auth.isLoading" size="sm" class="w-100" />
+      <template v-else>
+        {{ firstLetter }}
+      </template>
       <AvatarMenu />
     </q-avatar>
 

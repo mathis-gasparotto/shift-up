@@ -5,11 +5,13 @@ import { api } from 'src/boot/axios'
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: LocalStorage.getItem('token'),
-    me: LocalStorage.getItem('me')
+    me: null,
+    loading: true
   }),
   getters: {
     isAuthenticated: (state) => Boolean(state.token),
-    getUser: (state) => state.me
+    getUser: (state) => state.me,
+    isLoading: (state) => Boolean(state.token) && state.loading
   },
   actions: {
     login(email, password) {
@@ -33,18 +35,22 @@ export const useAuthStore = defineStore('auth', {
       LocalStorage.remove('refreshToken')
     },
     loadUserData(cached = true) {
+      this.loading = true
       return new Promise((resolve, reject) => {
         if (!cached || !this.me) {
           return api.get('/users/me').then(
             (res) => {
               this.setMe(res.data)
+              this.loading = false
               return resolve(this.me)
             },
             (error) => {
+              this.loading = false
               return reject(error)
             }
           )
         }
+        this.loading = false
         return resolve(this.me)
       })
     },
@@ -62,7 +68,7 @@ export const useAuthStore = defineStore('auth', {
       return LocalStorage.getItem('refreshToken')
     },
     setMe(me) {
-      LocalStorage.set('me', me)
+      this.me = me
     },
     setCacheDirty() {
       this.me = null
