@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ProjectCardSkeleton from 'src/components/Project/ProjectCardSkeleton.vue'
-import ProjectCard from 'src/components/Project/ProjectCard.vue'
+import ProjectCardSkeleton from 'src/components/Projects/ProjectCardSkeleton.vue'
+import ProjectCard from 'src/components/Projects/ProjectCard.vue'
 import AddCard from 'src/components/AddCard.vue'
 
 export default {

@@ -7,7 +7,7 @@
 
     <q-avatar :class="'fixed-top-right q-ma-md cursor-pointer avatar avatar-' + avatarColor" text-color="white"
       size="lg">
-      <q-spinner v-if="$auth.isLoading" size="sm" class="w-100" />
+      <q-skeleton v-if="$auth.isLoading" type="rect" size="20px" />
       <template v-else>
         {{ firstLetter }}
       </template>

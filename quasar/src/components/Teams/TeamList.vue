@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import TeamCard from 'src/components/Team/TeamCard.vue'
-import TeamCardSkeleton from 'src/components/Team/TeamCardSkeleton.vue'
+import TeamCard from 'src/components/Teams/TeamCard.vue'
+import TeamCardSkeleton from 'src/components/Teams/TeamCardSkeleton.vue'
 
 export default {
   name: 'TeamList',

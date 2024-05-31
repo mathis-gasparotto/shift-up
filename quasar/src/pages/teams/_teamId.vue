@@ -14,7 +14,7 @@
 import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
-import ProjectList from 'src/components/Project/ProjectList.vue'
+import ProjectList from 'src/components/Projects/ProjectList.vue'
 
 export default {
   components: {

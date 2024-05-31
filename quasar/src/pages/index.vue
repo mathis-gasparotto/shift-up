@@ -25,8 +25,8 @@
 
 <script>
 import CreateNewTeamModal from 'src/components/Index/CreateNewTeamModal.vue'
-import ProjectList from 'src/components/Project/ProjectList.vue'
-import TeamList from 'src/components/Team/TeamList.vue'
+import ProjectList from 'src/components/Projects/ProjectList.vue'
+import TeamList from 'src/components/Teams/TeamList.vue'
 
 export default {
   components: {

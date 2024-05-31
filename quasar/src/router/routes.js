@@ -63,9 +63,9 @@ const routes = [
         component: () => import('pages/teams/_teamId.vue')
       },
       {
-        path: 'test',
-        name: 'test',
-        component: () => import('pages/not-found.vue')
+        path: 'teams/:teamId/projects/create',
+        name: 'project-create',
+        component: () => import('pages/projects/create.vue')
       }
     ]
   },
