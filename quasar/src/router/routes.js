@@ -44,7 +44,7 @@ const routes = [
   },
   {
     path: '/verify-email/:token',
-    name: 'emailConfirmation',
+    name: 'email-confirmation',
     component: () => import('pages/email-confirmation.vue')
   },
   {
@@ -56,6 +56,11 @@ const routes = [
         path: '',
         name: 'index',
         component: () => import('pages/index.vue')
+      },
+      {
+        path: 'teams/:teamId',
+        name: 'team',
+        component: () => import('pages/teams/_teamId.vue')
       },
       {
         path: 'test',

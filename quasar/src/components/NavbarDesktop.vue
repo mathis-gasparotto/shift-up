@@ -1,7 +1,7 @@
 <template>
   <q-drawer v-model="visible" show-if-above bordered>
 
-    <q-tabs vertical class="nav-bar nav-bar--desktop q-pa-lg q-mx-auto bg-main" align="justify"
+    <q-tabs vertical class="nav-bar nav-bar--desktop q-pa-lg q-mx-auto bg-nav" align="justify"
       indicator-color="transparent" active-color="primary">
       <q-item-label header class="h-15">
         <a href="/" @click.prevent="$router.push({ name: 'index' })">
@@ -10,7 +10,7 @@
       </q-item-label>
 
       <q-list class=" h-70">
-        <q-spinner v-if="navLoading" size="lg" color="primary" class="w-100" />
+        <q-skeleton v-if="navLoading" />
         <template v-else>
 
           <q-expansion-item v-for="(navItem_0, index_0) in navItems" :key="index_0" v-model="navItem_0.open"
@@ -19,7 +19,7 @@
             <template v-slot:header>
               <div class="row no-wrap items-center">
                 <q-icon v-if="navItem_0.icon" size="20px" color="primary" :name="navItem_0.icon" class="q-mr-sm" />
-                {{ navItem_0.title }}
+                {{ navItem_0.name }}
               </div>
             </template>
 
@@ -29,7 +29,7 @@
               <template v-slot:header>
                 <div class="row no-wrap items-center">
                   <q-icon v-if="navItem_1.icon" size="20px" color="primary" :name="navItem_1.icon" class="q-mr-sm" />
-                  {{ navItem_1.title }}
+                  {{ navItem_1.name }}
                 </div>
               </template>
 
@@ -39,7 +39,7 @@
                 <template v-slot:header>
                   <div class="row no-wrap items-center">
                     <q-icon v-if="navItem_2.icon" size="20px" color="primary" :name="navItem_2.icon" class="q-mr-sm" />
-                    {{ navItem_2.title }}
+                    {{ navItem_2.name }}
                   </div>
                 </template>
 
@@ -50,7 +50,7 @@
                     <div class="row no-wrap items-center">
                       <q-icon v-if="navItem_3.icon" size="20px" color="primary" :name="navItem_3.icon"
                         class="q-mr-sm" />
-                      {{ navItem_3.title }}
+                      {{ navItem_3.name }}
                     </div>
                   </template>
 
@@ -61,7 +61,7 @@
                       <div class="row no-wrap items-center">
                         <q-icon v-if="navItem_4.icon" size="20px" color="primary" :name="navItem_4.icon"
                           class="q-mr-sm" />
-                        {{ navItem_4.title }}
+                        {{ navItem_4.name }}
                       </div>
                     </template>
                   </q-expansion-item>
@@ -89,6 +89,7 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import { displayError } from 'src/helpers/translatting'
 
 export default {
   name: 'NavbarDesktop',
@@ -102,17 +103,17 @@ export default {
       navLoading: true,
       navItems: [
         // {
-        //   title: 'Teams',
+        //   name: 'Teams',
         //   icon: 'sym_o_group',
         //   open: false,
         //   childs: [
         //     {
-        //       title: 'Team 1',
+        //       name: 'Team 1',
         //       icon: 'sym_o_emoji_events',
         //       open: false,
         //       childs: [
         //         {
-        //           title: 'Project 1',
+        //           name: 'Project 1',
         //           icon: 'sym_o_folder',
         //           open: false,
         //           route: { name: 'index' }
@@ -120,12 +121,12 @@ export default {
         //       ]
         //     },
         //     {
-        //       title: 'Team 2',
+        //       name: 'Team 2',
         //       icon: 'sym_o_palette',
         //       open: false,
         //       childs: [
         //         {
-        //           title: 'Project 2',
+        //           name: 'Project 2',
         //           icon: 'sym_o_folder',
         //           open: false,
         //           route: { name: 'test' }
@@ -133,12 +134,12 @@ export default {
         //       ]
         //     },
         //     {
-        //       title: 'Team 3',
+        //       name: 'Team 3',
         //       icon: 'sym_o_bolt',
         //       open: false,
         //       childs: [
         //         {
-        //           title: 'Project 3',
+        //           name: 'Project 3',
         //           icon: 'sym_o_folder',
         //           open: false,
         //           route: { name: 'index' }
@@ -148,17 +149,17 @@ export default {
         //   ]
         // },
         // {
-        //   title: 'Shared with me',
+        //   name: 'Shared with me',
         //   icon: 'sym_o_group',
         //   open: false,
         //   childs: [
         //     {
-        //       title: 'School',
+        //       name: 'School',
         //       open: false,
         //       icon: 'sym_o_book_5',
         //       childs: [
         //         {
-        //           title: 'Oui',
+        //           name: 'Oui',
         //           open: false,
         //           route: { name: 'test' }
         //         }
@@ -170,8 +171,7 @@ export default {
     }
   },
   async created() {
-    await this.reloadData()
-    this.opendCurrentRouteTabs()
+    this.reloadData()
   },
   methods: {
     async reloadData() {
@@ -180,18 +180,22 @@ export default {
         this.formatTeamsForNav(res.data)
         this.navLoading = false
         this.opendCurrentRouteTabs()
+      }).catch((err) => {
+        displayError(err)
+        this.navLoading = false
       })
     },
     formatTeamsForNav(teamList) {
       this.navItems = []
       teamList.forEach(team => {
         this.navItems.push({
-          title: team.name,
+          id: team.id,
+          name: team.name,
           icon: 'sym_o_group',
           open: false,
           childs: team.projects.map(project => {
             return {
-              title: project.name,
+              name: project.name,
               icon: 'sym_o_folder',
               open: false,
               route: { name: 'project', params: { id: project.id } }
@@ -199,7 +203,6 @@ export default {
           })
         })
       })
-      console.log(this.navItems)
     },
     opendCurrentRouteTabs() {
       this.navItems.forEach(navItem_0 => {
@@ -235,6 +238,10 @@ export default {
           })
         }
       })
+      if (this.$route.name === 'team') {
+        const currentTeam = this.navItems.find((t) => t.id === this.$route.params.id)
+        if (currentTeam) currentTeam.open = true
+      }
     },
     toggleNav() {
       this.visible = !this.visible

@@ -152,7 +152,7 @@ class Project implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['project:read'])]
+    #[Groups(['project:read', 'team:read'])]
     private ?Uuid $id = null;
 
     /**
@@ -161,7 +161,7 @@ class Project implements TracingAwareInterface
     #[ORM\Column(length: 255)]
     #[
         Assert\NotBlank,
-        Groups(['project:read', 'project:write'])
+        Groups(['project:read', 'project:write', 'team:read'])
     ]
     private ?string $name = null;
 

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 // app global css in SCSS form
 $sizes: (
   0: 0,
@@ -79,6 +83,9 @@ $gaps: (
   &-main {
     background-color: $background;
   }
+  &-nav {
+    background-color: $navBackground;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -130,5 +137,11 @@ h1, h2, h3, h4, h5, h6 {
   }
   &-8 {
     background-color: $avatar-8;
+  }
+}
+
+.cursor {
+  &-loading {
+    cursor: wait;
   }
 }

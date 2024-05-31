@@ -133,7 +133,7 @@ class MediaObject implements TracingAwareInterface
      */
     #[
         ApiProperty(types: ["http://schema.org/contentUrl"]),
-        Groups(['media_object:read'])
+        Groups(['media_object:read', 'project:read'])
     ]
     private ?string $contentUrl;
 
