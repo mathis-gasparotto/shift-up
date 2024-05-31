@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: SWOTRepository::class)]
 #[ApiResource(
-    shortName: 'swot',
+    uriTemplate: '/swots',
     operations: [
         new Post(
             uriTemplate: '/swots',
@@ -126,7 +126,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/swots',
-    shortName: 'swot',
     operations: [new GetCollection()],
     uriVariables: [
         'id' => new Link(
@@ -144,7 +143,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/swots/last',
-    shortName: 'swot',
     operations: [new Get()],
     uriVariables: [
         'id' => new Link(

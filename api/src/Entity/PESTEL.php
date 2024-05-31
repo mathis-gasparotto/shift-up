@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: PESTELRepository::class)]
 #[ApiResource(
-    shortName: 'pestel',
+    uriTemplate: '/pestels',
     operations: [
         new Post(
             uriTemplate: '/pestels',
@@ -132,7 +132,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/pestels',
-    shortName: 'pestel',
     operations: [new GetCollection()],
     uriVariables: [
         'id' => new Link(
@@ -150,7 +149,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/pestels/last',
-    shortName: 'pestel',
     operations: [new Get()],
     uriVariables: [
         'id' => new Link(

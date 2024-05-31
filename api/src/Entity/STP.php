@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: STPRepository::class)]
 #[ApiResource(
-    shortName: 'stp',
+    uriTemplate: '/stps',
     operations: [
         new Post(
             uriTemplate: '/stps',
@@ -123,7 +123,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/stps',
-    shortName: 'stp',
     operations: [new GetCollection()],
     uriVariables: [
         'id' => new Link(
@@ -141,7 +140,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/stps/last',
-    shortName: 'stp',
     operations: [new Get()],
     uriVariables: [
         'id' => new Link(

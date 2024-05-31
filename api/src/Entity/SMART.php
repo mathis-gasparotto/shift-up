@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: SMARTRepository::class)]
 #[ApiResource(
-    shortName: 'smart',
+    uriTemplate: '/smarts',
     operations: [
         new Post(
             uriTemplate: '/smarts',
@@ -129,7 +129,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/smarts',
-    shortName: 'smart',
     operations: [new GetCollection()],
     uriVariables: [
         'id' => new Link(
@@ -147,7 +146,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/smarts/last',
-    shortName: 'smart',
     operations: [new Get()],
     uriVariables: [
         'id' => new Link(
