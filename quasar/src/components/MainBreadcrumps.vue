@@ -78,10 +78,25 @@ export default {
           },
           {
             label: this.teamName,
-            to: { name: 'team', params: { id: this.$route.params.teamId } }
+            to: { name: 'team', params: { teamId: this.$route.params.teamId } }
           },
           {
             label: this.projectName,
+            to: this.$route
+          }
+        ]
+      } else if (this.$route.name === 'project-create') {
+        this.items = [
+          {
+            label: 'Home',
+            to: { name: 'index' }
+          },
+          {
+            label: this.teamName,
+            to: { name: 'team', params: { teamId: this.$route.params.teamId } }
+          },
+          {
+            label: 'Create new project',
             to: this.$route
           }
         ]
@@ -93,7 +108,7 @@ export default {
           },
           {
             label: this.teamName,
-            to: { name: 'team', params: { id: this.$route.params.teamId } }
+            to: { name: 'team', params: { teamId: this.$route.params.teamId } }
           },
           {
             label: this.projectName,

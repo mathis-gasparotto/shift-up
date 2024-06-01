@@ -1,12 +1,11 @@
 <template>
-  <q-btn @click="$emit('click')" :label="label" :icon="icon" :color="color !== 'gradient' ? color : 'white'" :to="to"
-    :rounded="rounded" :outline="outline" flat :class="'btn-' + color" class="q-py-sm" no-caps :type="type"
-    :loading="loading" />
+  <q-btn :label="label" :icon="icon" :color="color !== 'gradient' ? color : 'white'" :to="to" :rounded="rounded"
+    :outline="outline" flat :class="'btn-' + color" class="q-py-sm" no-caps :type="type" :loading="loading"
+    :text-color="textColor ? textColor : undefined" />
 </template>
 
 <script>
 export default {
-  emits: ['click'],
   name: 'SUbtn',
   props: {
     label: {
@@ -40,6 +39,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    textColor: {
+      type: String,
+      default: null
     }
   }
 }

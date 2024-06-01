@@ -1,7 +1,7 @@
 <template>
   <q-page class="column">
     <MainBreadcrumps :loading="teamLoading" :team-name="team.name" />
-    <h1 class="text-h4">
+    <h1 class="text-h2 q-mt-xl q-mb-lg">
       <q-skeleton v-if="teamLoading" />
       {{ team.name }}
     </h1>
