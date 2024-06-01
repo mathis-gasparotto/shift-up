@@ -5,12 +5,12 @@
       <div class="w-100">
         <label class="text-weight-medium label-required">Project type</label>
         <div class="q-gutter-sm q-mt-xs column">
-          <q-radio v-model="localForm.type" v-for="(option, index) in options" :key="index" checked-icon="task_alt"
+          <q-radio v-model="_form.type" v-for="(option, index) in options" :key="index" checked-icon="task_alt"
             unchecked-icon="panorama_fish_eye" :val="option.value" :label="option.label" />
         </div>
       </div>
 
-      <SUbtn label="Next step" type="submit" color="gradient" class="fixed-bottom-right q-mr-lg q-mb-lg"
+      <SUbtn label="Next step" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
         :disabled="!isValid" />
 
     </q-form>
@@ -26,7 +26,7 @@ export default {
   props: {
     form: {
       type: Object,
-      required: false
+      required: true
     }
   },
   components: {
@@ -43,11 +43,11 @@ export default {
   },
   computed: {
     isValid() {
-      return this.localForm.type
+      return this._form.type
     },
-    localForm: {
+    _form: {
       set() {
-        this.$emit('updated:form', this.localForm)
+        this.$emit('updated:form', this._form)
       },
       get() {
         return this.form

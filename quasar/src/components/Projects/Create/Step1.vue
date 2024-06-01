@@ -4,15 +4,15 @@
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
         <label for="name" class="text-weight-medium label-required">Name</label>
-        <q-input v-model="localForm.name" outlined for="name" placeholder="Add a name to your project"
-          class="input q-mb-md" type="text" lazy-rules :rules="[
+        <q-input v-model="_form.name" outlined for="name" placeholder="Add a name to your project" class="input q-mb-md"
+          type="text" lazy-rules :rules="[
       (val) =>
         val.trim().length > 0 || 'You must enter a project name'
     ]" />
       </div>
       <div class="w-100">
         <label for="description" class="text-weight-medium label-required">Description</label>
-        <q-input v-model="localForm.description" outlined for="description"
+        <q-input v-model="_form.description" outlined for="description"
           placeholder="Describe your project as much as possible" class="input q-mb-md" type="textarea" lazy-rules
           :rules="[
       (val) =>
@@ -20,7 +20,7 @@
     ]" />
       </div>
 
-      <SUbtn label="Next step" type="submit" color="gradient" class="fixed-bottom-right q-mr-lg q-mb-lg"
+      <SUbtn label="Next step" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
         :disabled="!isValid" />
 
     </q-form>
@@ -36,7 +36,7 @@ export default {
   props: {
     form: {
       type: Object,
-      required: false
+      required: true
     }
   },
   components: {
@@ -44,11 +44,11 @@ export default {
   },
   computed: {
     isValid() {
-      return this.localForm.name && this.localForm.description
+      return this._form.name && this._form.description
     },
-    localForm: {
+    _form: {
       set() {
-        this.$emit('updated:form', this.localForm)
+        this.$emit('updated:form', this._form)
       },
       get() {
         return this.form

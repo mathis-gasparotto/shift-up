@@ -24,20 +24,27 @@ import { displayError } from 'src/helpers/translatting'
 import SUbtn from 'src/components/SUbtn.vue'
 import Step1 from 'src/components/Projects/Create/Step1.vue'
 import Step2 from 'src/components/Projects/Create/Step2.vue'
+import Step3 from 'src/components/Projects/Create/Step3.vue'
 
 export default {
   components: {
     MainBreadcrumps,
     SUbtn,
     Step1,
-    Step2
+    Step2,
+    Step3
   },
   data() {
     return {
       team: {},
       step: 1,
       loading: true,
-      form: {}
+      form: {
+        name: '',
+        description: '',
+        type: '',
+        documents: []
+      }
     }
   },
   created() {
@@ -50,8 +57,10 @@ export default {
   },
   methods: {
     onSubmit() {
+      if (this.step < 3) {
+        return this.step++
+      }
       console.log(this.form)
-      this.step++
     },
     reloadData() {
       this.loading = true
