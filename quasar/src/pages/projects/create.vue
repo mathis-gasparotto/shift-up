@@ -2,8 +2,7 @@
   <q-page>
     <MainBreadcrumps :loading="loading" :team-name="team.name" />
     <div class="nav q-my-xl flex gap-100 items-center">
-      <SUbtn label="Back" color="grey-light" rounded icon="arrow_back" textColor="grey"
-        :to="{ name: 'team', params: { teamId: $route.params.teamId } }" />
+      <SUbtn label="Back" color="grey-light" rounded icon="arrow_back" textColor="grey" @click="goBack" />
 
       <div class="flex items-center gap-30">
         <div class="flex items-center gap-8 steps">
@@ -15,7 +14,7 @@
       </div>
     </div>
 
-    <component :is="stepComponent" @submit="onSubmit" />
+    <component :is="stepComponent" @submit="onSubmit" v-model:form.sync="form" />
   </q-page>
 </template>
 
@@ -24,29 +23,35 @@ import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import { displayError } from 'src/helpers/translatting'
 import SUbtn from 'src/components/SUbtn.vue'
 import Step1 from 'src/components/Projects/Create/Step1.vue'
+import Step2 from 'src/components/Projects/Create/Step2.vue'
 
 export default {
   components: {
     MainBreadcrumps,
     SUbtn,
-    Step1
+    Step1,
+    Step2
   },
   data() {
     return {
       team: {},
       step: 1,
       loading: true,
-      stepComponent: 'Step1',
-      forms: {}
+      form: {}
     }
   },
   created() {
     this.reloadData()
   },
+  computed: {
+    stepComponent() {
+      return 'Step' + this.step
+    }
+  },
   methods: {
-    onSubmit(data) {
-      this.forms = { ...this.forms, ...data }
-      console.log(this.forms)
+    onSubmit() {
+      console.log(this.form)
+      this.step++
     },
     reloadData() {
       this.loading = true
@@ -57,6 +62,13 @@ export default {
         displayError(err)
         this.loading = false
       })
+    },
+    goBack() {
+      if (this.step <= 1) {
+        return this.$router.push({ name: 'team', params: { teamId: this.$route.params.teamId } })
+      } else {
+        return this.step--
+      }
     }
   }
 }
