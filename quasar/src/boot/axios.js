@@ -21,13 +21,16 @@ export default boot(({ app, redirect, urlPath }) => {
     async (error) => {
       const originalConfig = error.config
       if (originalConfig.url !== '/authenticate' && originalConfig.url !== '/token/refresh' && error.response) {
-        if (error.response.status === 401) {
+        if (error.response.status === 401 && !auth.isRefreshTokenAlreadyCalled) {
+          auth.setRefreshTokenAlreadyCalled(true)
           try {
             const refresh = await api.post('/token/refresh', {
               refresh_token: auth.getRefreshToken()
             })
             auth.setToken(refresh.data.token)
             auth.setRefreshToken(refresh.data.refresh_token)
+
+            redirect(urlPath)
 
             return api(originalConfig)
           } catch (_error) {

@@ -6,14 +6,19 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: LocalStorage.getItem('token'),
     me: null,
-    loading: true
+    loading: true,
+    refreshTokenAlreadyCalled: false
   }),
   getters: {
     isAuthenticated: (state) => Boolean(state.token),
     getUser: (state) => state.me,
-    isLoading: (state) => Boolean(state.token) && state.loading
+    isLoading: (state) => Boolean(state.token) && state.loading,
+    isRefreshTokenAlreadyCalled: (state) => state.refreshTokenAlreadyCalled
   },
   actions: {
+    setRefreshTokenAlreadyCalled(value) {
+      this.refreshTokenAlreadyCalled = value
+    },
     login(email, password) {
       return api.post('/authenticate', { email, password }).then((res) => {
         this.setToken(res.data.token)
