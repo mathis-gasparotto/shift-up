@@ -63,7 +63,11 @@ export default {
 
       this.$auth.login(this.email, this.password.value)
         .then(() => {
-          this.$router.push({ name: 'index' })
+          if (this.$route.query.redirect) {
+            this.$router.push(this.$route.query.redirect)
+          } else {
+            this.$router.push({ name: 'index' })
+          }
           successNotify('You have successfully signed in!')
         })
         .catch((error) => {

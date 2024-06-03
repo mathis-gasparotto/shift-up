@@ -17,7 +17,8 @@ const beforeNoSign = function (to, from, next) {
 
   if (!auth.isAuthenticated) {
     return next({
-      name: 'signin'
+      name: 'signin',
+      query: { redirect: to.fullPath }
     })
   } else {
     return next()
