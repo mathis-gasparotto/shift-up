@@ -269,7 +269,6 @@ class Project implements TracingAwareInterface
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[
-        Assert\NotBlank,
         Groups(['project:read', 'project:write'])
     ]
     private ?MediaObject $picture = null;

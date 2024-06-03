@@ -10,7 +10,7 @@
       </div>
 
       <SUbtn label="Generate" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
-        :disabled="!isValid" />
+        :disabled="!isValid" :loading="loading" />
 
     </q-form>
   </div>
@@ -26,6 +26,10 @@ export default {
     form: {
       type: Object,
       required: true
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   components: {

@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      teamLoading: true,
       projectsLoading: true,
       team: {},
       projects: [
@@ -80,12 +81,6 @@ export default {
         displayError(err)
         this.projectsLoading = false
       })
-    },
-    openTeamSettings(teamId) {
-      console.log('Open team settings', teamId)
-    },
-    goToProject(projectId) {
-      console.log('Go to project', projectId)
     }
   }
 }

@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <component :is="stepComponent" @submit="onSubmit" v-model:form.sync="form" />
+    <component :is="stepComponent" @submit="onSubmit" v-model:form.sync="form" :loading="formLoading" />
   </q-page>
 </template>
 
@@ -25,6 +25,7 @@ import SUbtn from 'src/components/SUbtn.vue'
 import Step1 from 'src/components/Projects/Create/Step1.vue'
 import Step2 from 'src/components/Projects/Create/Step2.vue'
 import Step3 from 'src/components/Projects/Create/Step3.vue'
+import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
   components: {
@@ -42,9 +43,10 @@ export default {
       form: {
         name: '',
         description: '',
-        type: '',
+        sellingObject: '',
         documents: []
-      }
+      },
+      formLoading: false
     }
   },
   created() {
@@ -60,7 +62,24 @@ export default {
       if (this.step < 3) {
         return this.step++
       }
-      console.log(this.form)
+
+      this.formLoading = true
+      const payload = {
+        team: this.team['@id'] || ('/teams/' + this.$route.params.teamId),
+        name: this.form.name,
+        description: this.form.description,
+        sellingObject: this.form.sellingObject
+      }
+      this.$resources.projects.create(payload).then((res) => {
+        // TODO: generate all documents
+
+        this.formLoading = false
+        successNotify('Project created successfully')
+        this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
+      }).catch((err) => {
+        this.formLoading = false
+        displayError(err)
+      })
     },
     reloadData() {
       this.loading = true

@@ -198,7 +198,7 @@ export default {
               name: project.name,
               icon: 'sym_o_folder',
               open: false,
-              route: { name: 'project', params: { id: project.id } }
+              route: { name: 'project', params: { projectId: project.id } }
             }
           })
         })
@@ -239,7 +239,7 @@ export default {
         }
       })
       if (this.$route.name === 'team') {
-        const currentTeam = this.navItems.find((t) => t.id === this.$route.params.id)
+        const currentTeam = this.navItems.find((t) => t.id === this.$route.params.teamId)
         if (currentTeam) currentTeam.open = true
       }
     },

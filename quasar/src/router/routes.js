@@ -67,6 +67,11 @@ const routes = [
         path: 'teams/:teamId/projects/create',
         name: 'project-create',
         component: () => import('pages/projects/create.vue')
+      },
+      {
+        path: 'teams/:teamId/projects/:projectId',
+        name: 'project',
+        component: () => import('pages/projects/_projectId.vue')
       }
     ]
   },

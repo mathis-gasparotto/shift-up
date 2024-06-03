@@ -4,7 +4,6 @@ namespace App\Helper;
 
 use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
 use App\Entity\Project;
-use App\Entity\Team;
 use App\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 

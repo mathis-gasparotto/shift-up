@@ -5,7 +5,7 @@
       <div class="w-100">
         <label class="text-weight-medium label-required">Project type</label>
         <div class="q-gutter-sm q-mt-xs column">
-          <q-radio v-model="_form.type" v-for="(option, index) in options" :key="index" checked-icon="task_alt"
+          <q-radio v-model="_form.sellingObject" v-for="(option, index) in options" :key="index" checked-icon="task_alt"
             unchecked-icon="panorama_fish_eye" :val="option.value" :label="option.label" />
         </div>
       </div>
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     isValid() {
-      return this._form.type
+      return this._form.sellingObject
     },
     _form: {
       set() {
