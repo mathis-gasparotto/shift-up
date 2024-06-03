@@ -5,8 +5,7 @@
 
     <NavbarDesktop ref="navbarDesktop" />
 
-    <q-avatar :class="'fixed-top-right q-ma-md cursor-pointer avatar avatar-' + avatarColor" text-color="white"
-      size="lg">
+    <q-avatar :class="'fixed-top-right q-ma-md cursor-pointer avatar avatar-' + avatarColor" size="lg">
       <q-skeleton v-if="$auth.isLoading" type="rect" size="20px" />
       <template v-else>
         {{ firstLetter }}
