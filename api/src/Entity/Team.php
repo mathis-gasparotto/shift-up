@@ -47,9 +47,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                                     'description' => [
                                         'type' => 'string'
                                     ],
-                                    'subject' => [
-                                        'type' => 'string'
-                                    ],
                                     'billingEmail' => [
                                         'type' => 'string'
                                     ],
@@ -198,13 +195,6 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['team:read', 'team:write'])]
     private ?string $description = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    #[Groups(['team:read', 'team:write'])]
-    private ?string $subject = null;
 
     /**
      * @var \DateTime|null
@@ -362,25 +352,6 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSubject(): ?string
-    {
-        return $this->subject;
-    }
-
-    /**
-     * @param string $subject
-     * @return $this
-     */
-    public function setSubject(string $subject): static
-    {
-        $this->subject = $subject;
 
         return $this;
     }

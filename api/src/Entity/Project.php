@@ -51,9 +51,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                                     'description' => [
                                         'type' => 'string'
                                     ],
-                                    'subject' => [
-                                        'type' => 'string'
-                                    ],
                                     'sellingObject' => [
                                         'type' => 'string'
                                     ]
@@ -174,16 +171,6 @@ class Project implements TracingAwareInterface
         Groups(['project:read', 'project:write'])
     ]
     private ?string $description = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    #[
-        Assert\NotBlank,
-        Groups(['project:read', 'project:write'])
-    ]
-    private ?string $subject = null;
 
     /**
      * @var string|null
@@ -347,25 +334,6 @@ class Project implements TracingAwareInterface
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSubject(): ?string
-    {
-        return $this->subject;
-    }
-
-    /**
-     * @param string $subject
-     * @return $this
-     */
-    public function setSubject(string $subject): static
-    {
-        $this->subject = $subject;
 
         return $this;
     }
