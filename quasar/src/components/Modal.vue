@@ -4,6 +4,7 @@
       <q-icon name="close" class="absolute-top-right q-mr-xl q-mt-xl z-top cursor-pointer" size="25px" v-close-popup />
       <q-card-section class="q-px-none q-mb-lg">
         <div class="text-h6">{{ title }}</div>
+        <div v-if="subtitle" class="text-body1">{{ subtitle }}</div>
       </q-card-section>
       <q-card-section class="q-px-none q-pt-none">
         <slot />
@@ -23,6 +24,10 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    subtitle: {
+      type: String,
+      required: false
     },
     buttonsAlign: {
       type: String,

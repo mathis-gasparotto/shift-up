@@ -25,7 +25,8 @@ $sizes: (
   95: 95%,
   100: 100%,
   auto: auto,
-  content: fit-content
+  content: fit-content,
+  fill-available: fill-available,
 );
 
 $gaps: (
@@ -70,6 +71,24 @@ $gaps: (
   .mh-#{$key} {
     max-height: $value;
   }
+}
+
+.w-fit-content {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+}
+.w-fill-available {
+  width: -webkit-fill-available;
+  width: -moz-available;
+}
+
+.h-fit-content {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+}
+.h-fill-available {
+  height: -webkit-fill-available;
+  height: -moz-available;
 }
 
 @each $key, $value in $gaps {

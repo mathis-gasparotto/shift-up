@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <component :is="stepComponent" @submit="onSubmit" v-model:form.sync="form" :loading="formLoading" />
+    <component :is="stepComponent" @submit="onSubmit" v-model:form="form" :loading="formLoading" />
   </q-page>
 </template>
 

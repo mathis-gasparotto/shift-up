@@ -27,6 +27,7 @@
 import CreateNewTeamModal from 'src/components/Index/CreateNewTeamModal.vue'
 import ProjectList from 'src/components/Projects/ProjectList.vue'
 import TeamList from 'src/components/Teams/TeamList.vue'
+import { displayError } from 'src/helpers/translatting'
 
 export default {
   components: {
