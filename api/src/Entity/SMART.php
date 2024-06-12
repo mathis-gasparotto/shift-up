@@ -172,7 +172,7 @@ class SMART implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['smart:read'])]
+    #[Groups(['smart:read', 'project:item:read'])]
     private ?Uuid $id = null;
 
     /**

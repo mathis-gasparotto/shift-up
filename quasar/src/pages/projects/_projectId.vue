@@ -9,8 +9,9 @@
       <q-btn icon="more_horiz" text-color="grey-8" flat @click="openSettings" :disable="projectLoading" />
       <ProjectSettingsModal v-if="!projectLoading" ref="projectSettingsModal" :project="project" />
     </div>
-    <div class="w-100 q-mt-xl" v-if="!projectLoading">
-      <div class="no-doc-card column items-center q-mx-auto">
+    <div class="w-100 q-mt-xl">
+      <div class="no-doc-card column items-center q-mx-auto"
+        v-if="!projectLoading && project.lastDocuments.length <= 0">
         <q-avatar size="150px">
           <img :src="'/src/assets/projects/' + project.picture.contentUrl">
         </q-avatar>
@@ -19,6 +20,8 @@
           elit sed.</p>
         <SUBtn label="Generate strategy" />
       </div>
+      <ProjectDocumentList v-else :documents="project.lastDocuments || []" :project="project"
+        :loading="projectLoading" />
     </div>
   </q-page>
 </template>
@@ -29,12 +32,14 @@ import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import SUBtn from 'src/components/SUBtn.vue'
 import ProjectSettingsModal from 'src/components/Projects/ProjectSettingsModal.vue'
+import ProjectDocumentList from 'src/components/Projects/ProjectDocuments/ProjectDocumentList.vue'
 
 export default {
   components: {
     MainBreadcrumps,
     ProjectSettingsModal,
-    SUBtn
+    SUBtn,
+    ProjectDocumentList
   },
   setup() {
     return {

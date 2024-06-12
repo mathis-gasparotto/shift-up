@@ -9,7 +9,7 @@ import resources from 'src/plugins/api-resources'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: process.env.API_URL })
+const api = axios.create({ baseURL: process.env.API_URL, timeout: 0 })
 
 export default boot(({ app, redirect, urlPath }) => {
   const auth = useAuthStore()

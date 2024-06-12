@@ -175,7 +175,7 @@ class PESTEL implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['pestel:read'])]
+    #[Groups(['pestel:read', 'project:item:read'])]
     private ?Uuid $id = null;
 
     /**

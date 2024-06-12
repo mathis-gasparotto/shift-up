@@ -1,5 +1,5 @@
 <template>
-  <q-card class="project-card q-pa-lg cursor-pointer" @click="click()">
+  <q-card :class="'project-card q-pa-lg' + (linked ? ' cursor-pointer' : '')" @click="click()">
     <q-card-section class="q-pa-none q-mb-md">
       <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
         class="project-img w-100" />
@@ -23,7 +23,7 @@ export default {
       type: Object,
       required: true
     },
-    link: {
+    linked: {
       type: Boolean,
       default: false
     }
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     click() {
-      if (this.link) {
+      if (this.linked) {
         this.$router.push({ name: 'project', params: { teamId: this.project.team.id, projectId: this.project.id } })
       }
     }

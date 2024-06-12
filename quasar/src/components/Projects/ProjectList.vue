@@ -3,7 +3,7 @@
     <div class="projects-list flex gap-20">
       <ProjectCardSkeleton v-if="loading" />
       <template v-else-if="projects.length > 0">
-        <ProjectCard v-for="project in projects" :key="project.id" :project="project" link />
+        <ProjectCard v-for="project in projects" :key="project.id" :project="project" linked />
       </template>
       <AddCard v-if="addCard" text="New project" @cardClick="createNewProject" />
     </div>

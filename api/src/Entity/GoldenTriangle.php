@@ -175,7 +175,7 @@ class GoldenTriangle implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['golden_triangle:read'])]
+    #[Groups(['golden_triangle:read', 'project:item:read'])]
     private ?Uuid $id = null;
 
     /**

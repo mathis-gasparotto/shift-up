@@ -115,7 +115,7 @@ export function translateError(error, defaultMessage = null) {
 }
 
 export function displayError(error, defaultMessage = null) {
-  if (error.response.status === 401) return
+  if (error.response && error.response.status === 401) return
   const errorTranslated = translateError(error, defaultMessage)
   errorNotify(errorTranslated)
 }

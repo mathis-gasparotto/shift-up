@@ -23,6 +23,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -207,60 +208,90 @@ class Project implements TracingAwareInterface
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: SWOT::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $SWOTs;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: BusinessModelCanvas::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $businessModelCanvases;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: SMART::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $SMARTs;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: BuyerPersona::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $buyerPersonas;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: PESTEL::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $PESTELs;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: MarketingMix5::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $marketingMix5s;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: STP::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $STPs;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: MarketingMix4::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $marketingMix4s;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: GoldenTriangle::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $goldenTriangles;
 
     /**
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: CompetitorAnalysis::class, orphanRemoval: true)]
+    #[
+        Groups(['project:item:read'])
+    ]
     private Collection $competitorAnalyses;
 
     /**
@@ -889,5 +920,28 @@ class Project implements TracingAwareInterface
         $this->picture = $picture;
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    #[
+        SerializedName("lastDocuments"),
+        Groups(['project:read'])
+    ]
+    public function getLastDocuments(): ArrayCollection
+    {
+        $documents = new ArrayCollection();
+        if ($this->getLastSWOT()) $documents->add($this->getLastSWOT());
+        if ($this->getLastBusinessModelCanvas()) $documents->add($this->getLastBusinessModelCanvas());
+        if ($this->getLastSMART()) $documents->add($this->getLastSMART());
+        if ($this->getLastBuyerPersona()) $documents->add($this->getLastBuyerPersona());
+        if ($this->getLastPESTEL()) $documents->add($this->getLastPESTEL());
+        if ($this->getLastMarketingMix5()) $documents->add($this->getLastMarketingMix5());
+        if ($this->getLastSTP()) $documents->add($this->getLastSTP());
+        if ($this->getLastMarketingMix4()) $documents->add($this->getLastMarketingMix4());
+        if ($this->getLastGoldenTriangle()) $documents->add($this->getLastGoldenTriangle());
+        if ($this->getLastCompetitorAnalysis()) $documents->add($this->getLastCompetitorAnalysis());
+        return $documents;
     }
 }

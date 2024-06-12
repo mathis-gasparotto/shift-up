@@ -1,7 +1,7 @@
 <template>
-  <q-card class="project-card q-pa-lg cursor-loading">
+  <q-card class="project-document-card q-pa-lg cursor-loading">
     <q-card-section class="q-pa-none q-mb-md">
-      <q-skeleton type="rect" class="project-img" />
+      <q-skeleton type="rect" class="project-document-img" />
     </q-card-section>
     <q-card-section class="q-pa-none">
       <div>
@@ -14,16 +14,16 @@
 
 <script>
 export default {
-  name: 'ProjectCardSkeleton',
+  name: 'ProjectDocumentCardSkeleton',
 }
 </script>
 
 <style lang="scss" scoped>
-.project-card {
+.project-document-card {
   width: 300px;
 }
 
-.project-img {
+.project-document-img {
   border-radius: 4px;
   height: 150px;
 }

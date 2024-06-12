@@ -142,7 +142,7 @@ class CompetitorAnalysis implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['competitor_analysis:read'])]
+    #[Groups(['competitor_analysis:read', 'project:item:read'])]
     private ?Uuid $id = null;
 
     /**

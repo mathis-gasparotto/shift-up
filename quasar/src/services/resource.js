@@ -8,7 +8,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
     }
 
     return $axios
-      .get(`/${resource}`, { params: query, timeout: 10000 })
+      .get(`/${resource}`, { params: query })
       .then((resp) => {
         return {
           data: resp.data['hydra:member'] ? resp.data['hydra:member'] : resp,
@@ -33,7 +33,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
     }
 
     return $axios
-      .get(`/${resource}/me`, { params: query, timeout: 10000 })
+      .get(`/${resource}/me`, { params: query })
       .then((resp) => {
         return {
           data: resp.data['hydra:member'] ? resp.data['hydra:member'] : resp,
@@ -52,7 +52,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       ...filters
     }
     return $axios
-      .get(`/${resource}/${id}/${subresource}`, { params: query, timeout: 10000 })
+      .get(`/${resource}/${id}/${subresource}`, { params: query })
       .then((resp) => {
         return {
           data: resp.data['hydra:member'],
@@ -93,7 +93,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       ...filters
     }
     return $axios
-      .get(`/${resource}/${id}/${subresource}`, { params: query, timeout: 10000 })
+      .get(`/${resource}/${id}/${subresource}`, { params: query })
       .then((response) => response.data)
       .catch((e) => {
         if (e.response.status !== 404) {

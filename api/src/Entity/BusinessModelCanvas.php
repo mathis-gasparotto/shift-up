@@ -182,7 +182,7 @@ class BusinessModelCanvas implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['business_model_canvas:read'])]
+    #[Groups(['business_model_canvas:read', 'project:item:read'])]
     private ?Uuid $id = null;
 
     /**

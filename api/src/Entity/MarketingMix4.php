@@ -171,7 +171,7 @@ class MarketingMix4 implements TracingAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['marketing_mix_4:read'])]
+    #[Groups(['marketing_mix_4:read', 'project:item:read'])]
     private ?Uuid $id = null;
 
     /**
