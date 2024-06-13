@@ -19,7 +19,7 @@
     ]" />
       </div>
 
-      <SUbtn label="Prochaine étape" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
+      <SUbtn label="Passer à l’étape suivante" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
         :disabled="!isValid" />
 
     </q-form>

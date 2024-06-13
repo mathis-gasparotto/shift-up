@@ -6,7 +6,8 @@
         <q-skeleton v-if="projectLoading" width="150px" />
         <template v-else>{{ project.name }}</template>
       </h1>
-      <q-btn icon="more_horiz" text-color="grey-8" flat @click="openSettings" :disable="projectLoading" />
+      <q-btn icon="edit" label="Modifier" stack no-caps text-color="grey-9" flat @click="openSettings"
+        :disable="projectLoading" class="q-no-hoverable q-pa-xs" />
       <ProjectSettingsModal v-if="!projectLoading" ref="projectSettingsModal" :project="project"
         @updated="reloadData" />
     </div>

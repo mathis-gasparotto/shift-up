@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -120,7 +122,12 @@ use Symfony\Component\Validator\Constraints as Assert;
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getTeam().getManager() === user)
             '
         )
-    ]
+    ],
+    order: [
+        'updatedAt' => 'DESC'
+    ],
+    paginationClientItemsPerPage: true,
+    paginationMaximumItemsPerPage: 30
 )]
 #[ApiResource(
     uriTemplate: '/teams/{id}/projects',
@@ -136,6 +143,11 @@ use Symfony\Component\Validator\Constraints as Assert;
             'project:read'
         ]
     ],
+    order: [
+        'updatedAt' => 'DESC'
+    ],
+    paginationClientItemsPerPage: true,
+    paginationMaximumItemsPerPage: 30,
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectByTeamCollectionDataProvider::class
 )]

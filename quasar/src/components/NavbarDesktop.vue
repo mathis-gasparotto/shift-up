@@ -13,8 +13,8 @@
         <q-skeleton v-if="navLoading" />
         <template v-else>
 
-          <q-expansion-item v-for="(navItem_0, index_0) in navItems" :key="index_0" v-model="navItem_0.open"
-            switch-toggle-side dense :to="navItem_0.route" :hide-expand-icon="!!navItem_0.route"
+          <q-expansion-item v-for="(navItem_0, index_0) in navItems" :key="index_0" v-model="navItem_0.open" dense
+            header-class="justify-between" :to="navItem_0.route" :hide-expand-icon="!!navItem_0.route"
             expand-icon-class="expand-icon q-pr-xs">
             <template v-slot:header>
               <div class="row no-wrap items-center">
@@ -24,7 +24,7 @@
             </template>
 
             <q-expansion-item v-for="(navItem_1, index_1) in navItem_0.childs" :key="index_1" v-model="navItem_1.open"
-              :header-inset-level="0.5" :content-inset-level="1" switch-toggle-side dense :to="navItem_1.route"
+              :header-inset-level="0.5" header-class="justify-between" dense :to="navItem_1.route"
               :hide-expand-icon="!!navItem_1.route" expand-icon-class="expand-icon q-pr-xs">
               <template v-slot:header>
                 <div class="row no-wrap items-center">
@@ -34,7 +34,7 @@
               </template>
 
               <q-expansion-item v-for="(navItem_2, index_2) in navItem_1.childs" :key="index_2" v-model="navItem_2.open"
-                switch-toggle-side dense :header-inset-level="1" :content-inset-level="1.5" :to="navItem_2.route"
+                header-class="justify-between" dense :header-inset-level="1" :to="navItem_2.route"
                 :hide-expand-icon="!!navItem_2.route" expand-icon-class="expand-icon q-pr-xs">
                 <template v-slot:header>
                   <div class="row no-wrap items-center">
@@ -44,7 +44,7 @@
                 </template>
 
                 <q-expansion-item v-for="(navItem_3, index_3) in navItem_2.childs" :key="index_3"
-                  v-model="navItem_3.open" switch-toggle-side dense :header-inset-level="1.5" :content-inset-level="2"
+                  v-model="navItem_3.open" header-class="justify-between" dense :header-inset-level="1.5"
                   :to="navItem_3.route" :hide-expand-icon="!!navItem_3.route" expand-icon-class="expand-icon q-pr-xs">
                   <template v-slot:header>
                     <div class="row no-wrap items-center">
@@ -55,7 +55,7 @@
                   </template>
 
                   <q-expansion-item v-for="(navItem_4, index_4) in navItem_3.childs" :key="index_4"
-                    v-model="navItem_4.open" switch-toggle-side dense :header-inset-level="2" :content-inset-level="2.5"
+                    v-model="navItem_4.open" header-class="justify-between" dense :header-inset-level="2"
                     :to="navItem_4.route" :hide-expand-icon="!!navItem_4.route" expand-icon-class="expand-icon q-pr-xs">
                     <template v-slot:header>
                       <div class="row no-wrap items-center">
@@ -171,7 +171,8 @@ export default {
     }
   },
   async created() {
-    this.reloadData()
+    // this.reloadData()
+    this.navLoading = false
   },
   methods: {
     async reloadData() {
