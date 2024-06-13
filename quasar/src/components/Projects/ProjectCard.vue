@@ -7,7 +7,7 @@
     <q-card-section class="q-pa-none">
       <div>
         <h3 class="text-body1 q-my-none">{{ strMaxLenght(project.name, 13) }}</h3>
-        <p class="text-caption q-my-none">Edited {{ durationFromDateTime(project.updatedAt) }}</p>
+        <p class="text-caption q-my-none">Modifié {{ durationFromDateTime(project.updatedAt) }}</p>
       </div>
     </q-card-section>
   </q-card>

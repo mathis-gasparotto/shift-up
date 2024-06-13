@@ -1,18 +1,19 @@
 <template>
-  <Modal v-if="project" title="Edit your project" :subtitle="project.name" ref="modal" buttonsAlign="full">
+  <Modal v-if="project" title="Modifier votre projet" :subtitle="project.name" ref="modal" buttonsAlign="full">
     <q-form class="w-100 gap-10 column items-center q-mb-xl" @submit.prevent="submit">
       <div class="w-100">
-        <label for="name" class="text-weight-medium label-required">Name</label>
-        <q-input v-model="form.name" outlined for="name" placeholder="A name for your project" class="input" type="text"
-          lazy-rules :rules="[
+        <label for="name" class="text-weight-medium label-required">Nom du projet</label>
+        <q-input v-model="form.name" outlined for="name" placeholder="Un nom pour votre projet" class="input"
+          type="text" lazy-rules :rules="[
     (val) =>
-      val && val.trim().length > 3 || 'Project name required'
+      val && val.trim().length > 3 || 'Nom du projet requis'
   ]" />
       </div>
       <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
     </q-form>
     <template #buttons>
-      <SUbtn label="Submit" color="gradient" rounded class="w-100" type="submit" :loading="loading" @click="submit" />
+      <SUbtn label="Enregstrer" color="gradient" rounded class="w-100" type="submit" :loading="loading"
+        @click="submit" />
     </template>
   </Modal>
 </template>

@@ -5,19 +5,19 @@
         <q-card-section horizontal class="items-center ">
           <q-icon size="25px" color="black" name="sym_o_folder" class="q-mr-md" />
           <div>
-            <h3 class="text-body1 q-my-none">Create a new team</h3>
-            <p class="text-caption q-my-none">Organize your projects</p>
+            <h3 class="text-body1 q-my-none">Créer une nouvelle équipe</h3>
+            <p class="text-caption q-my-none">Organisez vos projets</p>
           </div>
         </q-card-section>
       </q-card>
       <CreateNewTeamModal ref="createNewTeamModal" />
     </div>
     <div class="section teams-section">
-      <h2 class="text-grey text-body1">Teams</h2>
+      <h2 class="text-grey text-body1">Équipes</h2>
       <TeamList :loading="teamsLoading" :teams="teams" />
     </div>
     <div class="section projects-section">
-      <h2 class="text-grey text-body1">Projects</h2>
+      <h2 class="text-grey text-body1">Projets</h2>
       <ProjectList :loading="projectsLoading" :projects="projects" />
     </div>
   </q-page>

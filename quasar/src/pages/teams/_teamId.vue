@@ -5,7 +5,7 @@
       <q-skeleton v-if="teamLoading" />
       {{ team.name }}
     </h1>
-    <h2 class="text-grey text-body1">Projects</h2>
+    <h2 class="text-grey text-body1">Projets</h2>
     <ProjectList :loading="projectsLoading" :projects="projects" add-card />
   </q-page>
 </template>

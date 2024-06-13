@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex-center column page q-mx-auto q-py-xl">
     <div class="w-100 q-mb-lg">
-      <h2 class="text-h4 q-mb-sm q-mt-none">Sign In</h2>
+      <h2 class="text-h4 q-mb-sm q-mt-none">Connexion</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
     <q-form class="w-100 gap-10 column items-center" @submit.prevent="submit">
@@ -9,15 +9,15 @@
         <label for="email" class="text-weight-medium label-required">Email</label>
         <q-input v-model="email" outlined inputmode="email" for="email" placeholder="johndoe@gmail.com" class="input"
           type="email" lazy-rules :rules="[
-      (val, rules) =>
-        rules.email(val) || 'You must enter a valid email address'
+      (val) =>
+        val.trim().length > 0 || 'Email requise'
     ]" />
       </div>
       <div class="w-100 q-mb-sm">
-        <label for="password" class="text-weight-medium label-required">Password</label>
+        <label for="password" class="text-weight-medium label-required">Mot de passe</label>
         <q-input v-model="password.value" outlined :type="password.visible ? 'text' : 'password'" for="password"
-          placeholder="Your password" class="input" lazy-rules :rules="[
-      (val) => val.trim().length > 0 || 'You must enter a password']">
+          placeholder="Votre mot de passe" class="input" lazy-rules :rules="[
+      (val) => val.trim().length > 0 || 'Mot de passe requis']">
           <template v-slot:append>
             <q-icon :name="password.visible ? 'visibility' : 'visibility_off'" class="cursor-pointer"
               @click="password.visible = !password.visible" />
@@ -25,11 +25,11 @@
         </q-input>
       </div>
       <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
-      <SUbtn label="Sign In" color="gradient" class="w-100" rounded type="submit" :loading="loading" />
+      <SUbtn label="Se connecter" color="gradient" class="w-100" rounded type="submit" :loading="loading" />
     </q-form>
     <p class="q-mt-lg">
-      Haven't an account yet?
-      <router-link :to="{ name: 'signup' }" class="text-bold">Sign Up</router-link>
+      Pas encore de compte ?
+      <router-link :to="{ name: 'signup' }" class="text-bold">S'inscrire</router-link>
     </p>
   </q-page>
 </template>
@@ -68,7 +68,7 @@ export default {
           } else {
             this.$router.push({ name: 'index' })
           }
-          successNotify('You have successfully signed in!')
+          successNotify('Vous avez bien été connecté !')
         })
         .catch((error) => {
           this.loading = false

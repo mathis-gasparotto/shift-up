@@ -1,16 +1,16 @@
 <template>
   <div>
-    <h1>Define your project</h1>
+    <h1>Définisser votre projet</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
-        <label class="text-weight-medium label-required">Project type</label>
+        <label class="text-weight-medium label-required">Type de projet</label>
         <div class="q-gutter-sm q-mt-xs column">
           <q-radio v-model="_form.sellingObject" v-for="(option, index) in options" :key="index" checked-icon="task_alt"
             unchecked-icon="panorama_fish_eye" :val="option.value" :label="option.label" />
         </div>
       </div>
 
-      <SUbtn label="Next step" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
+      <SUbtn label="Prochaine étape" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
         :disabled="!isValid" />
 
     </q-form>
@@ -35,9 +35,9 @@ export default {
   data() {
     return {
       options: [
-        { label: 'Product for sale', value: 'product-for-sale' },
-        { label: 'Service/Performance', value: 'service' },
-        { label: 'Innovating product/Concept', value: 'concept' }
+        { label: 'Produit à vendre', value: 'product-for-sale' },
+        { label: 'Service/Prestation', value: 'service' },
+        { label: 'Produit innovant/Concept', value: 'concept' }
       ]
     }
   },

@@ -5,7 +5,7 @@
       <template v-else-if="projects.length > 0">
         <ProjectCard v-for="project in projects" :key="project.id" :project="project" linked />
       </template>
-      <AddCard v-if="addCard" text="New project" @cardClick="createNewProject" />
+      <AddCard v-if="addCard" text="Nouveau projet" @cardClick="createNewProject" />
     </div>
     <div v-if="!addCard && !loading && projects.length === 0">No project</div>
   </div>

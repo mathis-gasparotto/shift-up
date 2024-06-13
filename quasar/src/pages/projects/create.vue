@@ -2,7 +2,7 @@
   <q-page>
     <MainBreadcrumps :loading="loading" :team-name="team.name" />
     <div class="nav q-my-xl flex gap-100 items-center">
-      <SUbtn label="Back" color="grey-light" rounded icon="arrow_back" textColor="grey" @click="goBack" />
+      <SUbtn label="Retour" color="grey-light" rounded icon="arrow_back" textColor="grey" @click="goBack" />
 
       <div class="flex items-center gap-30">
         <div class="flex items-center gap-8 steps">
@@ -74,7 +74,7 @@ export default {
         // TODO: generate all documents
 
         this.formLoading = false
-        successNotify('Project created successfully')
+        successNotify('Projet créé avec succès !')
         this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
       }).catch((err) => {
         this.formLoading = false

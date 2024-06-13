@@ -55,14 +55,14 @@ export default {
       if (this.$route.name === 'index') {
         this.items = [
           {
-            label: 'Home',
+            label: 'Accueil',
             to: { name: 'index' }
           }
         ]
       } else if (this.$route.name === 'team') {
         this.items = [
           {
-            label: 'Home',
+            label: 'Accueil',
             to: { name: 'index' }
           },
           {
@@ -73,7 +73,7 @@ export default {
       } else if (this.$route.name === 'project') {
         this.items = [
           {
-            label: 'Home',
+            label: 'Accueil',
             to: { name: 'index' }
           },
           {
@@ -88,7 +88,7 @@ export default {
       } else if (this.$route.name === 'project-create') {
         this.items = [
           {
-            label: 'Home',
+            label: 'Accueil',
             to: { name: 'index' }
           },
           {
@@ -96,14 +96,14 @@ export default {
             to: { name: 'team', params: { teamId: this.$route.params.teamId } }
           },
           {
-            label: 'Create new project',
+            label: 'Créer un nouveau projet',
             to: this.$route
           }
         ]
       } else if (this.$route.name === 'project-document') {
         this.items = [
           {
-            label: 'Home',
+            label: 'Accueil',
             to: { name: 'index' }
           },
           {

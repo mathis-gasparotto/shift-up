@@ -1,26 +1,25 @@
 <template>
   <div>
-    <h1>Create your project</h1>
+    <h1>Créez votre projet</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
-        <label for="name" class="text-weight-medium label-required">Name</label>
-        <q-input v-model="_form.name" outlined for="name" placeholder="Add a name to your project" class="input q-mb-md"
-          type="text" lazy-rules :rules="[
+        <label for="name" class="text-weight-medium label-required">Nom du projet</label>
+        <q-input v-model="_form.name" outlined for="name" placeholder="Ajoutez un nom à votre projet"
+          class="input q-mb-md" type="text" lazy-rules :rules="[
       (val) =>
-        val.trim().length > 0 || 'You must enter a project name'
+        val.trim().length > 0 || 'Vous devez entrer un nom de projet'
     ]" />
       </div>
       <div class="w-100">
         <label for="description" class="text-weight-medium label-required">Description</label>
-        <q-input v-model="_form.description" outlined for="description"
-          placeholder="Describe your project as much as possible" class="input q-mb-md" type="textarea" lazy-rules
-          :rules="[
+        <q-input v-model="_form.description" outlined for="description" placeholder="Décrivez votre projet au maximum"
+          class="input q-mb-md" type="textarea" lazy-rules :rules="[
       (val) =>
-        val.trim().length > 0 || 'You must enter a project description'
+        val.trim().length > 0 || 'Vous devez entrer une description de projet'
     ]" />
       </div>
 
-      <SUbtn label="Next step" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
+      <SUbtn label="Prochaine étape" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
         :disabled="!isValid" />
 
     </q-form>

@@ -6,7 +6,7 @@
         <ProjectDocumentCard v-for="document in documents" :project="project" :key="document.id" :document="document"
           linked />
       </template>
-      <AddCard v-if="addCard" text="New project" @cardClick="createNewProject" />
+      <AddCard v-if="addCard" text="Nouveau projet" @cardClick="createNewProject" />
     </div>
     <div v-if="!addCard && !loading && documents.length === 0">No project</div>
   </div>

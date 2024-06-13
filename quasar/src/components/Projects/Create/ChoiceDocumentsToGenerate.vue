@@ -20,8 +20,8 @@ export default {
       options: [
         { label: 'Business Model Canvas', value: 'business_model_canvas', selected: false },
         { label: 'Buyer Persona', value: 'buyer_persona', selected: false },
-        { label: 'Competitor Analysis', value: 'competitor_analysis', selected: false },
-        { label: 'Golden Triangle', value: 'golden_triangle', selected: false },
+        { label: 'Analyse de la concurence', value: 'competitor_analysis', selected: false },
+        { label: 'Triange d\'or', value: 'golden_triangle', selected: false },
         { label: '4P', value: 'marketing_mix4', selected: false, disabled: true },
         { label: '5P', value: 'marketing_mix5', selected: false, disabled: true },
         { label: 'PESTEL', value: 'pestel', selected: false, disabled: true },

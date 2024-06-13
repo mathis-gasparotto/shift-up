@@ -15,10 +15,10 @@
         <q-avatar size="150px">
           <img :src="'/src/assets/projects/' + project.picture.contentUrl">
         </q-avatar>
-        <h2 class="text-h6 text-center">Your project is empty...</h2>
+        <h2 class="text-h6 text-center">Votre projet est vide</h2>
         <p class="text-subtitle2 text-weight-regular text-center">Lorem ipsum dolor sit amet, consectetur adipiscing
           elit sed.</p>
-        <SUBtn label="Generate strategy" />
+        <SUBtn label="Genérer la stratégie" />
       </div>
       <ProjectDocumentList v-else :documents="project.lastDocuments || []" :project="project"
         :loading="projectLoading" />

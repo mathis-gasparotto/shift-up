@@ -3,10 +3,10 @@
     <q-page-container>
       <q-page class="flex flex-center">
         <q-spinner color="primary" size="3em" v-if="loading" />
-        <InfoCard v-else-if="!error" type="success" title="Your email address has been confirmed!"
-          action-btn-label="Go for sign in" :action-btn-route="{ name: 'signin' }">
+        <InfoCard v-else-if="!error" type="success" title="Votre email a bien été confirmée !"
+          action-btn-label="Retour à la page de connexion" :action-btn-route="{ name: 'signin' }">
         </InfoCard>
-        <InfoCard v-else type="error" :title="error" action-btn-label="Back to sign in page"
+        <InfoCard v-else type="error" :title="error" action-btn-label="Retour à la page de connexion"
           :action-btn-route="{ name: 'signin' }">
         </InfoCard>
       </q-page>

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>Choose documents to generate</h1>
+    <h1>Choisissez les documents à générer</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
         <ChoiceDocumentsToGenerate ref="choiceDocumentsToGenerate" v-model:documents-selected="_form.documents"
           @update:isValid="(value) => isValid = value" />
       </div>
 
-      <SUbtn label="Generate" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
+      <SUbtn label="Générer" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
         :disabled="!isValid" :loading="loading" />
 
     </q-form>

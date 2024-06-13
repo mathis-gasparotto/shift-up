@@ -15,4 +15,4 @@ export const langs = {
 
 export const langCodes = Object.keys(langs)
 export const langArray = Object.values(langs)
-export const defaultLang = 'en-US'
+export const defaultLang = 'fr-FR'

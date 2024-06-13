@@ -94,11 +94,11 @@ export default {
         case 'BusinessModelCanvas':
           return 'Business Model Canvas'
         case 'BuyerPersona':
-          return 'BuyerPersona'
+          return 'Buyer Persona'
         case 'CompetitorAnalysis':
-          return 'Competitor Analysis'
+          return 'Analyse de la concurrence'
         case 'GoldenTriangle':
-          return 'Golden Triangle'
+          return 'Triangle d\'or'
         case 'MarketingMix4':
           return '4P'
         case 'MarketingMix5':

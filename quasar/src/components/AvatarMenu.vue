@@ -26,7 +26,7 @@
         <q-item-section>Help &amp; Feedback</q-item-section>
       </q-item>
       <q-item clickable @click="logout">
-        <q-item-section>Logout</q-item-section>
+        <q-item-section>Se déconnecter</q-item-section>
       </q-item>
     </q-list>
   </q-menu>
@@ -41,7 +41,7 @@ export default {
     logout() {
       this.$auth.logout()
       this.$router.push({ name: 'signin' })
-      successNotify('You have successfully signed out!')
+      successNotify('Vous avez bien été déconnecté !')
     }
   }
 }

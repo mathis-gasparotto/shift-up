@@ -1,18 +1,18 @@
 <template>
-  <Modal title="Create new team" ref="modal" buttonsAlign="full">
+  <Modal title="Créer une nouvelle équipe" ref="modal" buttonsAlign="full">
     <q-form class="w-100 gap-10 column items-center q-mb-xl" @submit.prevent="submit">
       <div class="w-100">
-        <label for="name" class="text-weight-medium label-required">Name</label>
-        <q-input v-model="form.name" outlined for="name" placeholder="Add a name for your team" class="input"
+        <label for="name" class="text-weight-medium label-required">Nom</label>
+        <q-input v-model="form.name" outlined for="name" placeholder="Ajoutez un nom à votre projet" class="input"
           type="text" lazy-rules :rules="[
       (val) =>
-        val && val.trim().length > 3 || 'Team name required'
+    val && val.trim().length > 3 || 'Nom du projet requis'
     ]" />
       </div>
       <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
     </q-form>
     <template #buttons>
-      <SUbtn label="Create" color="gradient" rounded class="w-100" type="submit" :loading="loading" @click="submit" />
+      <SUbtn label="Créer" color="gradient" rounded class="w-100" type="submit" :loading="loading" @click="submit" />
     </template>
   </Modal>
 </template>
