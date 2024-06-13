@@ -4,10 +4,11 @@
     <div class="q-mt-xl q-mb-lg row item-center justify-between">
       <h1 class="text-h2 q-my-none">
         <q-skeleton v-if="projectLoading" width="150px" />
-        {{ project.name }}
+        <template v-else>{{ project.name }}</template>
       </h1>
       <q-btn icon="more_horiz" text-color="grey-8" flat @click="openSettings" :disable="projectLoading" />
-      <ProjectSettingsModal v-if="!projectLoading" ref="projectSettingsModal" :project="project" />
+      <ProjectSettingsModal v-if="!projectLoading" ref="projectSettingsModal" :project="project"
+        @updated="reloadData" />
     </div>
     <div class="w-100 q-mt-xl">
       <div class="no-doc-card column items-center q-mx-auto"
