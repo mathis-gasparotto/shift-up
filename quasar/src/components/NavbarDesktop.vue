@@ -170,19 +170,18 @@ export default {
       ]
     }
   },
-  async created() {
-    // this.reloadData()
-    this.navLoading = false
+  created() {
+    this.reloadData()
   },
   methods: {
-    async reloadData() {
+    reloadData() {
       this.navLoading = true
       this.$resources.teams.list().then(res => {
         this.formatTeamsForNav(res.data)
-        this.navLoading = false
         this.opendCurrentRouteTabs()
       }).catch((err) => {
         displayError(err)
+      }).finally(() => {
         this.navLoading = false
       })
     },

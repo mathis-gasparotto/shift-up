@@ -7,7 +7,7 @@
       </template>
       <AddCard v-if="addCard" text="Nouveau projet" @cardClick="createNewProject" />
     </div>
-    <div v-if="!addCard && !loading && projects.length === 0">No project</div>
+    <div v-if="!addCard && !loading && projects.length === 0">Pas de projet de disponible</div>
   </div>
 </template>
 

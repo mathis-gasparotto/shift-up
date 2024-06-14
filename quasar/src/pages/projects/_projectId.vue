@@ -13,7 +13,7 @@
     </div>
     <div class="w-100 q-mt-xl">
       <div class="no-doc-card column items-center q-mx-auto"
-        v-if="!projectLoading && project.lastDocuments.length <= 0">
+        v-if="!projectLoading && (!project.lastDocuments || project.lastDocuments.length <= 0) ">
         <q-avatar size="150px">
           <img :src="'/src/assets/projects/' + project.picture.contentUrl">
         </q-avatar>

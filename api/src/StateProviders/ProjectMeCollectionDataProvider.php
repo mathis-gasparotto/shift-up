@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Helper\GlobalHelper;
 use App\Helper\RepositoryHelper;
+use App\Repository\ProjectRepository;
 use App\Service\RepositoryService;
 use Symfony\Component\Security\Core\Security;
 
@@ -17,10 +18,12 @@ class ProjectMeCollectionDataProvider implements ProviderInterface
     /**
      * @param Security $security
      * @param RepositoryService $repositoryService
+     * @param ProjectRepository $projectRepository
      */
     public function __construct(
         private Security $security,
-        private RepositoryService $repositoryService
+        private RepositoryService $repositoryService,
+        private ProjectRepository $projectRepository
     ) {
     }
 
@@ -45,6 +48,7 @@ class ProjectMeCollectionDataProvider implements ProviderInterface
         foreach ($teams as $team) {
             $projects = array_merge($projects, $team->getProjects()->toArray());
         }
+        usort($projects, fn($a, $b) => $a->getUpdatedAt() < $b->getUpdatedAt());
 
         return $projects;
     }
