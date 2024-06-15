@@ -44,9 +44,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                                     'name' => [
                                         'type' => 'string'
                                     ],
-                                    'description' => [
-                                        'type' => 'string'
-                                    ],
                                     'billingEmail' => [
                                         'type' => 'string'
                                     ],
@@ -190,13 +187,6 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     private ?string $name = null;
 
     /**
-     * @var string|null
-     */
-    #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['team:read', 'team:write'])]
-    private ?string $description = null;
-
-    /**
      * @var \DateTime|null
      */
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -333,25 +323,6 @@ class Team implements ManagerAwareInterface, TracingAwareInterface
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     * @return $this
-     */
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }

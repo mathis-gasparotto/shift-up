@@ -6,8 +6,10 @@ namespace App\StateProcessor\User;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Entity\Team;
 use App\Helper\EmailHelper;
 use App\Helper\GlobalHelper;
+use App\Helper\TeamHelper;
 use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -66,7 +68,16 @@ class UserPostDataPersister implements ProcessorInterface
             ['confirmation_link' => $confirmationLink]
         );
 
+        // create default team to the user
+        $team = (new Team())
+            ->setName($data->getFirstName() . '\'s team')
+            ->setManager($data)
+            ->addUser($data)
+            ->setBillingEmail($data->getEmail())
+            ->setStatus(TeamHelper::STATUS_ACTIVE);
+
         $this->entityManager->persist($data);
+        $this->entityManager->persist($team);
         $this->entityManager->flush();
 
         return $data;
