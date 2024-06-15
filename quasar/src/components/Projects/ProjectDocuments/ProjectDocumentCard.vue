@@ -1,8 +1,10 @@
 <template>
-  <q-card :class="'project-card q-pa-lg' + (linked && documentRoute ? ' cursor-pointer' : '')" @click="click()">
+  <q-card :class="'project-document-card q-pa-lg' + (linked && documentRoute ? ' cursor-pointer' : '')"
+    @click="click()">
     <q-card-section class="q-pa-none q-mb-md">
       <!-- <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
-        class="project-img w-100" /> -->
+        class="project-document-img w-100" /> -->
+      <q-skeleton type="rect" class="project-document-img" height="150px" />
     </q-card-section>
     <q-card-section class="q-pa-none">
       <div>
@@ -39,55 +41,42 @@ export default {
   computed: {
     documentRoute() {
       const params = { teamId: this.project.team.id, projectId: this.project.id }
-      let routeName
-      let routeParamDocumentId
       switch (this.document['@type']) {
         case 'BusinessModelCanvas':
-          routeName = 'businessModelCanvas'
-          routeParamDocumentId = 'businessModelCanvasId'
+          params.documentName = 'business-model-canvas'
           break
         case 'BuyerPersona':
-          routeName = 'buyerPersona'
-          routeParamDocumentId = 'buyerPersonaId'
+          params.documentName = 'buyer-persona'
           break
         case 'CompetitorAnalysis':
-          routeName = 'competitorAnalysis'
-          routeParamDocumentId = 'competitorAnalysisId'
+          params.documentName = 'competitor-analysis'
           break
         case 'GoldenTriangle':
-          routeName = 'goldenTriangle'
-          routeParamDocumentId = 'goldenTriangleId'
+          params.documentName = 'golden-triangle'
           break
         case 'MarketingMix4':
-          routeName = 'marketingMix4'
-          routeParamDocumentId = 'marketingMix4Id'
+          params.documentName = 'marketing-mix-4'
           break
         case 'MarketingMix5':
-          routeName = 'marketingMix5'
-          routeParamDocumentId = 'marketingMix5Id'
+          params.documentName = 'marketing-mix-5'
           break
         case 'PESTEL':
-          routeName = 'pestel'
-          routeParamDocumentId = 'pestelId'
+          params.documentName = 'pestel'
           break
         case 'SMART':
-          routeName = 'smart'
-          routeParamDocumentId = 'smartId'
+          params.documentName = 'smart'
           break
         case 'STP':
-          routeName = 'stp'
-          routeParamDocumentId = 'stpId'
+          params.documentName = 'stp'
           break
         case 'SWOT':
-          routeName = 'swot'
-          routeParamDocumentId = 'swotId'
+          params.documentName = 'swot'
           break
       }
 
-      if (!routeName || !routeParamDocumentId) return null
+      if (!params.documentName) return null
 
-      params[routeParamDocumentId] = this.document.id
-      return { name: routeName, params }
+      return { name: 'project-document', params }
     },
     title() {
       switch (this.document['@type']) {
@@ -127,11 +116,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.project-card {
+.project-document-card {
   width: 300px;
 }
 
-.project-img {
+.project-document-img {
   border-radius: 4px;
 }
 </style>

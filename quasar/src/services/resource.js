@@ -18,7 +18,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       })
       .catch((e) => {
         // if 404
-        if (e.response.status !== 404) {
+        if (e.response && e.response.status !== 404) {
           // $sentry.captureException(e)
         }
         throw e
@@ -61,7 +61,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
         }
       })
       .catch((e) => {
-        if (e.response.status !== 404) {
+        if (e.response && e.response.status !== 404) {
           // $sentry.captureException(e)
         }
         throw e
@@ -96,7 +96,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       .get(`/${resource}/${id}/${subresource}`, { params: query })
       .then((response) => response.data)
       .catch((e) => {
-        if (e.response.status !== 404) {
+        if (e.response && e.response.status !== 404) {
           // $sentry.captureException(e)
         }
         throw e
@@ -117,7 +117,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       .get(`/${resource}/${id}`, { timeout: 10000 })
       .then((response) => response.data)
       .catch((e) => {
-        if (e.response.status !== 404) {
+        if (e.response && e.response.status !== 404) {
           // $sentry.captureException(e)
         }
         throw e
@@ -128,7 +128,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       .put(`/${resource}/${id}`, payload)
       .then((response) => response.data)
       .catch((e) => {
-        if (e.response.status !== 404) {
+        if (e.response && e.response.status !== 404) {
           // $sentry.captureException(e)
         }
         throw e
