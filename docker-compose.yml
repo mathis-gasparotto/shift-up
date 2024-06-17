@@ -1,0 +1,5 @@
+version: "3.8"
+
+include:
+  - api/docker-compose.yml
+  - quasar/docker-compose.yml

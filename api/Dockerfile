@@ -1,5 +1,6 @@
 # Utiliser l'image PHP Alpine 8.2.15
 FROM php:8.2.15-alpine as api_php
+LABEL maintainer="Mathis Gasparotto <mathis.gasparotto@hotmail.com>"
 
 ENV APP_ENV=dev XDEBUG_MODE=off
 
@@ -15,6 +16,16 @@ RUN apk add --no-cache autoconf g++ imagemagick-dev libtool make pcre-dev && \
     pecl install imagick && \
     docker-php-ext-enable imagick && \
     apk del autoconf g++ libtool make pcre-dev
+
+# Installer les extensions PDO MySQL et PostgreSQL
+# RUN apk add --no-cache \
+#     mariadb-client \
+#     postgresql-dev && \
+#     docker-php-ext-install pdo pdo_mysql pdo_pgsql
+
+# Installer les extensions PDO MySQL
+RUN apk add --no-cache mariadb-client && \
+    docker-php-ext-install pdo pdo_mysql
 
 # Définir le fuseau horaire
 RUN apk add --no-cache tzdata && \

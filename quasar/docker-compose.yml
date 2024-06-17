@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      target: development
+      args:
+        DOCKER_BUILDKIT: 1
+    env_file: .env
+    container_name: shift-up_app_quasar
+    volumes:
+      - .:/app:rw
+    ports:
+      - '9000:9000'
