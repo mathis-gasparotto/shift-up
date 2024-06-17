@@ -18,6 +18,7 @@
 
 <script>
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
+import { displayError } from 'src/helpers/translatting'
 
 export default {
   components: {

@@ -8,7 +8,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
     }
 
     return $axios
-      .get(`/${resource}`, { params: query })
+      .get(`/${resource}`, { params: query, timeout: 0 })
       .then((resp) => {
         return {
           data: resp.data['hydra:member'] ? resp.data['hydra:member'] : resp,
@@ -33,7 +33,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
     }
 
     return $axios
-      .get(`/${resource}/me`, { params: query })
+      .get(`/${resource}/me`, { params: query, timeout: 0 })
       .then((resp) => {
         return {
           data: resp.data['hydra:member'] ? resp.data['hydra:member'] : resp,
@@ -52,7 +52,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       ...filters
     }
     return $axios
-      .get(`/${resource}/${id}/${subresource}`, { params: query })
+      .get(`/${resource}/${id}/${subresource}`, { params: query, timeout: 0 })
       .then((resp) => {
         return {
           data: resp.data['hydra:member'],
@@ -71,7 +71,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
     config = config || {}
     payload = payload || {}
     return $axios
-      .post(`/${resource}/${id}/${subresource}`, payload, config)
+      .post(`/${resource}/${id}/${subresource}`, payload, { ...config, timeout: 0 })
       .then((response) => response.data)
       .catch((e) => {
         // $sentry.captureException(e)
@@ -80,7 +80,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
   },
   deleteChild(id, subresource) {
     return $axios
-      .delete(`/${resource}/${id}/${subresource}`)
+      .delete(`/${resource}/${id}/${subresource}`, { timeout: 0 })
       .then((response) => response.data)
       .catch((e) => {
         // $sentry.captureException(e)
@@ -93,7 +93,7 @@ export default ($axios /*, $sentry*/) => (resource) => ({
       ...filters
     }
     return $axios
-      .get(`/${resource}/${id}/${subresource}`, { params: query })
+      .get(`/${resource}/${id}/${subresource}`, { params: query, timeout: 0 })
       .then((response) => response.data)
       .catch((e) => {
         if (e.response && e.response.status !== 404) {
