@@ -4,8 +4,7 @@
       :project-name="project.name" :project-document-name="title" />
     <div class="q-mt-xl q-mb-lg row item-center justify-between">
       <h1 class="text-h2 q-my-none">
-        <q-skeleton v-if="documentLoading" width="150px" />
-        <template v-else>{{ title }}</template>
+        {{ title }}
       </h1>
       <q-btn icon="edit" label="Modifier" stack no-caps text-color="grey-9" flat @click="editMode"
         :disable="documentLoading" class="q-no-hoverable q-pa-xs" />
@@ -19,6 +18,8 @@
 <script>
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import { displayError } from 'src/helpers/translatting'
+import { errorNotify } from 'src/helpers/notifyHelper'
+import text from 'src/assets/langs/pages/projects/_projectId/_documentName.json'
 
 export default {
   components: {
@@ -134,7 +135,12 @@ export default {
           this.document = document
         })
         .catch((error) => {
-          displayError(error)
+          if (error.response && error.response.status === 404) {
+            errorNotify(text[this.$lang.currentLang].errorNotFound)
+          } else {
+            displayError(error, text[this.$lang.currentLang].defaultError)
+          }
+          this.$router.push({ name: 'project', params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId } })
         })
         .finally(() => {
           this.documentLoading = false
