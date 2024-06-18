@@ -69,6 +69,15 @@ export function translateError(error, defaultMessage = null) {
         default:
           return 'Invalid link'
       }
+    case 'phone: This value is already used.':
+      switch (currentLang) {
+        case 'fr-FR':
+          return 'Le numéro de téléphone est déjà utilisé'
+        case 'en-US':
+          return 'Phone number already used'
+        default:
+          return 'Phone number already used'
+      }
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         switch (currentLang) {
@@ -103,6 +112,7 @@ export function translateError(error, defaultMessage = null) {
       if (defaultMessage) {
         return defaultMessage
       }
+      console.error('Error message not translated:', error)
       switch (currentLang) {
         case 'fr-FR':
           return 'Une erreur est survenue'
