@@ -8,26 +8,33 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install
 
+COPY . .
+
 ##
 # DEV LAYER
 ##
 FROM dependencies as development
 
-ENTRYPOINT ["yarn", "dev"]
-#CMD ["yarn", "dev"]
+ENV NODE_ENV=development
+
+#ENTRYPOINT ["yarn", "dev"]
+CMD ["yarn", "dev"]
+EXPOSE 9000
 
 ##
 # BUILDER LAYER
 ##
 FROM dependencies as builder
 
-COPY --link . .
+COPY . .
 
 RUN yarn build --standalone
 
-##
-# PRODUCTION LAYER
-##
-FROM base as production
+# ##
+# # PRODUCTION LAYER
+# ##
+# FROM base as production
 
-## Copy the build from the builder layer
+# ENV NODE_ENV=production
+
+# ## Copy the build from the builder layer

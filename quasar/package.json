@@ -9,14 +9,14 @@
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "npx quasar dev",
-    "build": "npx quasar build",
+    "dev": "quasar dev",
+    "build": "quasar build",
     "build:web": "yarn build:pwa",
     "build:android": "yarn build:capacitor:android:ide",
-    "build:pwa": "npx quasar build -m pwa",
-    "build:capacitor:android": "npx quasar build -m capacitor -T android",
-    "build:capacitor:android:ide": "npx quasar build -m capacitor -T android --ide",
-    "cap:open:android": "cd src-capacitor && npx cap open android"
+    "build:pwa": "quasar build -m pwa",
+    "build:capacitor:android": "quasar build -m capacitor -T android",
+    "build:capacitor:android:ide": "quasar build -m capacitor -T android --ide",
+    "cap:open:android": "cd src-capacitor && cap open android"
   },
   "dependencies": {
     "@ionic/pwa-elements": "^3.2.2",
