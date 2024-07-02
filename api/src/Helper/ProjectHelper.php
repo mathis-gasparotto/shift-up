@@ -25,6 +25,50 @@ final class ProjectHelper
         self::STATUS_SUBSCRIPTION_PENDING,
     ];
 
+    /** @var string  */
+    public const PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS = 'business_model_canvas';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_BUYER_PLAN = 'buyer_persona';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_COMPETITOR_ANALYSIS = 'competitor_analysis';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_GOLDEN_TRIANGLE = 'golden_triangle';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_MARKETING_MIX_4P = 'marketing_mix4';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_MARKETING_MIX_5P = 'marketing_mix5';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_PESTEL = 'pestel';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_SMART = 'smart';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_STP = 'stp';
+
+    /** @var string  */
+    public const PROJECT_DOCUMENT_SWOT = 'swot';
+
+    /** @var string[]  */
+    public const PROJECT_DOCUMENTS = [
+        self::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS,
+        self::PROJECT_DOCUMENT_BUYER_PLAN,
+        self::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS,
+        self::PROJECT_DOCUMENT_GOLDEN_TRIANGLE,
+        self::PROJECT_DOCUMENT_MARKETING_MIX_4P,
+        self::PROJECT_DOCUMENT_MARKETING_MIX_5P,
+        self::PROJECT_DOCUMENT_PESTEL,
+        self::PROJECT_DOCUMENT_SMART,
+        self::PROJECT_DOCUMENT_STP,
+        self::PROJECT_DOCUMENT_SWOT,
+    ];
+
     /**
      * @param User|UserInterface $user
      * @param Project $project

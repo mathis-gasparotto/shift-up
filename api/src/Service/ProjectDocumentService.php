@@ -5,6 +5,8 @@ namespace App\Service;
 
 use App\Entity\BusinessModelCanvas;
 use App\Entity\BuyerPersona;
+use App\Entity\CompetitorAnalysis;
+use App\Entity\GoldenTriangle;
 use App\Entity\MarketingMix4;
 use App\Entity\MarketingMix5;
 use App\Entity\PESTEL;
@@ -13,6 +15,7 @@ use App\Entity\SMART;
 use App\Entity\STP;
 use App\Entity\SWOT;
 use App\Helper\OpenAIHelper;
+use App\Helper\ProjectHelper;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
@@ -317,5 +320,52 @@ class ProjectDocumentService
         $this->entityManager->flush();
 
         return $marketingMix5;
+    }
+
+    /**
+     * @param Project $project
+     * @param array $documents
+     * @return array<BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP|SWOT>
+     * @throws ORMException
+     */
+    public function generateDocuments(Project $project, array $documents): array
+    {
+        $toReturn = [];
+        foreach ($documents as $document) {
+            switch ($document) {
+                case ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS] = $this->generateBusinessModelCanvas($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN] = $this->generateBuyerPersona($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS:
+//                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS] = $this->generateCompetitorAnalysis($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE:
+//                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE] = $this->generateGoldenTriangle($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P] = $this->generateMarketingMix4($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P] = $this->generateMarketingMix5($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_PESTEL:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_PESTEL] = $this->generatePESTEL($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_SMART:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_SMART] = $this->generateSMART($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_STP:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_STP] = $this->generateSTP($project);
+                    break;
+                case ProjectHelper::PROJECT_DOCUMENT_SWOT:
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_SWOT] = $this->generateSWOT($project);
+                    break;
+            }
+        }
+
+        return $toReturn;
     }
 }

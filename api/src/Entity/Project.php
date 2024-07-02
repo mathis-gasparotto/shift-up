@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -11,11 +9,13 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\User\ProjectGenerateDocumentsController;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\ProjectRepository;
+use App\StateProcessor\Project\ProjectGenerateDocumentsDataPersister;
 use App\StateProcessor\Project\ProjectPostDataPersister;
 use App\StateProviders\ProjectByTeamCollectionDataProvider;
 use App\StateProviders\ProjectMeCollectionDataProvider;
@@ -35,6 +35,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ApiResource(
     operations: [
+        new Post(
+            uriTemplate: '/projects/{id}/generate_documents',
+            controller: ProjectGenerateDocumentsController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'documents' => [
+                                        'type' => 'array'
+                                    ]
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'PostGenerateDocumentsCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
+        ),
         new Post(
             uriTemplate: '/projects',
             openapiContext: [
