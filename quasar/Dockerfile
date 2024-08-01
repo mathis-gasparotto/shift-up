@@ -6,7 +6,8 @@ FROM base as dependencies
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn global add @quasar/cli
+RUN yarn install --non-interactive --frozen-lockfile
 
 COPY . .
 
@@ -17,9 +18,9 @@ FROM dependencies as development
 
 ENV NODE_ENV=development
 
-#ENTRYPOINT ["yarn", "dev"]
-CMD ["yarn", "dev"]
 EXPOSE 9000
+#ENTRYPOINT ["yarn", "dev"]
+CMD ["/bin/sh", "-c", "yarn && yarn dev"]
 
 ##
 # BUILDER LAYER
