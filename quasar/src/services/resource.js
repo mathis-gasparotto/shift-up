@@ -142,5 +142,14 @@ export default ($axios /*, $sentry*/) => (resource) => ({
         // $sentry.captureException(e)
         throw e
       })
+  },
+  postWithId(id, payload) {
+    return $axios
+      .post(`/${resource}/${id}`, payload)
+      .then((response) => response.data)
+      .catch((e) => {
+        // $sentry.captureException(e)
+        throw e
+      })
   }
 })
