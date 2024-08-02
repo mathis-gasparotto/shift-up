@@ -20,7 +20,7 @@ ENV NODE_ENV=development
 
 EXPOSE 9000
 #ENTRYPOINT ["yarn", "dev"]
-CMD ["/bin/sh", "-c", "yarn && yarn dev"]
+CMD ["yarn" ,"dev"]
 
 ##
 # BUILDER LAYER
