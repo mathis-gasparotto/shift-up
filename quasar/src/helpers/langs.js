@@ -1,11 +1,11 @@
-export const langs = {
+export const langsData = {
   'en-US': {
     code: 'en-US',
     name: 'English',
     countryCode: 'US',
     momentCode: 'en'
   },
-  'fr-FR': {
+  'fr': {
     code: 'fr-FR',
     name: 'Français',
     countryCode: 'FR',
@@ -13,6 +13,5 @@ export const langs = {
   }
 }
 
-export const langCodes = Object.keys(langs)
-export const langArray = Object.values(langs)
-export const defaultLang = 'fr-FR'
+export const langCodes = Object.keys(langsData)
+export const langArray = Object.values(langsData)

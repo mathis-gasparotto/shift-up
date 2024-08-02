@@ -1,8 +1,6 @@
 import { errorNotify } from './notifyHelper'
-import { useLangStore } from 'src/store/lang'
-
-const langStore = useLangStore()
-const currentLang = langStore.getCurrentLang.code
+import { i18n } from 'boot/i18n'
+const $t = i18n.global.t
 
 export function translateError(error, defaultMessage = null) {
   let errorMessage
@@ -16,111 +14,34 @@ export function translateError(error, defaultMessage = null) {
 
   switch (errorMessage) {
     case 'Incorrect password':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Mot de passe incorrect'
-        case 'en-US':
-          return 'Incorrect password'
-        default:
-          return 'Incorrect password'
-      }
+      return $t('errors.incorrectPassword')
     case 'Invalid credentials':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Identifiants incorrects'
-        case 'en-US':
-          return 'Invalid credentials'
-        default:
-          return 'Invalid credentials'
-      }
+      return $t('errors.invalidCredentials')
     case 'Incorrect current password':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Mot de passe actuel incorrect'
-        case 'en-US':
-          return 'Incorrect current password'
-        default:
-          return 'Incorrect current password'
-      }
+      return $t('errors.incorrectCurrentPassword')
     case 'The token has expired':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Le lien a expiré'
-        case 'en-US':
-          return 'The link has expired'
-        default:
-          return 'The link has expired'
-      }
+      return $t('errors.theLinkHasExpired')
     case 'Invalid token':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Le lien est invalide'
-        case 'en-US':
-          return 'Invalid link'
-        default:
-          return 'Invalid link'
-      }
+      return $t('errors.invalidLink')
     case 'Invalid confirmation token':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Le lien est invalide'
-        case 'en-US':
-          return 'Invalid link'
-        default:
-          return 'Invalid link'
-      }
+      return $t('errors.invalidLink')
     case 'phone: This value is already used.':
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Le numéro de téléphone est déjà utilisé'
-        case 'en-US':
-          return 'Phone number already used'
-        default:
-          return 'Phone number already used'
-      }
+      return $t('errors.phoneNumberAlreadyUsed')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
-        switch (currentLang) {
-          case 'fr-FR':
-            return 'Veuillez choisir une date future'
-          case 'en-US':
-            return 'Please choose a future date'
-          default:
-            return 'Please choose a future date'
-        }
+        return $t('errors.pleaseChooseAFutureDate')
       }
       if (/.*This value should be less than.*/gm.test(errorMessage)) {
-        switch (currentLang) {
-          case 'fr-FR':
-            return 'Veuillez choisir une date passée'
-          case 'en-US':
-            return 'Please choose a past date'
-          default:
-            return 'Please choose a past date'
-        }
+        return $t('errors.pleaseChooseAPastDate')
       }
       if (/^confirmPassword: The password must be confirmed.*/gm.test(errorMessage)) {
-        switch (currentLang) {
-          case 'fr-FR':
-            return 'Les mots de passe ne correspondent pas'
-          case 'en-US':
-            return 'Passwords do not match'
-          default:
-            return 'Passwords do not match'
-        }
+        return $t('errors.passwordsDoNotMatch')
       }
       if (defaultMessage) {
         return defaultMessage
       }
       console.error('Error message not translated:', error)
-      switch (currentLang) {
-        case 'fr-FR':
-          return 'Une erreur est survenue'
-        case 'en-US':
-          return 'Something went wrong'
-        default:
-          return 'Something went wrong'
-      }
+      return $t('errors.somethingWentWrong')
   }
 }
 

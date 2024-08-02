@@ -1,17 +1,28 @@
 <template>
   <q-page class="column">
-    <MainBreadcrumps :loading="teamLoading || projectLoading || documentLoading" :team-name="team.name"
-      :project-name="project.name" :project-document-name="title" />
+    <MainBreadcrumps
+      :loading="teamLoading || projectLoading || documentLoading"
+      :team-name="team.name"
+      :project-name="project.name"
+      :project-document-name="title"
+    />
     <div class="q-mt-xl q-mb-lg row item-center justify-between">
       <h1 class="text-h2 q-my-none">
         {{ title }}
       </h1>
-      <q-btn icon="edit" label="Modifier" stack no-caps text-color="grey-9" flat @click="editMode"
-        :disable="documentLoading" class="q-no-hoverable q-pa-xs" />
+      <q-btn
+        icon="edit"
+        label="Modifier"
+        stack
+        no-caps
+        text-color="grey-9"
+        flat
+        @click="editMode"
+        :disable="documentLoading"
+        class="q-no-hoverable q-pa-xs"
+      />
     </div>
-    <div class="w-100 q-mt-xl">
-      Yoooo
-    </div>
+    <div class="w-100 q-mt-xl">Yoooo</div>
   </q-page>
 </template>
 
@@ -19,7 +30,6 @@
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import { displayError } from 'src/helpers/translatting'
 import { errorNotify } from 'src/helpers/notifyHelper'
-import text from 'src/assets/langs/pages/projects/_projectId/_documentName.json'
 
 export default {
   components: {
@@ -49,7 +59,10 @@ export default {
   },
   created() {
     if (!this.documentNamesAccepted.includes(this.$route.params.documentName)) {
-      return this.$router.push({ name: 'project', params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId } })
+      return this.$router.push({
+        name: 'project',
+        params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId }
+      })
     }
     this.reloadData()
   },
@@ -63,7 +76,7 @@ export default {
         case 'competitor-analysis':
           return 'Analyse de la concurrence'
         case 'golden-triangle':
-          return 'Triangle d\'or'
+          return "Triangle d'or"
         case 'marketing-mix-4':
           return '4P'
         case 'marketing-mix-5':
@@ -110,7 +123,8 @@ export default {
   methods: {
     reloadData() {
       this.documentLoading = true
-      this.$resources.teams.get(this.$route.params.teamId)
+      this.$resources.teams
+        .get(this.$route.params.teamId)
         .then((team) => {
           this.team = team
         })
@@ -120,7 +134,8 @@ export default {
         .finally(() => {
           this.teamLoading = false
         })
-      this.$resources.projects.get(this.$route.params.projectId)
+      this.$resources.projects
+        .get(this.$route.params.projectId)
         .then((project) => {
           this.project = project
         })
@@ -130,17 +145,21 @@ export default {
         .finally(() => {
           this.projectLoading = false
         })
-      this.$resources.projects.child(this.$route.params.projectId, this.apiRoute + '/last')
+      this.$resources.projects
+        .child(this.$route.params.projectId, this.apiRoute + '/last')
         .then((document) => {
           this.document = document
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
-            errorNotify(text[this.$lang.currentLang].errorNotFound)
+            errorNotify($t('documentName.errorNotFound'))
           } else {
-            displayError(error, text[this.$lang.currentLang].defaultError)
+            displayError(error, $t('documentName.defaultError'))
           }
-          this.$router.push({ name: 'project', params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId } })
+          this.$router.push({
+            name: 'project',
+            params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId }
+          })
         })
         .finally(() => {
           this.documentLoading = false
