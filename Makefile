@@ -8,6 +8,9 @@ CONSOLE=bin/console
 start:
 	$(COMPOSE) up -d --remove-orphans
 
+stop:
+	$(COMPOSE) down
+
 api-db-reset:
 	cd api && $(MAKE) db-reset
 
