@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Controller\CreateMediaObjectAction;
 use App\Helper\GlobalHelper;
+use App\Helper\MediaObjectHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\MediaObjectRepository;
@@ -47,6 +48,10 @@ use Symfony\Component\Validator\Constraints as Assert;
                                         'type' => 'string',
                                         'format' => 'binary',
                                     ],
+                                    'category' => [
+                                        'type' => 'string',
+                                        'enum' => MediaObjectHelper::CATEGORIES
+                                    ]
                                 ],
                             ],
                         ],
@@ -170,6 +175,13 @@ class MediaObject implements TracingAwareInterface
      * @var string|null
      */
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['media_object:read', 'media_object:admin:write'])]
+    #[
+        Assert\Choice(
+            choices: MediaObjectHelper::CATEGORIES,
+            message: 'Choose a valid category'
+        )
+    ]
     private ?string $category = null;
 
 
