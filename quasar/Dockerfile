@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 RUN yarn global add @quasar/cli
-RUN yarn install --non-interactive --frozen-lockfile
+RUN yarn install --non-interactive
 
 COPY . .
 
