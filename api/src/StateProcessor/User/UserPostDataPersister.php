@@ -61,7 +61,7 @@ class UserPostDataPersister implements ProcessorInterface
         $data->setConfirmationToken($token);
 
         // Send email to the user
-        $confirmationLink = $this->appFrontUrl . '/verify-email/' . $token;
+        $confirmationLink = $this->appFrontUrl . '/email-confirmation/' . $token;
         $this->emailService->sendEmailService(
             $data->getEmail(),
             EmailHelper::EMAIL_TYPE_CONFIRM_EMAIL,

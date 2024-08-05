@@ -160,13 +160,12 @@
         v-if="signedUp"
         class="w-100 q-mt-md"
         type="success"
-        title="Vous avez bien été inscrit !"
-        action-btn-label="Go for sign in"
+        :title="$t('signup.successCard.title')"
+        :action-btn-label="$t('signup.successCard.action')"
         :action-btn-route="{ name: 'signin' }"
       >
         <template #content>
-          Un mail de confirmation a été envoyé à votre adresse email. Veuillez vérifier votre boîte de réception ainsi
-          que vos spams.
+          {{ $t('signup.successCard.content') }}
         </template>
       </InfoCard>
     </q-form>

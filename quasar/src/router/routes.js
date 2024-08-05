@@ -75,7 +75,7 @@ const routes = [
     ]
   },
   {
-    path: '/verify-email/:token',
+    path: '/email-confirmation/:token',
     name: 'email-confirmation',
     component: () => import('pages/email-confirmation.vue')
   },

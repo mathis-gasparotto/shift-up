@@ -62,6 +62,17 @@ export default {
     'en-US': 'Anglais',
     'fr-FR': 'Français'
   },
+  'signup': {
+    'successCard': {
+      'title': 'Inscription réussie',
+      'content': 'Un mail de confirmation a été envoyé à votre adresse email. Veuillez vérifier votre boîte de réception ainsi que vos spams.',
+      'action': 'Retour à la page de connexion'
+    }
+  },
+  'emailConfirmation': {
+    'successTitle': 'Votre email a bien été confirmée !',
+    'action': 'Retour à la page de connexion'
+  },
   'documentName': {
     'errorNotFound': 'Document introuvable',
     'defaultError': 'Impossible de charger le document'

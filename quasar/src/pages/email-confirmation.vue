@@ -1,13 +1,30 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="relative bg-main">
+  <q-layout
+    view="lHh Lpr lFf"
+    class="relative bg-main"
+  >
     <q-page-container>
       <q-page class="flex flex-center">
-        <q-spinner color="primary" size="3em" v-if="loading" />
-        <InfoCard v-else-if="!error" type="success" title="Votre email a bien été confirmée !"
-          action-btn-label="Retour à la page de connexion" :action-btn-route="{ name: 'signin' }">
+        <q-spinner
+          color="primary"
+          size="3em"
+          v-if="loading"
+        />
+        <InfoCard
+          v-else-if="!error"
+          type="success"
+          :title="$t('emailConfirmation.successTitle')"
+          :action-btn-label="$t('emailConfirmation.action')"
+          :action-btn-route="{ name: 'signin' }"
+        >
         </InfoCard>
-        <InfoCard v-else type="error" :title="error" action-btn-label="Retour à la page de connexion"
-          :action-btn-route="{ name: 'signin' }">
+        <InfoCard
+          v-else
+          type="error"
+          :title="error"
+          :action-btn-label="$t('emailConfirmation.action')"
+          :action-btn-route="{ name: 'signin' }"
+        >
         </InfoCard>
       </q-page>
     </q-page-container>
@@ -29,12 +46,15 @@ export default {
     }
   },
   created() {
-    this.$auth.confirmEmail(this.$route.params.token).then(() => {
-      this.loading = false
-    }).catch((error) => {
-      this.error = translateError(error)
-      this.loading = false
-    })
+    this.$auth
+      .confirmEmail(this.$route.params.token)
+      .then(() => {
+        this.loading = false
+      })
+      .catch((error) => {
+        this.error = translateError(error)
+        this.loading = false
+      })
   }
 }
 </script>
