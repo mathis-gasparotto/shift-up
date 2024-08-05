@@ -48,7 +48,7 @@ class ResetPasswordController extends AbstractController
 
         // Update user password
         $user->setPassword(
-            $passwordHasher->hashPassword($user, $data->getNewPassword())
+            $passwordHasher->hashPassword($user, $data->getPassword())
         );
         $user->setResetPasswordToken(null);
         $user->setResetPasswordAt(null);

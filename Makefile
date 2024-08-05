@@ -1,7 +1,7 @@
 COMPOSE=docker compose
 EXEC_PHP=$(COMPOSE) exec php
 EXEC_APP=$(COMPOSE) exec app
-CONSOLE=bin/console
+CONSOLE=php bin/console
 
 .DEFAULT_GOAL := help
 

@@ -41,7 +41,10 @@ class SendResetPasswordController extends AbstractController
         $user = $userRepository->findOneBy(['email' => $data->getEmail()]);
 
         if (!$user) {
-            throw new BadRequestHttpException('Invalid email');
+//            throw new BadRequestHttpException('Invalid email');
+            return $this->json([
+                'success' => true
+            ]);
         }
 
         // Generate token
@@ -60,7 +63,7 @@ class SendResetPasswordController extends AbstractController
             EmailHelper::EMAIL_TYPE_RESET_PASSWORD,
             [
                 'user_first_name' => $user->getFirstName(),
-                'reset_link' => $appFrontUrl . '/reset_password/' . $user->getResetPasswordToken()
+                'reset_link' => $appFrontUrl . '/reset-password/' . $user->getResetPasswordToken()
             ]
         );
 

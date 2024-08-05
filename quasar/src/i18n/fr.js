@@ -1,5 +1,5 @@
 export default {
-  'errors': {
+  'error': {
     'incorrectPassword': 'Mot de passe incorrect',
     'invalidCredentials': 'Identifiants invalides',
     'incorrectCurrentPassword': 'Mot de passe actuel incorrect',
@@ -9,7 +9,8 @@ export default {
     'pleaseChooseAFutureDate': 'Veuillez choisir une date future',
     'pleaseChooseAPastDate': 'Veuillez choisir une date passée',
     'passwordsDoNotMatch': 'Les mots de passe ne correspondent pas',
-    'somethingWentWrong': 'Une erreur est survenue'
+    'somethingWentWrong': 'Une erreur est survenue',
+    'passwordComplexity': 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial'
   },
   'menu': {
     'logout': 'Se déconnecter',
@@ -20,9 +21,10 @@ export default {
       'lastName': 'Nom',
       'email': 'Adresse e-mail',
       'password': 'Mot de passe',
-      'confirmPassword': 'Confirmer le mot de passe',
+      'confirmPassword': 'Confirmation du mot de passe',
       'currentPassword': 'Mot de passe actuel',
       'newPassword': 'Nouveau mot de passe',
+      'confirmNewPassword': 'Confirmation du nouveau mot de passe',
       'phoneNumber': 'Numéro de téléphone'
     },
     'placeholder': {
@@ -32,14 +34,14 @@ export default {
       'password': 'Votre mot de passe',
       'confirmPassword': 'Encore une fois',
       'currentPassword': 'Votre mot de passe actuel',
-      'newPassword': 'Votre nouveau mot de passe'
+      'newPassword': 'Votre nouveau mot de passe',
+      'confirmNewPassword': 'Encore une fois'
     },
     'error': {
       'required': 'Ce champ est obligatoire',
       'email': 'Veuillez saisir une adresse e-mail valide',
       'min': 'Ce champ doit contenir au moins {min} caractères',
-      'max': 'Ce champ doit contenir au plus {max} caractères',
-      'sameAs': 'Les mots de passe ne correspondent pas'
+      'max': 'Ce champ doit contenir au plus {max} caractères'
     }
   },
   'forgotPassword': {
@@ -48,6 +50,13 @@ export default {
     'submit': 'Envoyer',
     'back': 'Retour à la page de connexion',
     'success': 'Un e-mail vous a été envoyé avec un lien pour réinitialiser votre mot de passe.'
+  },
+  'resetPassword': {
+    'title': 'Réinitialiser votre mot de passe',
+    'content': 'Veuillez saisir votre nouveau mot de passe.',
+    'submit': 'Confirmer',
+    'back': 'Retour à la page de connexion',
+    'success': 'Votre mot de passe a bien été réinitialisé.'
   },
   'langs': {
     'en-US': 'Anglais',

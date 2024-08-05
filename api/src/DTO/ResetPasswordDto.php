@@ -18,14 +18,14 @@ class ResetPasswordDto
         Assert\Regex(pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])(?!.*\s).*$/', message: 'Password must contain at least one lowercase letter, one uppercase letter, one number and one special character'),
         Assert\Type('string')
     ]
-    private ?string $newPassword;
+    private ?string $password;
 
     /**
      * @var string|null
      */
     #[
         Assert\NotBlank(),
-        Assert\EqualTo(null, 'newPassword', message: 'The new password must be confirmed'),
+        Assert\EqualTo(propertyPath: 'password', message: 'The new password must be confirmed'),
         Assert\Type('string')
     ]
     private ?string $confirmPassword;
@@ -33,18 +33,18 @@ class ResetPasswordDto
     /**
      * @return string|null
      */
-    public function getNewPassword(): ?string
+    public function getPassword(): ?string
     {
-        return $this->newPassword;
+        return $this->password;
     }
 
     /**
-     * @param string|null $newPassword
+     * @param string|null $password
      * @return $this
      */
-    public function setNewPassword(?string $newPassword): self
+    public function setPassword(?string $password): self
     {
-        $this->newPassword = $newPassword;
+        $this->password = $password;
         return $this;
     }
 

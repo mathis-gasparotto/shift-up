@@ -26,7 +26,7 @@ $sizes: (
   100: 100%,
   auto: auto,
   content: fit-content,
-  fill-available: stretch,
+  fill-available: stretch
 );
 
 $gaps: (
@@ -106,14 +106,13 @@ $gaps: (
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: map-get($map: $text-weights, $key: medium) !important;
-}
-
-.label-required {
-  &::after {
-    content: '*';
-  }
 }
 
 .text-underline {

@@ -14,34 +14,37 @@ export function translateError(error, defaultMessage = null) {
 
   switch (errorMessage) {
     case 'Incorrect password':
-      return $t('errors.incorrectPassword')
+      return $t('error.incorrectPassword')
     case 'Invalid credentials':
-      return $t('errors.invalidCredentials')
+      return $t('error.invalidCredentials')
     case 'Incorrect current password':
-      return $t('errors.incorrectCurrentPassword')
+      return $t('error.incorrectCurrentPassword')
     case 'The token has expired':
-      return $t('errors.theLinkHasExpired')
+      return $t('error.theLinkHasExpired')
     case 'Invalid token':
-      return $t('errors.invalidLink')
+      return $t('error.invalidLink')
     case 'Invalid confirmation token':
-      return $t('errors.invalidLink')
+      return $t('error.invalidLink')
     case 'phone: This value is already used.':
-      return $t('errors.phoneNumberAlreadyUsed')
+      return $t('error.phoneNumberAlreadyUsed')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
-        return $t('errors.pleaseChooseAFutureDate')
+        return $t('error.pleaseChooseAFutureDate')
       }
       if (/.*This value should be less than.*/gm.test(errorMessage)) {
-        return $t('errors.pleaseChooseAPastDate')
+        return $t('error.pleaseChooseAPastDate')
       }
-      if (/^confirmPassword: The password must be confirmed.*/gm.test(errorMessage)) {
-        return $t('errors.passwordsDoNotMatch')
+      if (/^The password must be confirmed.*/gm.test(errorMessage) || /^The new password must be confirmed*/gm.test(errorMessage)) {
+        return $t('error.passwordsDoNotMatch')
+      }
+      if (/^Password must contain at least one lowercase letter, one uppercase letter, one number and one special character*/gm.test(errorMessage)) {
+        return $t('error.passwordComplexity')
       }
       if (defaultMessage) {
         return defaultMessage
       }
       console.error('Error message not translated:', error)
-      return $t('errors.somethingWentWrong')
+      return $t('error.somethingWentWrong')
   }
 }
 

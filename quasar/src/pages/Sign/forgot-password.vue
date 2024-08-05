@@ -50,6 +50,7 @@
         rounded
         type="submit"
         :loading="loading"
+        :disabled="!isValid"
       />
     </q-form>
     <p class="q-mt-lg">
@@ -63,7 +64,6 @@
 </template>
 
 <script>
-import { rule } from 'postcss'
 import SUbtn from 'src/components/SUbtn.vue'
 import { translateError } from 'src/helpers/translatting'
 
@@ -79,7 +79,11 @@ export default {
       successSessage: ''
     }
   },
-
+  computed: {
+    isValid() {
+      return this.email.trim().length > 0
+    }
+  },
   methods: {
     submit() {
       this.loading = true

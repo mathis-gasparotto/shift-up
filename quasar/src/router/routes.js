@@ -27,24 +27,50 @@ const beforeNoSign = function (to, from, next) {
 
 const routes = [
   {
-    path: '/sign',
+    path: '/signup',
     component: () => import('layouts/SignLayout.vue'),
     beforeEnter: beforeSign,
     children: [
       {
-        path: 'signup',
+        path: '',
         name: 'signup',
         component: () => import('pages/sign/signup.vue')
-      },
+      }
+    ]
+  },
+  {
+    path: '/signin',
+    component: () => import('layouts/SignLayout.vue'),
+    beforeEnter: beforeSign,
+    children: [
       {
-        path: 'signin',
+        path: '',
         name: 'signin',
         component: () => import('pages/sign/signin.vue')
-      },
+      }
+    ]
+  },
+  {
+    path: '/forgot-password',
+    component: () => import('layouts/SignLayout.vue'),
+    beforeEnter: beforeSign,
+    children: [
       {
-        path: 'forgot-password',
+        path: '',
         name: 'forgotPassword',
         component: () => import('pages/sign/forgot-password.vue')
+      }
+    ]
+  },
+  {
+    path: '/reset-password/:token',
+    component: () => import('layouts/SignLayout.vue'),
+    beforeEnter: beforeSign,
+    children: [
+      {
+        path: '',
+        name: 'resetPassword',
+        component: () => import('pages/sign/reset-password.vue')
       }
     ]
   },
