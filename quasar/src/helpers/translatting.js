@@ -27,6 +27,12 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.invalidLink')
     case 'phone: This value is already used.':
       return $t('error.phoneNumberAlreadyUsed')
+    case 'phone: This value is not a valid phone number.':
+      return $t('error.phoneNumberInvalid')
+    case 'email: This value is already used.':
+      return $t('error.emailAlreadyUsed')
+    case 'email: This value is not a valid email address.':
+      return $t('error.emailInvalid')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

@@ -6,11 +6,14 @@ export default {
     'theLinkHasExpired': 'Le lien a expiré',
     'invalidLink': 'Lien invalide',
     'phoneNumberAlreadyUsed': 'Numéro de téléphone déjà utilisé',
+    'phoneNumberInvalid': 'Numéro de téléphone invalide',
     'pleaseChooseAFutureDate': 'Veuillez choisir une date future',
     'pleaseChooseAPastDate': 'Veuillez choisir une date passée',
     'passwordsDoNotMatch': 'Les mots de passe ne correspondent pas',
     'somethingWentWrong': 'Une erreur est survenue',
-    'passwordComplexity': 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial'
+    'passwordComplexity': 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial',
+    'emailAlreadyUsed': 'Adresse e-mail déjà utilisée',
+    'emailInvalid': 'Adresse e-mail invalide'
   },
   'menu': {
     'logout': 'Se déconnecter',
@@ -63,6 +66,11 @@ export default {
     'fr-FR': 'Français'
   },
   'signup': {
+    'title': 'S\'inscrire',
+    'content': 'Veuillez saisir vos informations pour vous inscrire.',
+    'submit': 'S\'inscrire',
+    'alreadySigned': 'Déjà inscrit ?',
+    'login': 'Se connecter',
     'successCard': {
       'title': 'Inscription réussie',
       'content': 'Un mail de confirmation a été envoyé à votre adresse email. Veuillez vérifier votre boîte de réception ainsi que vos spams.',

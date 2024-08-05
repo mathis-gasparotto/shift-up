@@ -1,8 +1,8 @@
 <template>
   <q-page class="flex-center column page q-mx-auto q-py-xl">
     <div class="w-100 q-mb-lg">
-      <h2 class="text-h4 q-mb-sm q-mt-none">S'inscrire</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <h2 class="text-h4 q-mb-sm q-mt-none">{{ $t('signup.title') }}</h2>
+      <p>{{ $t('signup.content') }}</p>
     </div>
     <q-form
       class="w-100 gap-10 column items-center"
@@ -13,32 +13,32 @@
           <label
             for="first_name"
             class="text-weight-medium label-required"
-            >Prénom</label
+            >{{ $t('form.label.fisrtName') }}</label
           >
           <q-input
             v-model="firstName"
             outlined
             for="first_name"
-            placeholder="John"
+            :placeholder="$t('form.placeholder.fisrtName')"
             class="input"
             lazy-rules
-            :rules="[(val) => (val && val.trim().length > 3) || 'Prénom requis']"
+            :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
           />
         </div>
         <div>
           <label
             for="last_name"
             class="text-weight-medium label-required"
-            >Nom</label
+            >{{ $t('form.label.lastName') }}</label
           >
           <q-input
             v-model="lastName"
             outlined
             for="last_name"
-            placeholder="Doe"
+            :placeholder="$t('form.placeholder.lastName')"
             class="input"
             lazy-rules
-            :rules="[(val) => (val && val.trim().length > 3) || 'Nom requis']"
+            :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
           />
         </div>
       </div>
@@ -46,7 +46,7 @@
         <label
           for="phone"
           class="text-weight-medium label-required"
-          >Numéro de téléphone</label
+          >{{ $t('form.label.phoneNumber') }}</label
         >
         <Vue3QTelInput
           v-model="phone.value"
@@ -59,8 +59,8 @@
           @country="updatePhoneCountry"
           @error="(val) => (phone.error = val)"
           :rules="[
-            (val) => !!val || 'Numéro de téléphone requis',
-            (val) => !phone.error || 'Numéro de téléphone invalide'
+            (val) => !!val || $t('form.error.required'),
+            (val) => !phone.error || $t('error.phoneNumberInvalid')
           ]"
         />
       </div>
@@ -68,41 +68,39 @@
         <label
           for="email"
           class="text-weight-medium label-required"
-          >Email</label
+          >{{ $t('form.label.email') }}</label
         >
         <q-input
           v-model="email"
           outlined
           inputmode="email"
           for="email"
-          placeholder="johndoe@gmail.com"
+          :placeholder="$t('form.placeholder.email')"
           class="input"
           type="email"
           lazy-rules
-          :rules="[(val, rules) => rules.email(val) || 'Email invalide']"
+          :rules="[(val, rules) => rules.email(val) || $t('error.emailInvalid')]"
         />
       </div>
       <div class="w-100">
         <label
           for="password"
           class="text-weight-medium label-required"
-          >Mot de passe</label
+          >{{ $t('form.label.password') }}</label
         >
         <q-input
           v-model="password.value"
           outlined
           :type="password.visible ? 'text' : 'password'"
           for="password"
-          placeholder="Votre mot de passe"
+          :placeholder="$t('form.placeholder.password')"
           class="input"
           lazy-rules
           hint="8 caractères minimum, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial"
           hide-hint
           :rules="[
-            (val) => (val && val.trim().length > 0) || 'You must enter a password',
-            (val) =>
-              /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) ||
-              'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial'
+            (val) => (val && val.trim().length > 0) || $t('form.error.required'),
+            (val) => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) || $t('error.passwordComplexity')
           ]"
         >
           <template v-slot:append>
@@ -118,19 +116,19 @@
         <label
           for="confirm_password"
           class="text-weight-medium label-required"
-          >Confirmation du mot de passe</label
+          >{{ $t('form.label.confirmPassword') }}</label
         >
         <q-input
           v-model="confirmPassword.value"
           outlined
           :type="confirmPassword.visible ? 'text' : 'password'"
           for="confirm_password"
-          placeholder="Encore votre mot de passe..."
+          :placeholder="$t('form.placeholder.confirmPassword')"
           class="input"
           reactive-rules
           :rules="[
-            (val) => val.trim().length > 0 || 'Vous devez entrer un mot de passe',
-            (val) => val === password.value || 'Les mots de passe ne correspondent pas'
+            (val) => val.trim().length > 0 || $t('form.error.required'),
+            (val) => val === password.value || $t('error.passwordsDoNotMatch')
           ]"
         >
           <template v-slot:append>
@@ -149,7 +147,7 @@
         {{ error }}
       </p>
       <SUbtn
-        label="S'inscrire"
+        :label="$t('signup.submit')"
         color="gradient"
         class="w-100"
         rounded
@@ -170,11 +168,11 @@
       </InfoCard>
     </q-form>
     <p class="q-mt-lg">
-      Déjà inscrit ?
+      {{ $t('signup.alreadySigned') }}
       <router-link
         :to="{ name: 'signin' }"
         class="text-bold"
-        >Se connecter</router-link
+        >{{ $t('signup.login') }}</router-link
       >
     </p>
   </q-page>
