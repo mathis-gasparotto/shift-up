@@ -1,19 +1,49 @@
 <template>
-  <Modal v-if="project" title="Modifier votre projet" :subtitle="project.name" ref="modal" buttonsAlign="full">
-    <q-form class="w-100 gap-10 column items-center q-mb-lg" @submit.prevent="submit">
+  <Modal
+    v-if="project"
+    :title="$t('project.editModal.title')"
+    :subtitle="project.name"
+    ref="modal"
+    buttonsAlign="full"
+  >
+    <q-form
+      class="w-100 gap-10 column items-center q-mb-lg"
+      @submit.prevent="submit"
+    >
       <div class="w-100">
-        <label for="name" class="text-weight-medium label-required">Nom du projet</label>
-        <q-input v-model="form.name" outlined for="name" placeholder="Un nom pour votre projet" class="input"
-          type="text" lazy-rules :rules="[
-    (val) =>
-      val && val.trim().length > 3 || 'Nom du projet requis'
-  ]" />
+        <label
+          for="name"
+          class="text-weight-medium label-required"
+          >{{ $t('form.project.label.name') }}</label
+        >
+        <q-input
+          v-model="form.name"
+          outlined
+          for="name"
+          :placeholder="$t('form.project.placeholder.name')"
+          class="input"
+          type="text"
+          lazy-rules
+          :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
+        />
       </div>
-      <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
+      <p
+        v-if="error"
+        class="text-negative q-mb-none"
+      >
+        {{ error }}
+      </p>
     </q-form>
     <template #buttons>
-      <SUbtn label="Enregstrer" color="gradient" rounded class="w-100" type="submit" :loading="loading"
-        @click="submit" />
+      <SUbtn
+        :label="$t('project.editModal.submit')"
+        color="gradient"
+        rounded
+        class="w-100"
+        type="submit"
+        :loading="loading"
+        @click="submit"
+      />
     </template>
   </Modal>
 </template>
@@ -50,10 +80,11 @@ export default {
   methods: {
     submit() {
       this.loading = true
-      this.$resources.projects.update(this.project.id, this.form)
+      this.$resources.projects
+        .update(this.project.id, this.form)
         .then(() => {
           this.$refs.modal.open = false
-          successNotify('Projet mis à jour avec succès')
+          successNotify($t('project.editModal.success'))
           this.$emit('updated')
         })
         .catch((error) => {

@@ -1,21 +1,28 @@
 <template>
   <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
     <div>
-      <div style="font-size: 30vh">
-        404
+      <div style="font-size: 30vh">404</div>
+
+      <div
+        class="text-h2"
+        style="opacity: 0.4"
+      >
+        {{ $t('notFound.content') }}
       </div>
 
-      <div class="text-h2" style="opacity:.4">
-        Oups! Page introuvable...
-      </div>
-
-      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/" label="Revenir à la page d'accueil"
-        no-caps />
+      <q-btn
+        class="q-mt-xl"
+        color="white"
+        text-color="blue"
+        unelevated
+        to="/"
+        :label="$t('notFound.backToHome')"
+        no-caps
+      />
     </div>
   </div>
 </template>
 
 <script>
-export default {
-}
+export default {}
 </script>

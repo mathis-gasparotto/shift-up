@@ -13,13 +13,13 @@
           <label
             for="first_name"
             class="text-weight-medium label-required"
-            >{{ $t('form.label.fisrtName') }}</label
+            >{{ $t('form.user.label.fisrtName') }}</label
           >
           <q-input
             v-model="firstName"
             outlined
             for="first_name"
-            :placeholder="$t('form.placeholder.fisrtName')"
+            :placeholder="$t('form.user.placeholder.fisrtName')"
             class="input"
             lazy-rules
             :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
@@ -29,13 +29,13 @@
           <label
             for="last_name"
             class="text-weight-medium label-required"
-            >{{ $t('form.label.lastName') }}</label
+            >{{ $t('form.user.label.lastName') }}</label
           >
           <q-input
             v-model="lastName"
             outlined
             for="last_name"
-            :placeholder="$t('form.placeholder.lastName')"
+            :placeholder="$t('form.user.placeholder.lastName')"
             class="input"
             lazy-rules
             :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
@@ -46,7 +46,7 @@
         <label
           for="phone"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.phoneNumber') }}</label
+          >{{ $t('form.user.label.phoneNumber') }}</label
         >
         <Vue3QTelInput
           v-model="phone.value"
@@ -68,14 +68,14 @@
         <label
           for="email"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.email') }}</label
+          >{{ $t('form.user.label.email') }}</label
         >
         <q-input
           v-model="email"
           outlined
           inputmode="email"
           for="email"
-          :placeholder="$t('form.placeholder.email')"
+          :placeholder="$t('form.user.placeholder.email')"
           class="input"
           type="email"
           lazy-rules
@@ -86,14 +86,14 @@
         <label
           for="password"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.password') }}</label
+          >{{ $t('form.user.label.password') }}</label
         >
         <q-input
           v-model="password.value"
           outlined
           :type="password.visible ? 'text' : 'password'"
           for="password"
-          :placeholder="$t('form.placeholder.password')"
+          :placeholder="$t('form.user.placeholder.password')"
           class="input"
           lazy-rules
           hint="8 caractères minimum, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial"
@@ -116,14 +116,14 @@
         <label
           for="confirm_password"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.confirmPassword') }}</label
+          >{{ $t('form.user.label.confirmPassword') }}</label
         >
         <q-input
           v-model="confirmPassword.value"
           outlined
           :type="confirmPassword.visible ? 'text' : 'password'"
           for="confirm_password"
-          :placeholder="$t('form.placeholder.confirmPassword')"
+          :placeholder="$t('form.user.placeholder.confirmPassword')"
           class="input"
           reactive-rules
           :rules="[

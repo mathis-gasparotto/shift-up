@@ -1,7 +1,12 @@
 <template>
   <div class="q-gutter-sm q-mt-xs column">
-    <q-checkbox v-for="(option, index) in options" :key="index" v-model="option.selected" :disable="option.disabled"
-      :label="option.label" />
+    <q-checkbox
+      v-for="(option, index) in options"
+      :key="index"
+      v-model="option.selected"
+      :disable="option.disabled"
+      :label="$t('document.name.' + option.value)"
+    />
   </div>
 </template>
 
@@ -18,23 +23,25 @@ export default {
   data() {
     return {
       options: [
-        { label: 'Business Model Canvas', value: 'business_model_canvas', selected: false },
-        { label: 'Buyer Persona', value: 'buyer_persona', selected: false },
-        { label: 'Analyse de la concurence', value: 'competitor_analysis', selected: false },
-        { label: 'Triange d\'or', value: 'golden_triangle', selected: false },
-        { label: '4P', value: 'marketing_mix4', selected: false, disabled: true },
-        { label: '5P', value: 'marketing_mix5', selected: false, disabled: true },
-        { label: 'PESTEL', value: 'pestel', selected: false, disabled: true },
-        { label: 'SMART', value: 'smart', selected: false },
-        { label: 'STP', value: 'stp', selected: false, disabled: true },
-        { label: 'SWOT', value: 'swot', selected: false }
+        { value: 'business_model_canvas', selected: false },
+        { value: 'buyer_persona', selected: false },
+        { value: 'competitor_analysis', selected: false },
+        { value: 'golden_triangle', selected: false },
+        { value: 'marketing_mix4', selected: false, disabled: true },
+        { value: 'marketing_mix5', selected: false, disabled: true },
+        { value: 'pestel', selected: false, disabled: true },
+        { value: 'smart', selected: false },
+        { value: 'stp', selected: false, disabled: true },
+        { value: 'swot', selected: false }
       ]
     }
   },
   watch: {
     options: {
       handler() {
-        this.documents = this.options.filter((option) => this.isPro ? option.selected : !option.disabled && option.selected).map((option) => option.value)
+        this.documents = this.options
+          .filter((option) => (this.isPro ? option.selected : !option.disabled && option.selected))
+          .map((option) => option.value)
       },
       deep: true
     },
@@ -66,7 +73,7 @@ export default {
       set(value) {
         this.$emit('update:documentsSelected', value)
       }
-    },
+    }
   }
 }
 </script>

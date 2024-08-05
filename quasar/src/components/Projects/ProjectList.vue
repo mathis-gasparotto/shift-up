@@ -3,11 +3,20 @@
     <div class="projects-list flex gap-20">
       <ProjectCardSkeleton v-if="loading" />
       <template v-else-if="projects.length > 0">
-        <ProjectCard v-for="project in projects" :key="project.id" :project="project" linked />
+        <ProjectCard
+          v-for="project in projects"
+          :key="project.id"
+          :project="project"
+          linked
+        />
       </template>
-      <AddCard v-if="addCard" text="Nouveau projet" @cardClick="createNewProject" />
+      <AddCard
+        v-if="addCard"
+        :text="$t('project.list.newProject')"
+        @cardClick="createNewProject"
+      />
     </div>
-    <div v-if="!addCard && !loading && projects.length === 0">Pas de projet de disponible</div>
+    <div v-if="!addCard && !loading && projects.length === 0">{{ $t('project.list.noProject') }}</div>
   </div>
 </template>
 

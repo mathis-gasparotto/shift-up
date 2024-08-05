@@ -1,20 +1,50 @@
 <template>
   <q-page>
-    <MainBreadcrumps :loading="loading" :team-name="team.name" />
+    <MainBreadcrumps
+      :loading="loading"
+      :team-name="team.name"
+    />
     <div class="nav q-my-xl flex gap-100 items-center">
-      <SUbtn label="Retour" color="grey-light" rounded icon="arrow_back" textColor="grey" @click="goBack" />
+      <SUbtn
+        :label="$t('project.create.back')"
+        color="grey-light"
+        rounded
+        icon="arrow_back"
+        textColor="grey"
+        @click="goBack"
+      />
 
       <div class="flex items-center gap-30">
         <div class="flex items-center gap-8 steps">
-          <q-linear-progress :value="step >= 1 ? 1 : 0" rounded color="primary" class="step-bar" />
-          <q-linear-progress :value="step >= 2 ? 1 : 0" rounded color="primary" class="step-bar" />
-          <q-linear-progress :value="step >= 3 ? 1 : 0" rounded color="primary" class="step-bar" />
+          <q-linear-progress
+            :value="step >= 1 ? 1 : 0"
+            rounded
+            color="primary"
+            class="step-bar"
+          />
+          <q-linear-progress
+            :value="step >= 2 ? 1 : 0"
+            rounded
+            color="primary"
+            class="step-bar"
+          />
+          <q-linear-progress
+            :value="step >= 3 ? 1 : 0"
+            rounded
+            color="primary"
+            class="step-bar"
+          />
         </div>
         <span class="q-mb-none text-grey">{{ step }}/3</span>
       </div>
     </div>
 
-    <component :is="stepComponent" @submit="onSubmit" v-model:form="form" :loading="formLoading" />
+    <component
+      :is="stepComponent"
+      @submit="onSubmit"
+      v-model:form="form"
+      :loading="formLoading"
+    />
   </q-page>
 </template>
 
@@ -65,31 +95,37 @@ export default {
 
       this.formLoading = true
       const payload = {
-        team: this.team['@id'] || ('/teams/' + this.$route.params.teamId),
+        team: this.team['@id'] || '/teams/' + this.$route.params.teamId,
         name: this.form.name,
         description: this.form.description,
         sellingObject: this.form.sellingObject
       }
-      this.$resources.projects.create(payload).then((res) => {
-        // TODO: generate all documents
+      this.$resources.projects
+        .create(payload)
+        .then((res) => {
+          // TODO: generate all documents
 
-        this.formLoading = false
-        successNotify('Projet créé avec succès !')
-        this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
-      }).catch((err) => {
-        this.formLoading = false
-        displayError(err)
-      })
+          this.formLoading = false
+          successNotify($t('projects.create.success'))
+          this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
+        })
+        .catch((err) => {
+          this.formLoading = false
+          displayError(err)
+        })
     },
     reloadData() {
       this.loading = true
-      this.$resources.teams.get(this.$route.params.teamId).then((res) => {
-        this.team = res
-        this.loading = false
-      }).catch((err) => {
-        displayError(err)
-        this.loading = false
-      })
+      this.$resources.teams
+        .get(this.$route.params.teamId)
+        .then((res) => {
+          this.team = res
+          this.loading = false
+        })
+        .catch((err) => {
+          displayError(err)
+          this.loading = false
+        })
     },
     goBack() {
       if (this.step <= 1) {

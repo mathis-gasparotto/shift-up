@@ -12,14 +12,14 @@
         <label
           for="email"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.email') }}</label
+          >{{ $t('form.user.label.email') }}</label
         >
         <q-input
           v-model="email"
           outlined
           inputmode="email"
           for="email"
-          :placeholder="$t('form.placeholder.email')"
+          :placeholder="$t('form.user.placeholder.email')"
           class="input"
           type="email"
           lazy-rules
@@ -30,14 +30,14 @@
         <label
           for="password"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.password') }}</label
+          >{{ $t('form.user.label.password') }}</label
         >
         <q-input
           v-model="password.value"
           outlined
           :type="password.visible ? 'text' : 'password'"
           for="password"
-          :placeholder="$t('form.placeholder.password')"
+          :placeholder="$t('form.user.placeholder.password')"
           class="input"
           lazy-rules
           :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"

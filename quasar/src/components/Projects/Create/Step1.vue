@@ -1,27 +1,49 @@
 <template>
   <div>
-    <h1>Créez votre projet</h1>
+    <h1>{{ $t('project.create.step1') }}</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
-        <label for="name" class="text-weight-medium label-required">Nom du projet</label>
-        <q-input v-model="_form.name" outlined for="name" placeholder="Ajoutez un nom à votre projet"
-          class="input q-mb-md" type="text" lazy-rules :rules="[
-      (val) =>
-        val.trim().length > 0 || 'Vous devez entrer un nom de projet'
-    ]" />
+        <label
+          for="name"
+          class="text-weight-medium label-required"
+          >{{ $t('form.project.label.name') }}</label
+        >
+        <q-input
+          v-model="_form.name"
+          outlined
+          for="name"
+          :placeholder="$t('form.project.placeholder.name')"
+          class="input q-mb-md"
+          type="text"
+          lazy-rules
+          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
+        />
       </div>
       <div class="w-100">
-        <label for="description" class="text-weight-medium label-required">Description</label>
-        <q-input v-model="_form.description" outlined for="description" placeholder="Décrivez votre projet au maximum"
-          class="input q-mb-md" type="textarea" lazy-rules :rules="[
-      (val) =>
-        val.trim().length > 0 || 'Vous devez entrer une description de projet'
-    ]" />
+        <label
+          for="description"
+          class="text-weight-medium label-required"
+          >{{ $t('form.project.label.description') }}</label
+        >
+        <q-input
+          v-model="_form.description"
+          outlined
+          for="description"
+          :placeholder="$t('form.project.placeholder.description')"
+          class="input q-mb-md"
+          type="textarea"
+          lazy-rules
+          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
+        />
       </div>
 
-      <SUbtn label="Passer à l’étape suivante" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
-        :disabled="!isValid" />
-
+      <SUbtn
+        :label="$t('project.create.nextStep')"
+        type="submit"
+        color="gradient"
+        class="fixed-bottom-right q-mr-xl q-mb-xl"
+        :disabled="!isValid"
+      />
     </q-form>
   </div>
 </template>

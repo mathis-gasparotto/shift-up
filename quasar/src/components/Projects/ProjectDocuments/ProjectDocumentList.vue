@@ -3,12 +3,21 @@
     <div class="project-document-list flex gap-20">
       <ProjectDocumentCardSkeleton v-if="loading" />
       <template v-else-if="documents.length > 0">
-        <ProjectDocumentCard v-for="document in documents" :project="project" :key="document.id" :document="document"
-          linked />
+        <ProjectDocumentCard
+          v-for="document in documents"
+          :project="project"
+          :key="document.id"
+          :document="document"
+          linked
+        />
       </template>
-      <AddCard v-if="addCard" text="Nouveau projet" @cardClick="createNewProject" />
+      <AddCard
+        v-if="addCard"
+        :text="$t('document.list.newDocument')"
+        @cardClick="generateNewDocument"
+      />
     </div>
-    <div v-if="!addCard && !loading && documents.length === 0">Pas de projet de disponible</div>
+    <div v-if="!addCard && !loading && documents.length === 0">{{ $t('document.list.noDocument') }}</div>
   </div>
 </template>
 
@@ -43,8 +52,8 @@ export default {
     AddCard
   },
   methods: {
-    createNewProject() {
-      this.$router.push({ name: 'project-create', params: { teamId: this.$route.params.teamId } })
+    generateNewDocument() {
+      console.log('generateNewDocument')
     }
   }
 }

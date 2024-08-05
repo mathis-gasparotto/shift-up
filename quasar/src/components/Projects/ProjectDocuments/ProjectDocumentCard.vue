@@ -1,10 +1,16 @@
 <template>
-  <q-card :class="'project-document-card q-pa-lg' + (linked && documentRoute ? ' cursor-pointer' : '')"
-    @click="click()">
+  <q-card
+    :class="'project-document-card q-pa-lg' + (linked && documentRoute ? ' cursor-pointer' : '')"
+    @click="click()"
+  >
     <q-card-section class="q-pa-none q-mb-md">
       <!-- <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
         class="project-document-img w-100" /> -->
-      <q-skeleton type="rect" class="project-document-img" height="150px" />
+      <q-skeleton
+        type="rect"
+        class="project-document-img"
+        height="150px"
+      />
     </q-card-section>
     <q-card-section class="q-pa-none">
       <div>
@@ -78,31 +84,34 @@ export default {
 
       return { name: 'project-document', params }
     },
-    title() {
+    value() {
       switch (this.document['@type']) {
         case 'BusinessModelCanvas':
-          return 'Business Model Canvas'
+          return 'business_model_canvas'
         case 'BuyerPersona':
-          return 'Buyer Persona'
+          return 'buyer_persona'
         case 'CompetitorAnalysis':
-          return 'Analyse de la concurrence'
+          return 'competitor_analysis'
         case 'GoldenTriangle':
-          return 'Triangle d\'or'
+          return 'golden_triangle'
         case 'MarketingMix4':
-          return '4P'
+          return 'marketing_mix4'
         case 'MarketingMix5':
-          return '5P'
+          return 'marketing_mix5'
         case 'PESTEL':
-          return 'PESTEL'
+          return 'pestel'
         case 'SMART':
-          return 'SMART'
+          return 'smart'
         case 'STP':
-          return 'STP'
+          return 'stp'
         case 'SWOT':
-          return 'SWOT'
+          return 'swot'
         default:
           return ''
       }
+    },
+    title() {
+      return this.$t(`document.name.${this.value}`)
     }
   },
   methods: {

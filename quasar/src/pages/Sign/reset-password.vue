@@ -15,13 +15,13 @@
           for="password"
           class="text-weight-medium label-required"
         >
-          {{ $t('form.label.newPassword') }}
+          {{ $t('form.user.label.newPassword') }}
         </label>
         <q-input
           v-model="password.value"
           outlined
           for="password"
-          :placeholder="$t('form.placeholder.newPassword')"
+          :placeholder="$t('form.user.placeholder.newPassword')"
           class="input"
           :type="password.visible ? 'text' : 'password'"
           lazy-rules
@@ -44,13 +44,13 @@
           for="confirmPassword"
           class="text-weight-medium label-required"
         >
-          {{ $t('form.label.confirmNewPassword') }}
+          {{ $t('form.user.label.confirmNewPassword') }}
         </label>
         <q-input
           v-model="confirmPassword.value"
           outlined
           for="confirmPassword"
-          :placeholder="$t('form.placeholder.confirmNewPassword')"
+          :placeholder="$t('form.user.placeholder.confirmNewPassword')"
           class="input"
           :type="confirmPassword.visible ? 'text' : 'password'"
           lazy-rules

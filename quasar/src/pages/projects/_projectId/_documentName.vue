@@ -152,9 +152,9 @@ export default {
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
-            errorNotify($t('documentName.errorNotFound'))
+            errorNotify($t('document.errorNotFound'))
           } else {
-            displayError(error, $t('documentName.defaultError'))
+            displayError(error, $t('document.defaultError'))
           }
           this.$router.push({
             name: 'project',

@@ -1,13 +1,23 @@
 <template>
-  <q-card :class="'project-card q-pa-lg' + (linked ? ' cursor-pointer' : '')" @click="click()">
+  <q-card
+    :class="'project-card q-pa-lg' + (linked ? ' cursor-pointer' : '')"
+    @click="click()"
+  >
     <q-card-section class="q-pa-none q-mb-md">
-      <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
-        class="project-img w-100" />
+      <q-img
+        :src="'/src/assets/projects/' + project.picture.contentUrl"
+        height="150px"
+        fit="cover"
+        rounded
+        class="project-img w-100"
+      />
     </q-card-section>
     <q-card-section class="q-pa-none">
       <div>
         <h3 class="text-body1 q-my-none">{{ strMaxLenght(project.name, 13) }}</h3>
-        <p class="text-caption q-my-none">Modifié {{ durationFromDateTime(project.updatedAt) }}</p>
+        <p class="text-caption q-my-none">
+          {{ $t('project.card.edited') + ' ' + durationFromDateTime(project.updatedAt) }}
+        </p>
       </div>
     </q-card-section>
   </q-card>

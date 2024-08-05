@@ -15,37 +15,69 @@ export default {
     'emailAlreadyUsed': 'Adresse e-mail déjà utilisée',
     'emailInvalid': 'Adresse e-mail invalide'
   },
-  'menu': {
+  'breadcrumb': {
+    'home': 'Accueil',
+    'createNewProject': 'Créer un nouveau projet',
+  },
+  'nav': {
     'logout': 'Se déconnecter',
+    'profile': 'Profil',
+    'settings': 'Paramètres',
+    'minimize': 'Réduire',
+    'changePlan': 'Changer d\'offre',
+    'logoutSuccess': 'Vous avez bien été déconnecté'
   },
   'form': {
-    'label': {
-      'fisrtName': 'Prénom',
-      'lastName': 'Nom',
-      'email': 'Adresse e-mail',
-      'password': 'Mot de passe',
-      'confirmPassword': 'Confirmation du mot de passe',
-      'currentPassword': 'Mot de passe actuel',
-      'newPassword': 'Nouveau mot de passe',
-      'confirmNewPassword': 'Confirmation du nouveau mot de passe',
-      'phoneNumber': 'Numéro de téléphone'
-    },
-    'placeholder': {
-      'fisrtName': 'John',
-      'lastName': 'Doe',
-      'email': 'john.doe@gmail.com',
-      'password': 'Votre mot de passe',
-      'confirmPassword': 'Encore une fois',
-      'currentPassword': 'Votre mot de passe actuel',
-      'newPassword': 'Votre nouveau mot de passe',
-      'confirmNewPassword': 'Encore une fois'
-    },
     'error': {
       'required': 'Ce champ est obligatoire',
       'email': 'Veuillez saisir une adresse e-mail valide',
       'min': 'Ce champ doit contenir au moins {min} caractères',
       'max': 'Ce champ doit contenir au plus {max} caractères'
+    },
+    'user': {
+      'label': {
+        'fisrtName': 'Prénom',
+        'lastName': 'Nom',
+        'email': 'Adresse e-mail',
+        'password': 'Mot de passe',
+        'confirmPassword': 'Confirmation du mot de passe',
+        'currentPassword': 'Mot de passe actuel',
+        'newPassword': 'Nouveau mot de passe',
+        'confirmNewPassword': 'Confirmation du nouveau mot de passe',
+        'phoneNumber': 'Numéro de téléphone'
+      },
+      'placeholder': {
+        'fisrtName': 'John',
+        'lastName': 'Doe',
+        'email': 'john.doe@gmail.com',
+        'password': 'Votre mot de passe',
+        'confirmPassword': 'Encore une fois',
+        'currentPassword': 'Votre mot de passe actuel',
+        'newPassword': 'Votre nouveau mot de passe',
+        'confirmNewPassword': 'Encore une fois'
+      }
+    },
+    'project': {
+      'label': {
+        'name': 'Nom du projet',
+        'description': 'Description',
+        'type': 'Type de projet',
+      },
+      'placeholder': {
+        'name': 'Ajouter un nom à votre projet',
+        'description': 'Décrivez au maximum votre projet',
+      },
+      'error': {
+        'required': 'Ce champ est obligatoire',
+        'min': 'Ce champ doit contenir au moins {min} caractères',
+        'max': 'Ce champ doit contenir au plus {max} caractères'
+      }
     }
+  },
+  'notFound': {
+    'title': 'Page introuvable',
+    'content': 'La page que vous cherchez n\'existe pas.',
+    'backToHome': 'Revenir à la page d\'accueil'
   },
   'forgotPassword': {
     'title': 'Mot de passe oublié',
@@ -92,8 +124,73 @@ export default {
     'successTitle': 'Votre email a bien été confirmée !',
     'action': 'Retour à la page de connexion'
   },
-  'documentName': {
+  'home': {
+    'createNewTeam': 'Créer une nouvelle équipe',
+    'organizeYourProjects': 'Organisez vos projets',
+    'teams': 'Équipes',
+    'projects': 'Projets',
+  },
+  'team': {
+    'details': {
+      'projects': 'Projets',
+      'noProject': 'Aucun projet disponible',
+    },
+    'list': {
+      'noTeam': 'Aucune équipe disponible',
+      'newTeam': 'Créer une nouvelle équipe'
+    },
+  },
+  'project': {
+    'create': {
+      'step1': 'Créez votre projet',
+      'step2': 'Définissez votre projet',
+      'step3': 'Choisissez les documents à générer',
+      'nextStep': 'Passer à l\'étape suivante',
+      'submit': 'Générer',
+      'back': 'Retour',
+      'success': 'Projet créé avec succès'
+    },
+    'sellingObject': {
+      'product_for_sale': 'Produit à vendre',
+      'service': 'Service/Prestation',
+      'concept': 'Produit innovant/Concept'
+    },
+    'card': {
+      'edited': 'Modifié',
+    },
+    'list': {
+      'noProject': 'Aucun projet disponible',
+      'newProject': 'Nouveau projet'
+    },
+    'editModal': {
+      'title': 'Modifier votre projet',
+      'submit': 'Enregistrer',
+      'success': 'Projet mis à jour avec succès'
+    },
+    'details': {
+      'voidProjectTitle': 'Votre projet est vide',
+      'voidProjectText': 'Ajoutez des informations pour commencer à travailler sur votre projet',
+      'generate': 'Générer la stratégie'
+    }
+  },
+  'document': {
     'errorNotFound': 'Document introuvable',
-    'defaultError': 'Impossible de charger le document'
+    'defaultError': 'Impossible de charger le document',
+    'name': {
+      'business_model_canvas': 'Business Model Canvas',
+      'buyer_persona': 'Buyer Persona',
+      'competitor_analysis': 'Analyse de la concurence',
+      'golden_triangle': 'Triange d\'or',
+      'marketing_mix4': '4P',
+      'marketing_mix5': '5P',
+      'pestel': 'PESTEL',
+      'smart': 'SMART',
+      'stp': 'STP',
+      'swot': 'SWOT'
+    },
+    'list': {
+      'noDocument': 'Aucun document disponible',
+      'newDocument': 'Générer un document'
+    }
   }
 }

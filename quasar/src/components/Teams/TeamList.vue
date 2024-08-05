@@ -1,10 +1,18 @@
 <template>
   <div>
     <TeamCardSkeleton v-if="loading" />
-    <div class="teams-list flex gap-20" v-else-if="teams.length > 0">
-      <TeamCard v-for="team in teams" :key="team.id" :team="team" link />
+    <div
+      class="teams-list flex gap-20"
+      v-else-if="teams.length > 0"
+    >
+      <TeamCard
+        v-for="team in teams"
+        :key="team.id"
+        :team="team"
+        link
+      />
     </div>
-    <div v-else>Pas d'équipe de disponible</div>
+    <div v-else>{{ $t('team.list.noTeam') }}</div>
   </div>
 </template>
 

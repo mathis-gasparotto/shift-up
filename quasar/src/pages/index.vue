@@ -1,24 +1,44 @@
 <template>
   <q-page class="column gap-40">
-    <div class="section action-section" v-if="false">
-      <q-card class="action-card q-py-md q-px-lg cursor-pointer" @click="openCreateNewTeam">
-        <q-card-section horizontal class="items-center ">
-          <q-icon size="25px" color="black" name="sym_o_folder" class="q-mr-md" />
+    <div
+      class="section action-section"
+      v-if="false"
+    >
+      <q-card
+        class="action-card q-py-md q-px-lg cursor-pointer"
+        @click="openCreateNewTeam"
+      >
+        <q-card-section
+          horizontal
+          class="items-center"
+        >
+          <q-icon
+            size="25px"
+            color="black"
+            name="sym_o_folder"
+            class="q-mr-md"
+          />
           <div>
-            <h3 class="text-body1 q-my-none">Créer une nouvelle équipe</h3>
-            <p class="text-caption q-my-none">Organisez vos projets</p>
+            <h3 class="text-body1 q-my-none">{{ $t('home.createNewTeam') }}</h3>
+            <p class="text-caption q-my-none">{{ $t('home.organizeYourProjects') }}</p>
           </div>
         </q-card-section>
       </q-card>
       <CreateNewTeamModal ref="createNewTeamModal" />
     </div>
     <div class="section teams-section">
-      <h2 class="text-grey text-body1">Équipes</h2>
-      <TeamList :loading="teamsLoading" :teams="teams" />
+      <h2 class="text-grey text-body1">{{ $t('home.teams') }}</h2>
+      <TeamList
+        :loading="teamsLoading"
+        :teams="teams"
+      />
     </div>
     <div class="section projects-section">
-      <h2 class="text-grey text-body1">Projets</h2>
-      <ProjectList :loading="projectsLoading" :projects="projects" />
+      <h2 class="text-grey text-body1">{{ $t('home.projects') }}</h2>
+      <ProjectList
+        :loading="projectsLoading"
+        :projects="projects"
+      />
     </div>
   </q-page>
 </template>
@@ -106,23 +126,29 @@ export default {
     reloadData() {
       this.teamsLoading = true
       this.projectsLoading = true
-      this.$resources.teams.list().then(res => {
-        this.teams = res.data.map((team) => ({
-          ...team,
-          icon: 'sym_o_group'
-        }))
-        this.teamsLoading = false
-      }).catch((err) => {
-        displayError(err)
-        this.teamsLoading = false
-      })
-      this.$resources.projects.list().then(res => {
-        this.projects = res.data
-        this.projectsLoading = false
-      }).catch((err) => {
-        displayError(err)
-        this.projectsLoading = false
-      })
+      this.$resources.teams
+        .list()
+        .then((res) => {
+          this.teams = res.data.map((team) => ({
+            ...team,
+            icon: 'sym_o_group'
+          }))
+          this.teamsLoading = false
+        })
+        .catch((err) => {
+          displayError(err)
+          this.teamsLoading = false
+        })
+      this.$resources.projects
+        .list()
+        .then((res) => {
+          this.projects = res.data
+          this.projectsLoading = false
+        })
+        .catch((err) => {
+          displayError(err)
+          this.projectsLoading = false
+        })
     },
     openTeamSettings(teamId) {
       console.log('Open team settings', teamId)

@@ -1,15 +1,23 @@
 <template>
   <div>
-    <h1>Choisissez les documents à générer</h1>
+    <h1>{{ $t('project.create.step3') }}</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
-        <ChoiceDocumentsToGenerate ref="choiceDocumentsToGenerate" v-model:documents-selected="_form.documents"
-          @update:isValid="(value) => isValid = value" />
+        <ChoiceDocumentsToGenerate
+          ref="choiceDocumentsToGenerate"
+          v-model:documents-selected="_form.documents"
+          @update:isValid="(value) => (isValid = value)"
+        />
       </div>
 
-      <SUbtn label="Générer" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
-        :disabled="!isValid" :loading="loading" />
-
+      <SUbtn
+        :label="$t('project.create.submit')"
+        type="submit"
+        color="gradient"
+        class="fixed-bottom-right q-mr-xl q-mb-xl"
+        :disabled="!isValid"
+        :loading="loading"
+      />
     </q-form>
   </div>
 </template>

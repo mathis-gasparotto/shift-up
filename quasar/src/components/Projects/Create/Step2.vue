@@ -1,18 +1,29 @@
 <template>
   <div>
-    <h1>Définisser votre projet</h1>
+    <h1>{{ $t('project.create.step2') }}</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
-        <label class="text-weight-medium label-required">Type de projet</label>
+        <label class="text-weight-medium label-required">{{ $t('form.project.label.type') }}</label>
         <div class="q-gutter-sm q-mt-xs column">
-          <q-radio v-model="_form.sellingObject" v-for="(option, index) in options" :key="index" checked-icon="task_alt"
-            unchecked-icon="panorama_fish_eye" :val="option.value" :label="option.label" />
+          <q-radio
+            v-model="_form.sellingObject"
+            v-for="(option, index) in options"
+            :key="index"
+            checked-icon="task_alt"
+            unchecked-icon="panorama_fish_eye"
+            :val="option.value"
+            :label="$t('project.sellingObject.' + option.value)"
+          />
         </div>
       </div>
 
-      <SUbtn label="Passer à l’étape suivante" type="submit" color="gradient" class="fixed-bottom-right q-mr-xl q-mb-xl"
-        :disabled="!isValid" />
-
+      <SUbtn
+        :label="$t('project.create.nextStep')"
+        type="submit"
+        color="gradient"
+        class="fixed-bottom-right q-mr-xl q-mb-xl"
+        :disabled="!isValid"
+      />
     </q-form>
   </div>
 </template>
@@ -35,7 +46,7 @@ export default {
   data() {
     return {
       options: [
-        { label: 'Produit à vendre', value: 'product-for-sale' },
+        { label: 'Produit à vendre', value: 'product_for_sale' },
         { label: 'Service/Prestation', value: 'service' },
         { label: 'Produit innovant/Concept', value: 'concept' }
       ]

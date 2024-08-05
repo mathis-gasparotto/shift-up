@@ -1,12 +1,19 @@
 <template>
   <q-page class="column">
-    <MainBreadcrumps :loading="teamLoading" :team-name="team.name" />
+    <MainBreadcrumps
+      :loading="teamLoading"
+      :team-name="team.name"
+    />
     <h1 class="text-h2 q-mt-xl q-mb-lg">
       <q-skeleton v-if="teamLoading" />
       {{ team.name }}
     </h1>
-    <h2 class="text-grey text-body1">Projets</h2>
-    <ProjectList :loading="projectsLoading" :projects="projects" add-card />
+    <h2 class="text-grey text-body1">{{ $t('team.details.projects') }}</h2>
+    <ProjectList
+      :loading="projectsLoading"
+      :projects="projects"
+      add-card
+    />
   </q-page>
 </template>
 
@@ -67,20 +74,26 @@ export default {
     reloadData() {
       this.teamLoading = true
       this.projectsLoading = true
-      this.$resources.teams.get(this.$route.params.teamId).then(res => {
-        this.team = res
-        this.teamLoading = false
-      }).catch((err) => {
-        displayError(err)
-        this.teamLoading = false
-      })
-      this.$resources.teams.child(this.$route.params.teamId, 'projects').then(res => {
-        this.projects = res.data
-        this.projectsLoading = false
-      }).catch((err) => {
-        displayError(err)
-        this.projectsLoading = false
-      })
+      this.$resources.teams
+        .get(this.$route.params.teamId)
+        .then((res) => {
+          this.team = res
+          this.teamLoading = false
+        })
+        .catch((err) => {
+          displayError(err)
+          this.teamLoading = false
+        })
+      this.$resources.teams
+        .child(this.$route.params.teamId, 'projects')
+        .then((res) => {
+          this.projects = res.data
+          this.projectsLoading = false
+        })
+        .catch((err) => {
+          displayError(err)
+          this.projectsLoading = false
+        })
     }
   }
 }

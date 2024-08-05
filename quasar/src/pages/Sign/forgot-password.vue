@@ -14,14 +14,14 @@
         <label
           for="email"
           class="text-weight-medium label-required"
-          >{{ $t('form.label.email') }}</label
+          >{{ $t('form.user.label.email') }}</label
         >
         <q-input
           v-model="email"
           outlined
           inputmode="email"
           for="email"
-          :placeholder="$t('form.placeholder.email')"
+          :placeholder="$t('form.user.placeholder.email')"
           class="input"
           type="email"
           lazy-rules

@@ -1,7 +1,13 @@
 <template>
   <div>
-    <q-skeleton v-if="loading" size="md" />
-    <Breadcrumbs v-else :items="items" />
+    <q-skeleton
+      v-if="loading"
+      size="md"
+    />
+    <Breadcrumbs
+      v-else
+      :items="items"
+    />
   </div>
 </template>
 
@@ -55,14 +61,14 @@ export default {
       if (this.$route.name === 'index') {
         this.items = [
           {
-            label: 'Accueil',
+            label: this.$t('breadcrumb.home'),
             to: { name: 'index' }
           }
         ]
       } else if (this.$route.name === 'team') {
         this.items = [
           {
-            label: 'Accueil',
+            label: this.$t('breadcrumb.home'),
             to: { name: 'index' }
           },
           {
@@ -73,7 +79,7 @@ export default {
       } else if (this.$route.name === 'project') {
         this.items = [
           {
-            label: 'Accueil',
+            label: this.$t('breadcrumb.home'),
             to: { name: 'index' }
           },
           {
@@ -88,7 +94,7 @@ export default {
       } else if (this.$route.name === 'project-create') {
         this.items = [
           {
-            label: 'Accueil',
+            label: this.$t('breadcrumb.home'),
             to: { name: 'index' }
           },
           {
@@ -96,14 +102,14 @@ export default {
             to: { name: 'team', params: { teamId: this.$route.params.teamId } }
           },
           {
-            label: 'Créer un nouveau projet',
+            label: this.$t('breadcrumb.createNewProject'),
             to: this.$route
           }
         ]
       } else if (this.$route.name === 'project-document') {
         this.items = [
           {
-            label: 'Accueil',
+            label: this.$t('breadcrumb.home'),
             to: { name: 'index' }
           },
           {
@@ -112,7 +118,10 @@ export default {
           },
           {
             label: this.projectName,
-            to: { name: 'project', params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId } }
+            to: {
+              name: 'project',
+              params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId }
+            }
           },
           {
             label: this.projectDocumentName,
