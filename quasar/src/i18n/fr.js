@@ -66,16 +66,27 @@ export default {
     'fr-FR': 'Français'
   },
   'signup': {
-    'title': 'S\'inscrire',
+    'title': 'Inscription',
     'content': 'Veuillez saisir vos informations pour vous inscrire.',
     'submit': 'S\'inscrire',
     'alreadySigned': 'Déjà inscrit ?',
     'login': 'Se connecter',
+    'success': 'Inscription réussie',
     'successCard': {
       'title': 'Inscription réussie',
       'content': 'Un mail de confirmation a été envoyé à votre adresse email. Veuillez vérifier votre boîte de réception ainsi que vos spams.',
       'action': 'Retour à la page de connexion'
     }
+  },
+  'signin': {
+    'title': 'Connexion',
+    'content': 'Veuillez saisir vos identifiants pour vous connecter.',
+    'submit': 'Se connecter',
+    'forgotPassword': 'Mot de passe oublié ?',
+    'resetPassword': 'Réinitialiser votre mot de passe',
+    'noAccount': 'Pas encore de compte ?',
+    'signup': 'S\'inscrire',
+    'success': 'Vous avez bien été connecté !'
   },
   'emailConfirmation': {
     'successTitle': 'Votre email a bien été confirmée !',

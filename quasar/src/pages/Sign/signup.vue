@@ -258,7 +258,7 @@ export default {
           this.signedUp = true
           this.error = ''
           this.loading = false
-          successNotify('Inscription réussie')
+          successNotify($t('signup.success'))
         })
         .catch((error) => {
           this.loading = false

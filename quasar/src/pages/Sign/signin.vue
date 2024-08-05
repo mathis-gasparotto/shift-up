@@ -1,8 +1,8 @@
 <template>
   <q-page class="flex-center column page q-mx-auto q-py-xl">
     <div class="w-100 q-mb-lg">
-      <h2 class="text-h4 q-mb-sm q-mt-none">Connexion</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <h2 class="text-h4 q-mb-sm q-mt-none">{{ $t('signin.title') }}</h2>
+      <p>{{ $t('signin.content') }}</p>
     </div>
     <q-form
       class="w-100 gap-10 column items-center"
@@ -12,35 +12,35 @@
         <label
           for="email"
           class="text-weight-medium label-required"
-          >Email</label
+          >{{ $t('form.label.email') }}</label
         >
         <q-input
           v-model="email"
           outlined
           inputmode="email"
           for="email"
-          placeholder="johndoe@gmail.com"
+          :placeholder="$t('form.placeholder.email')"
           class="input"
           type="email"
           lazy-rules
-          :rules="[(val) => val.trim().length > 0 || 'Email requise']"
+          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
         />
       </div>
       <div class="w-100 q-mb-sm">
         <label
           for="password"
           class="text-weight-medium label-required"
-          >Mot de passe</label
+          >{{ $t('form.label.password') }}</label
         >
         <q-input
           v-model="password.value"
           outlined
           :type="password.visible ? 'text' : 'password'"
           for="password"
-          placeholder="Votre mot de passe"
+          :placeholder="$t('form.placeholder.password')"
           class="input"
           lazy-rules
-          :rules="[(val) => val.trim().length > 0 || 'Mot de passe requis']"
+          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
         >
           <template v-slot:append>
             <q-icon
@@ -58,7 +58,7 @@
         {{ error }}
       </p>
       <SUbtn
-        label="Se connecter"
+        :label="$t('signin.submit')"
         color="gradient"
         class="w-100"
         rounded
@@ -67,19 +67,19 @@
       />
     </q-form>
     <p class="q-mt-lg">
-      Pas encore de compte ?
+      {{ $t('signin.noAccount') }}
       <router-link
         :to="{ name: 'signup' }"
         class="text-bold"
-        >S'inscrire</router-link
+        >{{ $t('signin.signup') }}</router-link
       >
     </p>
     <p class="q-mt-dm">
-      Mot de passe oublié ?
+      {{ $t('signin.forgotPassword') }}
       <router-link
         :to="{ name: 'forgotPassword' }"
         class="text-bold"
-        >Réinitialiser son mot de passe</router-link
+        >{{ $t('signin.resetPassword') }}</router-link
       >
     </p>
   </q-page>
@@ -120,7 +120,7 @@ export default {
           } else {
             this.$router.push({ name: 'index' })
           }
-          successNotify('Vous avez bien été connecté !')
+          successNotify($t('signin.success'))
         })
         .catch((error) => {
           this.loading = false
