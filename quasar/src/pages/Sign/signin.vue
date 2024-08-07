@@ -9,47 +9,24 @@
       @submit.prevent="submit"
     >
       <div class="w-100">
-        <label
-          for="email"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.email') }}</label
-        >
-        <q-input
+        <SUinput
           v-model="email"
-          outlined
-          inputmode="email"
-          for="email"
-          :placeholder="$t('form.user.placeholder.email')"
-          class="input"
+          :label="$t('form.user.label.email')"
+          name="email"
           type="email"
-          lazy-rules
-          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
+          :placeholder="$t('form.user.placeholder.email')"
+          required
         />
       </div>
       <div class="w-100 q-mb-sm">
-        <label
-          for="password"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.password') }}</label
-        >
-        <q-input
-          v-model="password.value"
-          outlined
-          :type="password.visible ? 'text' : 'password'"
-          for="password"
+        <SUinput
+          v-model="password"
+          :label="$t('form.user.label.password')"
+          name="password"
+          type="password"
           :placeholder="$t('form.user.placeholder.password')"
-          class="input"
-          lazy-rules
-          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
-        >
-          <template v-slot:append>
-            <q-icon
-              :name="password.visible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer"
-              @click="password.visible = !password.visible"
-            />
-          </template>
-        </q-input>
+          required
+        />
       </div>
       <p
         v-if="error"
@@ -87,20 +64,19 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
 import { successNotify } from 'src/helpers/notifyHelper'
 import { translateError } from 'src/helpers/translatting'
 
 export default {
   components: {
-    SUbtn
+    SUbtn,
+    SUinput
   },
   data() {
     return {
       email: '',
-      password: {
-        value: '',
-        visible: false
-      },
+      password: '',
       loading: false,
       error: ''
     }
@@ -110,17 +86,17 @@ export default {
       this.loading = true
 
       this.email = this.email.trim()
-      this.password.value = this.password.value.trim()
+      this.password = this.password.trim()
 
       this.$auth
-        .login(this.email, this.password.value)
+        .login(this.email, this.password)
         .then(() => {
           if (this.$route.query.redirect) {
             this.$router.push(this.$route.query.redirect)
           } else {
             this.$router.push({ name: 'index' })
           }
-          successNotify($t('signin.success'))
+          successNotify(this.$t('signin.success'))
         })
         .catch((error) => {
           this.loading = false

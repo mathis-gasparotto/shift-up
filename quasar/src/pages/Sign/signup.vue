@@ -10,135 +10,71 @@
     >
       <div class="row w-100 gap-15 no-wrap">
         <div>
-          <label
-            for="first_name"
-            class="text-weight-medium label-required"
-            >{{ $t('form.user.label.fisrtName') }}</label
-          >
-          <q-input
+          <SUinput
             v-model="firstName"
-            outlined
-            for="first_name"
-            :placeholder="$t('form.user.placeholder.fisrtName')"
-            class="input"
-            lazy-rules
-            :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
+            :label="$t('form.user.label.firstName')"
+            name="first_name"
+            type="text"
+            :placeholder="$t('form.user.placeholder.firstName')"
+            required
+            :minLength="3"
           />
         </div>
         <div>
-          <label
-            for="last_name"
-            class="text-weight-medium label-required"
-            >{{ $t('form.user.label.lastName') }}</label
-          >
-          <q-input
+          <SUinput
             v-model="lastName"
-            outlined
-            for="last_name"
+            :label="$t('form.user.label.lastName')"
+            name="last_name"
+            type="text"
             :placeholder="$t('form.user.placeholder.lastName')"
-            class="input"
-            lazy-rules
-            :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
+            required
+            :minLength="3"
           />
         </div>
       </div>
       <div class="w-100">
-        <label
-          for="phone"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.phoneNumber') }}</label
-        >
-        <Vue3QTelInput
-          v-model="phone.value"
-          outlined
-          for="phone"
-          :default-country="defaultPhoneCountry"
+        <SUinput
+          v-model="phone"
+          :label="$t('form.user.label.phoneNumber')"
+          name="phone"
           type="tel"
-          inputmode="tel"
-          :placeholder="phoneNumberPlaceholder"
-          @country="updatePhoneCountry"
-          @error="(val) => (phone.error = val)"
-          :rules="[
-            (val) => !!val || $t('form.error.required'),
-            (val) => !phone.error || $t('error.phoneNumberInvalid')
-          ]"
+          required
         />
       </div>
       <div class="w-100">
-        <label
-          for="email"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.email') }}</label
-        >
-        <q-input
+        <SUinput
           v-model="email"
-          outlined
-          inputmode="email"
-          for="email"
-          :placeholder="$t('form.user.placeholder.email')"
-          class="input"
+          :label="$t('form.user.label.email')"
+          name="email"
           type="email"
-          lazy-rules
-          :rules="[(val, rules) => rules.email(val) || $t('error.emailInvalid')]"
+          :placeholder="$t('form.user.placeholder.email')"
+          required
         />
       </div>
       <div class="w-100">
-        <label
-          for="password"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.password') }}</label
-        >
-        <q-input
-          v-model="password.value"
-          outlined
-          :type="password.visible ? 'text' : 'password'"
-          for="password"
+        <SUinput
+          v-model="password"
+          :label="$t('form.user.label.password')"
+          name="password"
+          type="password"
           :placeholder="$t('form.user.placeholder.password')"
-          class="input"
-          lazy-rules
-          hint="8 caractères minimum, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial"
-          hide-hint
+          :hint="$t('signup.passwordHint')"
+          required
           :rules="[
-            (val) => (val && val.trim().length > 0) || $t('form.error.required'),
             (val) => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) || $t('error.passwordComplexity')
           ]"
-        >
-          <template v-slot:append>
-            <q-icon
-              :name="password.visible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer"
-              @click="password.visible = !password.visible"
-            />
-          </template>
-        </q-input>
+        />
       </div>
       <div class="w-100 q-mb-sm">
-        <label
-          for="confirm_password"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.confirmPassword') }}</label
-        >
-        <q-input
-          v-model="confirmPassword.value"
-          outlined
-          :type="confirmPassword.visible ? 'text' : 'password'"
-          for="confirm_password"
+        <SUinput
+          v-model="confirmPassword"
+          :label="$t('form.user.label.confirmPassword')"
+          name="confirm_password"
+          type="password"
           :placeholder="$t('form.user.placeholder.confirmPassword')"
-          class="input"
-          reactive-rules
-          :rules="[
-            (val) => val.trim().length > 0 || $t('form.error.required'),
-            (val) => val === password.value || $t('error.passwordsDoNotMatch')
-          ]"
-        >
-          <template v-slot:append>
-            <q-icon
-              :name="confirmPassword.visible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer"
-              @click="confirmPassword.visible = !confirmPassword.visible"
-            />
-          </template>
-        </q-input>
+          required
+          :rules="[(val) => val === password || $t('error.passwordsDoNotMatch')]"
+        />
       </div>
       <p
         v-if="error"
@@ -180,76 +116,48 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
 import InfoCard from 'src/components/InfoCard.vue'
-import 'vue3-q-tel-input/dist/vue3-q-tel-input.esm.css'
-import Vue3QTelInput from 'vue3-q-tel-input'
 import { successNotify } from 'src/helpers/notifyHelper'
 import { translateError } from 'src/helpers/translatting'
-import { langsData } from 'src/helpers/langs'
-import { phoneNumberPlaceholders } from 'src/helpers/phone'
-import { useQuasar } from 'quasar'
-import { ref } from 'vue'
 
 export default {
   components: {
     SUbtn,
-    Vue3QTelInput,
+    SUinput,
     InfoCard
-  },
-  setup() {
-    const $q = useQuasar()
-
-    const defaultPhoneCountry = langsData[$q.lang.isoName].countryCode
-    const phoneNumberPlaceholder = ref(phoneNumberPlaceholders[defaultPhoneCountry])
-
-    return {
-      defaultPhoneCountry,
-      phoneNumberPlaceholder
-    }
   },
   data() {
     return {
       firstName: '',
       lastName: '',
-      phone: {
-        value: '',
-        error: false
-      },
+      phone: '',
       email: '',
-      password: {
-        value: '',
-        visible: false
-      },
-      confirmPassword: {
-        value: '',
-        visible: false
-      },
+      password: '',
+      confirmPassword: '',
       loading: false,
       error: '',
       signedUp: false
     }
   },
   methods: {
-    updatePhoneCountry(country) {
-      this.phoneNumberPlaceholder = phoneNumberPlaceholders[country.iso2]
-    },
     submit() {
       this.loading = true
 
       this.firstName = this.firstName.trim()
       this.lastName = this.lastName.trim()
-      this.phone.value = this.phone.value.trim()
+      this.phone = this.phone.trim()
       this.email = this.email.trim()
-      this.password.value = this.password.value.trim()
-      this.confirmPassword.value = this.confirmPassword.value.trim()
+      this.password = this.password.trim()
+      this.confirmPassword = this.confirmPassword.trim()
 
       const payload = {
         firstName: this.firstName,
         lastName: this.lastName,
-        phone: this.phone.value.replace(/\s/g, ''),
+        phone: this.phone.replace(/\s/g, ''),
         email: this.email,
-        password: this.password.value,
-        confirmPassword: this.confirmPassword.value
+        password: this.password,
+        confirmPassword: this.confirmPassword
       }
 
       this.$auth
@@ -258,7 +166,7 @@ export default {
           this.signedUp = true
           this.error = ''
           this.loading = false
-          successNotify($t('signup.success'))
+          successNotify(this.$t('signup.success'))
         })
         .catch((error) => {
           this.loading = false

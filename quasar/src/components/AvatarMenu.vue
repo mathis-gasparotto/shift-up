@@ -27,7 +27,7 @@ export default {
     logout() {
       this.$auth.logout()
       this.$router.push({ name: 'signin' })
-      successNotify($t('nav.logoutSuccess'))
+      successNotify(this.$t('nav.logoutSuccess'))
     }
   }
 }

@@ -11,20 +11,14 @@
       @submit.prevent="submit"
     >
       <div class="w-100">
-        <label
-          for="name"
-          class="text-weight-medium label-required"
-          >{{ $t('form.project.label.name') }}</label
-        >
-        <q-input
+        <SUinput
           v-model="form.name"
-          outlined
-          for="name"
-          :placeholder="$t('form.project.placeholder.name')"
-          class="input"
+          :label="$t('form.project.label.name')"
+          name="name"
           type="text"
-          lazy-rules
-          :rules="[(val) => (val && val.trim().length > 3) || $t('form.error.required')]"
+          :placeholder="$t('form.project.placeholder.name')"
+          required
+          :minLength="3"
         />
       </div>
       <p
@@ -51,6 +45,7 @@
 <script>
 import Modal from 'src/components/Modal.vue'
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
 import { translateError } from 'src/helpers/translatting'
 import { successNotify } from 'src/helpers/notifyHelper'
 
@@ -59,7 +54,8 @@ export default {
   emits: ['updated'],
   components: {
     Modal,
-    SUbtn
+    SUbtn,
+    SUinput
   },
   props: {
     project: {
@@ -84,7 +80,7 @@ export default {
         .update(this.project.id, this.form)
         .then(() => {
           this.$refs.modal.open = false
-          successNotify($t('project.editModal.success'))
+          successNotify(this.$t('project.editModal.success'))
           this.$emit('updated')
         })
         .catch((error) => {

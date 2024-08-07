@@ -152,7 +152,7 @@ export default {
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
-            errorNotify($t('document.errorNotFound'))
+            errorNotify(this.$t('document.errorNotFound'))
           } else {
             displayError(error, $t('document.defaultError'))
           }

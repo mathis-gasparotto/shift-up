@@ -11,62 +11,29 @@
       @submit.prevent="submit"
     >
       <div class="w-100">
-        <label
-          for="password"
-          class="text-weight-medium label-required"
-        >
-          {{ $t('form.user.label.newPassword') }}
-        </label>
-        <q-input
-          v-model="password.value"
-          outlined
-          for="password"
+        <SUinput
+          v-model="password"
+          :label="$t('form.user.label.newPassword')"
+          name="password"
+          type="password"
           :placeholder="$t('form.user.placeholder.newPassword')"
-          class="input"
-          :type="password.visible ? 'text' : 'password'"
-          lazy-rules
+          :hint="$t('signup.passwordHint')"
+          required
           :rules="[
-            (val) => val.trim().length > 0 || $t('form.error.required'),
             (val) => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) || $t('error.passwordComplexity')
           ]"
-        >
-          <template v-slot:append>
-            <q-icon
-              :name="password.visible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer"
-              @click="password.visible = !password.visible"
-            />
-          </template>
-        </q-input>
+        />
       </div>
       <div class="w-100">
-        <label
-          for="confirmPassword"
-          class="text-weight-medium label-required"
-        >
-          {{ $t('form.user.label.confirmNewPassword') }}
-        </label>
-        <q-input
-          v-model="confirmPassword.value"
-          outlined
-          for="confirmPassword"
+        <SUinput
+          v-model="confirmPassword"
+          :label="$t('form.user.label.confirmNewPassword')"
+          name="confirm_password"
+          type="password"
           :placeholder="$t('form.user.placeholder.confirmNewPassword')"
-          class="input"
-          :type="confirmPassword.visible ? 'text' : 'password'"
-          lazy-rules
-          :rules="[
-            (val) => val.trim().length > 0 || $t('form.error.required'),
-            (val) => val === password.value || $t('error.passwordsDoNotMatch')
-          ]"
-        >
-          <template v-slot:append>
-            <q-icon
-              :name="confirmPassword.visible ? 'visibility' : 'visibility_off'"
-              class="cursor-pointer"
-              @click="confirmPassword.visible = !confirmPassword.visible"
-            />
-          </template>
-        </q-input>
+          required
+          :rules="[(val) => val === password || $t('error.passwordsDoNotMatch')]"
+        />
       </div>
       <p
         v-if="error"
@@ -102,22 +69,18 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
 import { translateError } from 'src/helpers/translatting'
 
 export default {
   components: {
-    SUbtn
+    SUbtn,
+    SUinput
   },
   data() {
     return {
-      password: {
-        value: '',
-        visible: false
-      },
-      confirmPassword: {
-        value: '',
-        visible: false
-      },
+      password: '',
+      confirmPassword: '',
       loading: false,
       error: '',
       successSessage: ''
@@ -125,20 +88,20 @@ export default {
   },
   computed: {
     isValid() {
-      return this.password.value.trim().length > 0 && this.password.value === this.confirmPassword.value
+      return this.password.trim().length > 0 && this.password === this.confirmPassword
     }
   },
   methods: {
     submit() {
       this.loading = true
 
-      this.password.value = this.password.value.trim()
-      this.confirmPassword.value = this.confirmPassword.value.trim()
+      this.password = this.password.trim()
+      this.confirmPassword = this.confirmPassword.trim()
 
       this.$resources.resetPassword
         .postWithId(this.$route.params.token, {
-          password: this.password.value,
-          confirmPassword: this.confirmPassword.value
+          password: this.password,
+          confirmPassword: this.confirmPassword
         })
         .then(() => {
           this.successSessage = this.$t('resetPassword.success')

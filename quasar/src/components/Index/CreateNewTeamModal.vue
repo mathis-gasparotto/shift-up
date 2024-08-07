@@ -1,18 +1,41 @@
 <template>
-  <Modal title="Créer une nouvelle équipe" ref="modal" buttonsAlign="full">
-    <q-form class="w-100 gap-10 column items-center q-mb-xl" @submit.prevent="submit">
+  <Modal
+    :title="$t('team.createModal.title')"
+    ref="modal"
+    buttonsAlign="full"
+  >
+    <q-form
+      class="w-100 gap-10 column items-center q-mb-xl"
+      @submit.prevent="submit"
+    >
       <div class="w-100">
-        <label for="name" class="text-weight-medium label-required">Nom</label>
-        <q-input v-model="form.name" outlined for="name" placeholder="Ajoutez un nom à votre projet" class="input"
-          type="text" lazy-rules :rules="[
-      (val) =>
-    val && val.trim().length > 3 || 'Nom du projet requis'
-    ]" />
+        <SUinput
+          v-model="form.name"
+          :label="$t('form.team.label.name')"
+          name="name"
+          type="text"
+          :placeholder="$t('form.team.placeholder.name')"
+          required
+          :minLength="3"
+        />
       </div>
-      <p v-if="error" class="text-negative q-mb-none">{{ error }}</p>
+      <p
+        v-if="error"
+        class="text-negative q-mb-none"
+      >
+        {{ error }}
+      </p>
     </q-form>
     <template #buttons>
-      <SUbtn label="Créer" color="gradient" rounded class="w-100" type="submit" :loading="loading" @click="submit" />
+      <SUbtn
+        :label="$t('team.createModal.submit')"
+        color="gradient"
+        rounded
+        class="w-100"
+        type="submit"
+        :loading="loading"
+        @click="submit"
+      />
     </template>
   </Modal>
 </template>
@@ -20,12 +43,15 @@
 <script>
 import Modal from 'src/components/Modal.vue'
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
+import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
   name: 'CreateNewTeamModal',
   components: {
     Modal,
-    SUbtn
+    SUbtn,
+    SUinput
   },
   data() {
     return {
@@ -40,6 +66,7 @@ export default {
   methods: {
     submit() {
       console.log(this.form)
+      successNotify(this.$t('team.createModal.success'))
     },
     openModal() {
       this.$refs.modal.open = true

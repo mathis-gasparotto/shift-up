@@ -106,7 +106,7 @@ export default {
           // TODO: generate all documents
 
           this.formLoading = false
-          successNotify($t('projects.create.success'))
+          successNotify(this.$t('projects.create.success'))
           this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
         })
         .catch((err) => {

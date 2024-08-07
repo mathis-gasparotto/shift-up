@@ -3,37 +3,25 @@
     <h1>{{ $t('project.create.step1') }}</h1>
     <q-form @submit.prevent="onSubmit">
       <div class="w-100">
-        <label
-          for="name"
-          class="text-weight-medium label-required"
-          >{{ $t('form.project.label.name') }}</label
-        >
-        <q-input
+        <SUinput
           v-model="_form.name"
-          outlined
-          for="name"
-          :placeholder="$t('form.project.placeholder.name')"
-          class="input q-mb-md"
+          :label="$t('form.project.label.name')"
+          name="name"
           type="text"
-          lazy-rules
-          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
+          :placeholder="$t('form.project.placeholder.name')"
+          required
+          :minLength="3"
         />
       </div>
       <div class="w-100">
-        <label
-          for="description"
-          class="text-weight-medium label-required"
-          >{{ $t('form.project.label.description') }}</label
-        >
-        <q-input
+        <SUinput
           v-model="_form.description"
-          outlined
-          for="description"
-          :placeholder="$t('form.project.placeholder.description')"
-          class="input q-mb-md"
+          :label="$t('form.project.label.description')"
+          name="description"
           type="textarea"
-          lazy-rules
-          :rules="[(val) => val.trim().length > 0 || $t('form.error.required')]"
+          :placeholder="$t('form.project.placeholder.description')"
+          required
+          :minLength="3"
         />
       </div>
 
@@ -50,6 +38,7 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
 
 export default {
   name: 'Step1',
@@ -61,7 +50,8 @@ export default {
     }
   },
   components: {
-    SUbtn
+    SUbtn,
+    SUinput
   },
   computed: {
     isValid() {

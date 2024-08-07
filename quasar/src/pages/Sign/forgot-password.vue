@@ -11,24 +11,13 @@
       @submit.prevent="submit"
     >
       <div class="w-100">
-        <label
-          for="email"
-          class="text-weight-medium label-required"
-          >{{ $t('form.user.label.email') }}</label
-        >
-        <q-input
+        <SUinput
           v-model="email"
-          outlined
-          inputmode="email"
-          for="email"
-          :placeholder="$t('form.user.placeholder.email')"
-          class="input"
+          :label="$t('form.user.label.email')"
+          name="email"
           type="email"
-          lazy-rules
-          :rules="[
-            (val) => val.trim().length > 0 || $t('form.error.required'),
-            (val, rules) => rules.email(val) || $t('form.error.email')
-          ]"
+          :placeholder="$t('form.user.placeholder.email')"
+          required
         />
       </div>
       <p
@@ -65,11 +54,13 @@
 
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import SUinput from 'src/components/SUinput.vue'
 import { translateError } from 'src/helpers/translatting'
 
 export default {
   components: {
-    SUbtn
+    SUbtn,
+    SUinput
   },
   data() {
     return {

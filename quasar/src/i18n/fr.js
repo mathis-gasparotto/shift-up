@@ -36,7 +36,7 @@ export default {
     },
     'user': {
       'label': {
-        'fisrtName': 'Prénom',
+        'firstName': 'Prénom',
         'lastName': 'Nom',
         'email': 'Adresse e-mail',
         'password': 'Mot de passe',
@@ -47,7 +47,7 @@ export default {
         'phoneNumber': 'Numéro de téléphone'
       },
       'placeholder': {
-        'fisrtName': 'John',
+        'firstName': 'John',
         'lastName': 'Doe',
         'email': 'john.doe@gmail.com',
         'password': 'Votre mot de passe',
@@ -66,12 +66,15 @@ export default {
       'placeholder': {
         'name': 'Ajouter un nom à votre projet',
         'description': 'Décrivez au maximum votre projet',
-      },
-      'error': {
-        'required': 'Ce champ est obligatoire',
-        'min': 'Ce champ doit contenir au moins {min} caractères',
-        'max': 'Ce champ doit contenir au plus {max} caractères'
       }
+    },
+    'team': {
+      'label': {
+        'name': 'Nom de l\'équipe',
+      },
+      'placeholder': {
+        'name': 'Ajouter un nom à votre équipe',
+      },
     }
   },
   'notFound': {
@@ -104,6 +107,7 @@ export default {
     'alreadySigned': 'Déjà inscrit ?',
     'login': 'Se connecter',
     'success': 'Inscription réussie',
+    'passwordHint': '8 caractères minimum, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial',
     'successCard': {
       'title': 'Inscription réussie',
       'content': 'Un mail de confirmation a été envoyé à votre adresse email. Veuillez vérifier votre boîte de réception ainsi que vos spams.',
@@ -131,6 +135,11 @@ export default {
     'projects': 'Projets',
   },
   'team': {
+    'createModal': {
+      'title': 'Créer une nouvelle équipe',
+      'submit': 'Créer',
+      'success': 'Équipe créée avec succès'
+    },
     'details': {
       'projects': 'Projets',
       'noProject': 'Aucun projet disponible',
