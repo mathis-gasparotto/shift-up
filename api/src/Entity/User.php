@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
@@ -16,6 +17,7 @@ use App\Helper\GlobalHelper;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\UserRepository;
+use App\StateProcessor\User\UserDeleteDataPersister;
 use App\StateProcessor\User\UserPostDataPersister;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -199,6 +201,19 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             read: false,
             name: 'app_reset_password'
+        ),
+        new Delete (
+            uriTemplate: '/users/{id}',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            status: 204,
+            normalizationContext: [
+                'openapi_definition_name' => 'DeleteItem'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '") or (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getId() === user.getId())',
+            write: false,
+            processor: UserDeleteDataPersister::class
         )
 
     ]
@@ -326,7 +341,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
     /**
      * @var Collection|ArrayCollection
      */
-    #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Team::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'manager', targetEntity: Team::class, orphanRemoval: false)]
     private Collection $teamsManaged;
 
     /**
@@ -643,7 +658,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Tracing
         if ($this->teamsManaged->removeElement($teamsManaged)) {
             // set the owning side to null (unless already changed)
             if ($teamsManaged->getManager() === $this) {
-                $teamsManaged->setManager(null);
+                $userJoinedFirst = $teamsManaged->getUsers()->first();
+                if ($userJoinedFirst->getId() === $this->getId()) {
+                    $userJoinedFirst = $teamsManaged->getUsers()->get(1);
+                }
+                $teamsManaged->setManager($userJoinedFirst);
             }
         }
 

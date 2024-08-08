@@ -21,4 +21,5 @@ return [
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     OpenAI\Symfony\OpenAIBundle::class => ['all' => true],
     Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class => ['all' => true],
+    Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],
 ];

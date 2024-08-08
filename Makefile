@@ -11,6 +11,8 @@ start:
 stop:
 	$(COMPOSE) down
 
+restart: stop start
+
 api-db-reset:
 	cd api && $(MAKE) db-reset
 
