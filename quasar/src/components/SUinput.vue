@@ -7,7 +7,7 @@
       >{{ label }}</label
     >
     <Vue3QTelInput
-      v-if="type === 'tel'"
+      v-if="inputType === 'tel'"
       v-model="value"
       outlined
       for="phone"
@@ -20,7 +20,7 @@
       :rules="rulesFormated"
     />
     <q-input
-      v-else-if="type === 'password'"
+      v-else-if="inputType === 'password'"
       v-model="value"
       outlined
       :for="name"
@@ -50,7 +50,7 @@
       class="input"
       lazy-rules
       :inputmode="inputmode"
-      :type="type"
+      :type="inputType"
       :rules="rulesFormated"
       :hint="hint"
       hide-hint
@@ -126,6 +126,16 @@ export default {
       showPassword: false
     }
   },
+  watch: {
+    value: {
+      handler(val) {
+        if (this.type === 'integer') {
+          this.value = parseInt(val)
+        }
+      },
+      immediate: true
+    }
+  },
   computed: {
     inputmode() {
       switch (this.type) {
@@ -133,10 +143,28 @@ export default {
           return 'tel'
         case 'email':
           return 'email'
-        case 'number':
+        case 'integer':
           return 'numeric'
+        case 'float':
+          return 'decimal'
         default:
-          return 'text'
+          return undefined
+      }
+    },
+    inputType() {
+      switch (this.type) {
+        case 'tel':
+          return 'tel'
+        case 'email':
+          return 'email'
+        case 'integer':
+          return 'number'
+        case 'float':
+          return 'number'
+        case 'datetime':
+          return 'datetime-local'
+        default:
+          return this.type
       }
     },
     value: {
