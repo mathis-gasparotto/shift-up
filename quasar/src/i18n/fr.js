@@ -84,10 +84,10 @@ export default {
   },
   'forgotPassword': {
     'title': 'Mot de passe oublié',
-    'content': 'Veuillez saisir votre adresse e-mail pour réinitialiser votre mot de passe. Si l\'adresse e-mail est valide, un e-mail vous sera envoyé avec un lien pour réinitialiser votre mot de passe.',
+    'content': 'Veuillez saisir votre adresse e-mail pour réinitialiser votre mot de passe. Si l\'adresse e-mail est reliée a un compte existant, un e-mail vous sera envoyé avec un lien pour réinitialiser votre mot de passe.',
     'submit': 'Envoyer',
     'back': 'Retour à la page de connexion',
-    'success': 'Un e-mail vous a été envoyé avec un lien pour réinitialiser votre mot de passe.'
+    'success': 'Vous recevrez prochainement un mail de réinitialisation de mot de passe si l\'adresse {email} est reliée à un compte existant.'
   },
   'resetPassword': {
     'title': 'Réinitialiser votre mot de passe',

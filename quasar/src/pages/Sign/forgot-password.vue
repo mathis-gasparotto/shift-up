@@ -84,7 +84,7 @@ export default {
       this.$resources.forgotPassword
         .create({ email: this.email })
         .then(() => {
-          this.successSessage = this.$t('forgotPassword.success')
+          this.successSessage = this.$t('forgotPassword.success', { email: this.email })
         })
         .catch((error) => {
           this.error = translateError(error)
