@@ -13,6 +13,9 @@ start: ## Start the containers
 stop: ## Build and start the containers
 	$(COMPOSE) down
 restart: stop start ## Restart the containers
+## —— Composer :notes: ——————————————————————————————————————————————————————————————
+composer-install: ## Install the PHP dependencies
+	$(EXEC) composer install
 php-sh: ## Connect to the PHP FPM container
 	@echo -----------------------Enter contener PHP-------------------------
 	$(COMPOSE) exec php sh
