@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 #[AsCommand(
     name: 'jwt',
-    description: 'Run Symfony server',
+    description: 'Generate JWT keys',
 )]
 class JWT extends Command
 {

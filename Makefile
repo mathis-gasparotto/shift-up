@@ -28,6 +28,15 @@ log-app:
 log-api:
 	$(COMPOSE) logs php -f
 
+## —— Init :notes: ——————————————————————————————————————————————————————————————
+composer-install: ## Install the PHP dependencies
+	$(EXEC_PHP) composer install
+jwt-key-generate: ## Generate the JWT key
+	$(EXEC_PHP) $(CONSOLE) jwt
+init-project-pictures: ## Init project pictures
+	$(EXEC_PHP) $(CONSOLE) init-project-pictures
+db-init: db-update ## Create database
+api-init: composer-install db-init jwt-key-generate init-project-pictures ## All init for api
 
 help: ## Outputs this help screen
 		@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'

@@ -1,5 +1,6 @@
 COMPOSE=docker compose
-EXEC=$(COMPOSE) exec php
+PHP_CONTAINER=php
+EXEC=$(COMPOSE) exec $(PHP_CONTAINER)
 CONSOLE=bin/console
 
 .DEFAULT_GOAL := help
@@ -13,9 +14,17 @@ start: ## Start the containers
 stop: ## Build and start the containers
 	$(COMPOSE) down
 restart: stop start ## Restart the containers
-## —— Composer :notes: ——————————————————————————————————————————————————————————————
+
+## —— Init :notes: ——————————————————————————————————————————————————————————————
 composer-install: ## Install the PHP dependencies
 	$(EXEC) composer install
+jwt-key-generate: ## Generate the JWT key
+	$(EXEC) $(CONSOLE) jwt
+init-project-pictures: ## Init project pictures
+	$(EXEC) $(CONSOLE) init-project-pictures
+db-init: db-update ## Create database
+api-init: composer-install db-init jwt-key-generate init-project-pictures ## All init for api
+
 php-sh: ## Connect to the PHP FPM container
 	@echo -----------------------Enter contener PHP-------------------------
 	$(COMPOSE) exec php sh
