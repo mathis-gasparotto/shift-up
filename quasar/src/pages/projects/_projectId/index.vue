@@ -43,7 +43,7 @@
         <p class="text-subtitle2 text-weight-regular text-center">
           {{ $t('project.details.voidProjectText') }}
         </p>
-        <SUBtn :label="$t('project.details.generate')" />
+        <SUbtn :label="$t('project.details.generate')" />
       </div>
       <ProjectDocumentList
         v-else
@@ -59,7 +59,7 @@
 import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
-import SUBtn from 'src/components/SUBtn.vue'
+import SUbtn from 'src/components/SUbtn.vue'
 import ProjectSettingsModal from 'src/components/Projects/ProjectSettingsModal.vue'
 import ProjectDocumentList from 'src/components/Projects/ProjectDocuments/ProjectDocumentList.vue'
 
@@ -67,7 +67,7 @@ export default {
   components: {
     MainBreadcrumps,
     ProjectSettingsModal,
-    SUBtn,
+    SUbtn,
     ProjectDocumentList
   },
   setup() {

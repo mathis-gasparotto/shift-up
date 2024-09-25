@@ -9,7 +9,7 @@
         v-for="team in teams"
         :key="team.id"
         :team="team"
-        link
+        linked
       />
     </div>
     <div v-else>{{ $t('team.list.noTeam') }}</div>

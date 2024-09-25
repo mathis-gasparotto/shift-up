@@ -1,17 +1,33 @@
 <template>
-  <q-card class="team-card q-py-md q-px-lg flex justify-between items-center cursor-pointer" @click="click()">
-    <q-card-section horizontal>
-      <q-icon v-if="team.icon" size="40px" color="primary" :name="team.icon" class="q-mr-lg" />
-      <div>
-        <h3 class="text-body1 q-my-none">{{ strMaxLenght(team.name, 13) }}</h3>
-        <p class="text-caption q-my-none">{{ team.projects.length + ' projet' + (team.projects.length > 1 ? 's' :
-    '') }}</p>
-      </div>
-    </q-card-section>
-    <q-card-section class="q-pa-none">
-      <q-btn icon="more_horiz" text-color="grey-8" flat @click.stop="openSettings()" />
-    </q-card-section>
-  </q-card>
+  <component
+    :is="linked ? 'router-link' : 'div'"
+    :to="{ name: 'team', params: { teamId: this.team.id } }"
+    class="no-link-style"
+  >
+    <q-card class="team-card q-py-md q-px-lg flex justify-between items-center">
+      <q-card-section horizontal>
+        <q-icon
+          v-if="team.icon"
+          size="40px"
+          color="primary"
+          :name="team.icon"
+          class="q-mr-lg"
+        />
+        <div>
+          <h3 class="text-body1 q-my-none">{{ strMaxLenght(team.name, 13) }}</h3>
+          <p class="text-caption q-my-none">{{ team.projects.length + ' ' + (team.projects.length > 1 ? $t('team.card.projects') : $t('team.card.project')) }}</p>
+        </div>
+      </q-card-section>
+      <q-card-section class="q-pa-none">
+        <q-btn
+          icon="more_horiz"
+          text-color="grey-8"
+          flat
+          @click.stop.prevent="openSettings()"
+        />
+      </q-card-section>
+    </q-card>
+  </component>
 </template>
 
 <script>
@@ -24,7 +40,7 @@ export default {
       type: Object,
       required: true
     },
-    link: {
+    linked: {
       type: Boolean,
       default: false
     }
@@ -37,11 +53,6 @@ export default {
   methods: {
     openSettings() {
       console.log('open settings')
-    },
-    click() {
-      if (this.link) {
-        this.$router.push({ name: 'team', params: { teamId: this.team.id, } })
-      }
     }
   }
 }

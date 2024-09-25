@@ -1,8 +1,9 @@
 import moment from 'moment/min/moment-with-locales.min'
 import { Lang } from 'quasar'
-import { langsData } from './langs'
+import { getCurrentLang, langsData } from './langs'
 
-const lang = Lang.props.isoName
+// const lang = Lang.props.isoName
+const lang = getCurrentLang()
 moment.locale(langsData[lang].momentCode)
 
 export function strMaxLenght(str, max) {

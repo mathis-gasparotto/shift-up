@@ -1,26 +1,29 @@
 <template>
-  <q-card
-    :class="'project-card q-pa-lg' + (linked ? ' cursor-pointer' : '')"
-    @click="click()"
+  <component
+    :is="linked ? 'router-link' : 'div'"
+    :to="{ name: 'project', params: { teamId: project.team.id, projectId: project.id } }"
+    class="no-link-style"
   >
-    <q-card-section class="q-pa-none q-mb-md">
-      <q-img
-        :src="'/src/assets/projects/' + project.picture.contentUrl"
-        height="150px"
-        fit="cover"
-        rounded
-        class="project-img w-100"
-      />
-    </q-card-section>
-    <q-card-section class="q-pa-none">
-      <div>
-        <h3 class="text-body1 q-my-none">{{ strMaxLenght(project.name, 13) }}</h3>
-        <p class="text-caption q-my-none">
-          {{ $t('project.card.edited') + ' ' + durationFromDateTime(project.updatedAt) }}
-        </p>
-      </div>
-    </q-card-section>
-  </q-card>
+    <q-card class="project-card q-pa-lg">
+      <q-card-section class="q-pa-none q-mb-md">
+        <q-img
+          :src="'/src/assets/projects/' + project.picture.contentUrl"
+          height="150px"
+          fit="cover"
+          rounded
+          class="project-img w-100"
+        />
+      </q-card-section>
+      <q-card-section class="q-pa-none">
+        <div>
+          <h3 class="text-body1 q-my-none">{{ strMaxLenght(project.name, 13) }}</h3>
+          <p class="text-caption q-my-none">
+            {{ $t('project.card.edited') + ' ' + durationFromDateTime(project.updatedAt) }}
+          </p>
+        </div>
+      </q-card-section>
+    </q-card>
+  </component>
 </template>
 
 <script>
@@ -42,13 +45,6 @@ export default {
     return {
       strMaxLenght,
       durationFromDateTime
-    }
-  },
-  methods: {
-    click() {
-      if (this.linked) {
-        this.$router.push({ name: 'project', params: { teamId: this.project.team.id, projectId: this.project.id } })
-      }
     }
   }
 }

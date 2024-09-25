@@ -1,23 +1,26 @@
 <template>
-  <q-card
-    :class="'project-document-card q-pa-lg' + (linked && documentRoute ? ' cursor-pointer' : '')"
-    @click="click()"
+  <component
+    :is="linked && documentRoute ? 'router-link' : 'div'"
+    :to="documentRoute"
+    class="no-link-style"
   >
-    <q-card-section class="q-pa-none q-mb-md">
-      <!-- <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
+    <q-card class="project-document-card q-pa-lg">
+      <q-card-section class="q-pa-none q-mb-md">
+        <!-- <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
         class="project-document-img w-100" /> -->
-      <q-skeleton
-        type="rect"
-        class="project-document-img"
-        height="150px"
-      />
-    </q-card-section>
-    <q-card-section class="q-pa-none">
-      <div>
-        <h3 class="text-body1 q-my-none">{{ strMaxLenght(title, 25) }}</h3>
-      </div>
-    </q-card-section>
-  </q-card>
+        <q-skeleton
+          type="rect"
+          class="project-document-img"
+          height="150px"
+        />
+      </q-card-section>
+      <q-card-section class="q-pa-none">
+        <div>
+          <h3 class="text-body1 q-my-none">{{ strMaxLenght(title, 25) }}</h3>
+        </div>
+      </q-card-section>
+    </q-card>
+  </component>
 </template>
 
 <script>
@@ -112,13 +115,6 @@ export default {
     },
     title() {
       return this.$t(`document.name.${this.value}`)
-    }
-  },
-  methods: {
-    click() {
-      if (this.linked && this.documentRoute) {
-        this.$router.push(this.documentRoute)
-      }
     }
   }
 }
