@@ -1,6 +1,6 @@
 COMPOSE=docker compose
 EXEC_PHP=$(COMPOSE) exec php
-EXEC_APP=$(COMPOSE) exec app
+EXEC_FRONT=$(COMPOSE) exec app
 CONSOLE=php bin/console
 
 .DEFAULT_GOAL := help
@@ -16,8 +16,8 @@ restart: stop start
 api-db-reset:
 	cd api && $(MAKE) db-reset
 
-sh-app:
-	$(EXEC_APP) sh
+sh-front:
+	$(EXEC_FRONT) sh
 
 sh-api:
 	$(EXEC_PHP) sh
