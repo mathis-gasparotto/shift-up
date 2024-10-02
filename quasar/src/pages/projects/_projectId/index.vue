@@ -5,7 +5,7 @@
       :team-name="team.name"
       :project-name="project.name"
     />
-    <div class="q-mt-xl q-mb-lg row item-center justify-between">
+    <div class="q-mt-xl q-mb-lg column row-xs item-center justify-between">
       <h1 class="text-h2 q-my-none">
         <q-skeleton
           v-if="projectLoading"
@@ -13,22 +13,41 @@
         />
         <template v-else>{{ project.name }}</template>
       </h1>
-      <q-btn
-        icon="edit"
-        label="Modifier"
-        stack
-        no-caps
-        text-color="grey-9"
-        flat
-        @click="openSettings"
-        :disable="projectLoading"
-        class="q-no-hoverable q-pa-xs"
-      />
+      <div class="flex gap-10 q-mt-lg q-mt-xs-none">
+        <q-btn
+          icon="refresh"
+          :label="$t('project.details.regenerateBtn')"
+          stack
+          no-caps
+          text-color="grey-9"
+          flat
+          @click="openRegenerate"
+          :disable="projectLoading"
+          class="q-no-hoverable q-pa-xs"
+        />
+        <q-btn
+          icon="edit"
+          :label="$t('project.details.editBtn')"
+          stack
+          no-caps
+          text-color="grey-9"
+          flat
+          @click="openSettings"
+          :disable="projectLoading"
+          class="q-no-hoverable q-pa-xs"
+        />
+      </div>
       <ProjectSettingsModal
         v-if="!projectLoading"
         ref="projectSettingsModal"
         :project="project"
         @updated="reloadData"
+      />
+      <ProjectRegenerateModal
+        v-if="!projectLoading"
+        ref="projectRegenerateModal"
+        :project="project"
+        @generated="reloadData"
       />
     </div>
     <div class="w-100 q-mt-xl">
@@ -61,12 +80,14 @@ import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import SUbtn from 'src/components/SUbtn.vue'
 import ProjectSettingsModal from 'src/components/Projects/ProjectSettingsModal.vue'
+import ProjectRegenerateModal from 'src/components/Projects/ProjectRegenerateModal.vue'
 import ProjectDocumentList from 'src/components/Projects/ProjectDocuments/ProjectDocumentList.vue'
 
 export default {
   components: {
     MainBreadcrumps,
     ProjectSettingsModal,
+    ProjectRegenerateModal,
     SUbtn,
     ProjectDocumentList
   },
@@ -114,6 +135,9 @@ export default {
     },
     openSettings() {
       this.$refs.projectSettingsModal.openModal()
+    },
+    openRegenerate() {
+      this.$refs.projectRegenerateModal.openModal()
     }
   }
 }

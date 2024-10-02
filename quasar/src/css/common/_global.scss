@@ -2,65 +2,6 @@
   box-sizing: border-box;
 }
 
-$sizes: (
-  0: 0,
-  5: 5%,
-  10: 10%,
-  15: 15%,
-  20: 20%,
-  25: 25%,
-  30: 30%,
-  35: 35%,
-  40: 40%,
-  45: 45%,
-  50: 50%,
-  55: 55%,
-  60: 60%,
-  65: 65%,
-  70: 70%,
-  75: 75%,
-  80: 80%,
-  85: 85%,
-  90: 90%,
-  95: 95%,
-  100: 100%,
-  auto: auto,
-  content: fit-content,
-  fill-available: stretch
-);
-
-$gaps: (
-  0: 0,
-  1: 1px,
-  2: 2px,
-  3: 3px,
-  4: 4px,
-  5: 5px,
-  6: 6px,
-  7: 7px,
-  8: 8px,
-  9: 9px,
-  10: 10px,
-  15: 15px,
-  20: 20px,
-  25: 25px,
-  30: 30px,
-  35: 35px,
-  40: 40px,
-  45: 45px,
-  50: 50px,
-  55: 55px,
-  60: 60px,
-  65: 65px,
-  70: 70px,
-  75: 75px,
-  80: 80px,
-  85: 85px,
-  90: 90px,
-  95: 95px,
-  100: 100px
-);
-
 @each $key, $value in $sizes {
   .w-#{$key} {
     width: $value;
@@ -136,4 +77,47 @@ h6 {
 .no-link-style {
   text-decoration: none;
   color: inherit;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  @include bp-all {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  @include bp-all {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+.q {
+  // all responsive spacing
+  @each $classCode, $spaceingType in $space-types {
+    &-#{$classCode} {
+      @each $suffix, $datas in $spaces-repo {
+        &#{$suffix} {
+          @each $bpKey, $bpValue in $bps {
+            &-#{$bpKey} {
+              @include bp($bpKey) {
+                @each $spaceKey, $spaceValue in $spaces {
+                  &-#{$spaceKey} {
+                    @each $label, $axe in $datas {
+                      #{$spaceingType}-#{$label}: map-get($spaceValue, $axe) !important;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -178,10 +178,17 @@ export default {
       submit: 'Enregistrer',
       success: 'Projet mis à jour avec succès'
     },
+    regenerateModal: {
+      title: 'Re-généner votre projet',
+      submit: 'Re-générer',
+      success: 'Projet mis à jour avec succès'
+    },
     details: {
       voidProjectTitle: 'Votre projet est vide',
       voidProjectText: 'Ajoutez des informations pour commencer à travailler sur votre projet',
-      generate: 'Générer la stratégie'
+      generate: 'Générer la stratégie',
+      editBtn: 'Modfier',
+      regenerateBtn: 'Re-générer'
     }
   },
   document: {

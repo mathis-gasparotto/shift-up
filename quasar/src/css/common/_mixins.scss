@@ -1,0 +1,49 @@
+@mixin bp-xs {
+  @media screen and (min-width: calc(#{map-get($bps, xs)} )) {
+    @include responsive-transition;
+    @content;
+  }
+}
+
+@mixin bp-sm {
+  @media screen and (min-width: calc(#{map-get($bps, sm)} )) {
+    @include responsive-transition;
+    @content;
+  }
+}
+
+@mixin bp-md {
+  @media screen and (min-width: calc(#{map-get($bps, md)} )) {
+    @include responsive-transition;
+    @content;
+  }
+}
+
+@mixin bp-lg {
+  @media screen and (min-width: calc(#{map-get($bps, lg)} )) {
+    @include responsive-transition;
+    @content;
+  }
+}
+
+@mixin bp($key) {
+  @media screen and (min-width: calc(#{map-get($bps, $key)} )) {
+    @include responsive-transition;
+    @content;
+  }
+}
+
+@mixin bp-all {
+  @each $key, $bp in $bps {
+    &-#{$key} {
+      @media screen and (min-width: calc(#{$bp} )) {
+        @include responsive-transition;
+        @content;
+      }
+    }
+  }
+}
+
+@mixin responsive-transition {
+  transition: all 0.4s ease, font-size 0s, background-color 0s, color 0s, top 0s, left 0s, right 0s, bottom 0s;
+}

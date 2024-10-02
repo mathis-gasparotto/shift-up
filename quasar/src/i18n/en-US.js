@@ -178,10 +178,17 @@ export default {
       submit: 'Save',
       success: 'Project updated successfully'
     },
+    regenerateModal: {
+      title: 'Re-generate your project',
+      submit: 'Re-generate',
+      success: 'Project updated successfully'
+    },
     details: {
       voidProjectTitle: 'Your project is empty',
       voidProjectText: 'Add information to start working on your project',
-      generate: 'Generate strategy'
+      generate: 'Generate strategy',
+      editBtn: 'Edit',
+      regenerateBtn: 'Re-generate'
     }
   },
   document: {
