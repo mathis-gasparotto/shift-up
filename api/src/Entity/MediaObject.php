@@ -13,7 +13,9 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\CreateMediaObjectAction;
 use App\Helper\GlobalHelper;
 use App\Helper\MediaObjectHelper;
+use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
+use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\MediaObjectRepository;
 use App\StateProviders\ProjectMediaObjectProvider;
@@ -118,9 +120,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ]
 )]
 #[Vich\Uploadable]
-class MediaObject implements TracingAwareInterface
+class MediaObject implements TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
+    use OwnerTrait;
 
     /**
      * @var Uuid|null

@@ -46,6 +46,8 @@ db-diff: ## Doctrine migrations diff
 	$(EXEC_PHP) $(CONSOLE) doctrine:migration:diff
 db-migrate: ## Doctrine migrations migrate
 	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
+make-migration: ## Doctrine generate migration
+	$(EXEC_PHP) $(CONSOLE) make:migration
 migration: ## Connect to the PHP FPM container
 	@echo -----------------------Enter contener PHP-------------------------
 	$(EXEC_PHP) $(CONSOLE) make:migration

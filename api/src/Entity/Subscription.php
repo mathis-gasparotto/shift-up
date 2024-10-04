@@ -11,7 +11,9 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
 use App\Helper\SubscriptionHelper;
+use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
+use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\SubscriptionRepository;
 use App\StateProviders\SlugEntityProvider;
@@ -118,9 +120,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
         )
     ]
 )]
-class Subscription implements TracingAwareInterface
+class Subscription implements TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
+    use OwnerTrait;
 
     /**
      * @var Uuid|null

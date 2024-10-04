@@ -12,7 +12,9 @@ use ApiPlatform\Metadata\Put;
 use App\Controller\User\ProjectGenerateDocumentsController;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
+use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
+use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\ProjectRepository;
 use App\StateProcessor\Project\ProjectGenerateDocumentsDataPersister;
@@ -175,9 +177,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: ProjectByTeamCollectionDataProvider::class
 )]
-class Project implements TracingAwareInterface
+class Project implements TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
+    use OwnerTrait;
 
     /**
      * @var Uuid|null

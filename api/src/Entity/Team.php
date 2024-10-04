@@ -13,7 +13,9 @@ use App\DTO\TeamChoiceSubscriptionDto;
 use App\Helper\GlobalHelper;
 use App\Helper\TeamHelper;
 use App\Model\ManagerAwareInterface;
+use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
+use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\TeamRepository;
 use App\StateProviders\TeamMeCollectionDataProvider;
@@ -138,9 +140,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ]
 )]
-class Team implements ManagerAwareInterface, TracingAwareInterface
+class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
+    use OwnerTrait;
 
     /**
      * @var Uuid|null

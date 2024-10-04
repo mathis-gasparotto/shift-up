@@ -10,7 +10,9 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
+use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
+use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\GoldenTriangleRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
@@ -164,9 +166,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: LastProjectDocumentByProjectGetDataProvider::class
 )]
-class GoldenTriangle implements TracingAwareInterface
+class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
+    use OwnerTrait;
 
     /**
      * @var Uuid|null

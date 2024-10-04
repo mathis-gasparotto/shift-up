@@ -10,7 +10,9 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
+use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
+use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\BuyerPersonaRepository;
 use App\Controller\Project\ProjectGenerateDocumentController;
@@ -163,9 +165,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
     provider: LastProjectDocumentByProjectGetDataProvider::class
 )]
-class BuyerPersona implements TracingAwareInterface
+class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
+    use OwnerTrait;
 
     /**
      * @var Uuid|null
