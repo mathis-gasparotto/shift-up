@@ -35,6 +35,8 @@ jwt-key-generate: ## Generate the JWT key
 	$(EXEC_PHP) $(CONSOLE) jwt
 init-project-pictures: ## Init project pictures
 	$(EXEC_PHP) $(CONSOLE) init-project-pictures
+init-subscriptions: ## Init project pictures
+	$(EXEC_PHP) $(CONSOLE) init-subscriptions
 db-init: db-update ## Create database
 api-init: composer-install db-init jwt-key-generate init-project-pictures ## All init for api
 
@@ -42,19 +44,11 @@ help: ## Outputs this help screen
 		@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 ## —— Makefile for inealab-api ——————————————————————————————————————————————————————————————
 ## —— Docker :baleine: ——————————————————————————————————————————————————————————————
-db-diff: ## Doctrine migrations diff
-	$(EXEC_PHP) $(CONSOLE) doctrine:migration:diff
-db-migrate: ## Doctrine migrations migrate
-	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
-make-migration: ## Doctrine generate migration
-	$(EXEC_PHP) $(CONSOLE) make:migration
-migration: ## Connect to the PHP FPM container
-	@echo -----------------------Enter contener PHP-------------------------
-	$(EXEC_PHP) $(CONSOLE) make:migration
-	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
 	
 
 ## —— Database :boîte_rangement_fiches: ————————————————————————————————————————————————————————————
+db-diff: ## Doctrine migrations diff
+	$(EXEC_PHP) $(CONSOLE) doctrine:migration:diff
 db-update: ## Update database schema
 	$(EXEC_PHP) $(CONSOLE) doctrine:schema:update --force
 #refresh-token:
@@ -116,8 +110,14 @@ consume-messenger-notification_message: ## Run PHP Worker messenger
 #	@echo ----------------- launch phpcs ------------------
 #	$(EXEC_PHP) $(CONSOLE) send:notification:test
 ## —— Migration :marteau_et_clé_anglaise: ———————————————————————————————————————————————————————————————
-run-migration:
+db-migrate: ## Doctrine migrations migrate
+	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
+make-migration: ## Doctrine generate migration
 	$(EXEC_PHP) $(CONSOLE) make:migration
+migration: ## Connect to the PHP FPM container
+	@echo -----------------------Enter contener PHP-------------------------
+	$(EXEC_PHP) $(CONSOLE) make:migration
+	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
 test:
 	clean-tests db-test run-test-functional run-test-unit run-phpcs
 ## —— Stripe ———————————————————————————————————————————————————————————————

@@ -200,9 +200,8 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[
-        Assert\NotBlank,
         Groups(['subscription:read', 'subscription:write'])
     ]
     private ?string $stripeProductId = null;
@@ -210,9 +209,8 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[
-        Assert\NotBlank,
         Groups(['subscription:read', 'subscription:write'])
     ]
     private ?string $stripePriceId = null;
