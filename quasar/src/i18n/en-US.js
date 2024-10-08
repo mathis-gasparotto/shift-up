@@ -178,7 +178,9 @@ export default {
     editModal: {
       title: 'Edit your project',
       submit: 'Save',
-      success: 'Project updated successfully'
+      success: 'Project updated successfully',
+      deleteSuccess: 'Project deleted successfully',
+      deleteError: 'An error occurred while deleting the project'
     },
     regenerateModal: {
       title: 'Re-generate your project',

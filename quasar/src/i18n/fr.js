@@ -178,7 +178,9 @@ export default {
     editModal: {
       title: 'Modifier votre projet',
       submit: 'Enregistrer',
-      success: 'Projet mis à jour avec succès'
+      success: 'Projet mis à jour avec succès',
+      deleteSuccess: 'Projet supprimé avec succès',
+      deleteError: 'Une erreur est survenue lors de la suppression du projet'
     },
     regenerateModal: {
       title: 'Re-généner votre projet',
