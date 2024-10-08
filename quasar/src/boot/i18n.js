@@ -10,16 +10,21 @@ if (!LocalStorage.getItem('lang')) {
   LocalStorage.set('lang', localLang && langsData[localLang] ? localLang : defaultLang)
 }
 
+const currentLang = getCurrentLang()
+
 // LocalStorage.set('lang', 'fr')
 
 // Create I18n instance
 export const i18n = createI18n({
-  locale: getCurrentLang(),
+  locale: currentLang,
   legacy: false, // comment this out if not using Composition API
   messages
 })
 
-export default boot(({ app }) => {
+export default boot(async ({ app }) => {
+  const quasarLangPack = await import(`../../node_modules/quasar/lang/${currentLang}.mjs`)
+  Lang.set(quasarLangPack)
+
   // Tell app to use the I18n instance
   app.use(i18n)
 })
