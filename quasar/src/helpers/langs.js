@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { i18n } from 'boot/i18n'
-import { LocalStorage } from 'quasar'
+import { LocalStorage, Lang } from 'quasar'
 
 export const langsData = {
   'en-US': {
@@ -33,16 +33,21 @@ export function getCurrentLang() {
   return LocalStorage.getItem('lang') || defaultLang
 }
 
-export function updateLang(isoName) {
+export async function updateLang(isoName) {
   if (typeof isoName !== 'string') {
     return
   }
+
+  const quasarLangPack = await import(`../../node_modules/quasar/lang/${isoName}.mjs`)
+  console.log('quasarLangPack', quasarLangPack)
 
   // if (langsData[isoName]) {
   //   moment.locale(langsData[isoName].momentCode)
   // }
   // i18n.global.locale.value = isoName
   LocalStorage.set('lang', isoName)
+  // update quasar html lang attribute
+  Lang.set(quasarLangPack)
 
   // reload all app
   window.location.reload()

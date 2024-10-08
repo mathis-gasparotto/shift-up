@@ -103,15 +103,21 @@ export default {
       this.$resources.projects
         .create(payload)
         .then((res) => {
-          // TODO: generate all documents
-
-          this.formLoading = false
-          successNotify(this.$t('projects.create.success'))
-          this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
+          this.$resources.projects
+            .generateDocuments(res.id, { documents: this.form.documents })
+            .then(() => {
+              successNotify(this.$t('project.create.success'))
+            })
+            .catch((err) => {
+              displayError(err, this.$t('project.create.generateDocumentsError'))
+              this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
+            })
+            .finally(() => {
+              this.formLoading = false
+            })
         })
         .catch((err) => {
-          this.formLoading = false
-          displayError(err)
+          displayError(err, this.$t('project.create.createProjectError'))
         })
     },
     reloadData() {

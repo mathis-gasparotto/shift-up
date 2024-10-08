@@ -159,7 +159,9 @@ export default {
       nextStep: "Passer à l'étape suivante",
       submit: 'Générer',
       back: 'Retour',
-      success: 'Projet créé avec succès'
+      success: 'Projet créé avec succès',
+      generateDocumentsError: 'Une erreur est survenue lors de la génération des documents',
+      createProjectError: 'Une erreur est survenue lors de la création du projet'
     },
     sellingObject: {
       product_for_sale: 'Produit à vendre',
@@ -181,7 +183,10 @@ export default {
     regenerateModal: {
       title: 'Re-généner votre projet',
       submit: 'Re-générer',
-      success: 'Projet mis à jour avec succès'
+      success: 'Projet mis à jour avec succès',
+      documentsLabel: 'Documents à générer',
+      generateDocumentsError: 'Une erreur est survenue lors de la génération des documents',
+      updateProjectError: 'Une erreur est survenue lors de la mise à jour du projet'
     },
     details: {
       voidProjectTitle: 'Votre projet est vide',

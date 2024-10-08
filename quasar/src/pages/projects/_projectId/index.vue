@@ -62,7 +62,10 @@
         <p class="text-subtitle2 text-weight-regular text-center">
           {{ $t('project.details.voidProjectText') }}
         </p>
-        <SUbtn :label="$t('project.details.generate')" />
+        <SUbtn
+          :label="$t('project.details.generate')"
+          @click="openRegenerate"
+        />
       </div>
       <ProjectDocumentList
         v-else

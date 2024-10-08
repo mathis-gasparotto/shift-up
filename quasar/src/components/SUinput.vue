@@ -1,11 +1,10 @@
 <template>
   <div>
-    <label
-      :for="name"
-      class="text-weight-medium"
-      :class="{ 'label-required': required }"
-      >{{ label }}</label
-    >
+    <SUlabel
+      :label="label"
+      :required="required"
+      :name="name"
+    />
     <Vue3QTelInput
       v-if="inputType === 'tel'"
       v-model="value"
@@ -65,11 +64,13 @@ import { langsData } from 'src/helpers/langs'
 import { phoneNumberPlaceholders } from 'src/helpers/phone'
 import { useQuasar } from 'quasar'
 import { ref } from 'vue'
+import SUlabel from 'src/components/SUlabel.vue'
 
 export default {
   name: 'SUinput',
   components: {
-    Vue3QTelInput
+    Vue3QTelInput,
+    SUlabel
   },
   props: {
     label: {
@@ -178,40 +179,11 @@ export default {
     rulesFormated() {
       switch (this.type) {
         case 'tel':
-          return this.required
-            ? [
-                (val) =>
-                  (val && val.trim().length >= this.minLength) ||
-                  (this.minLength > 0
-                    ? this.$t('form.error.min', { min: this.minLength })
-                    : this.$t('form.error.required')),
-                (val) => !this.phoneError || this.$t('error.phoneNumberInvalid'),
-                ...this.rules
-              ]
-            : [(val) => !this.phoneError || this.$t('error.phoneNumberInvalid'), ...this.rules]
+          return this.required ? [(val) => (val && val.trim().length >= this.minLength) || (this.minLength > 0 ? this.$t('form.error.min', { min: this.minLength }) : this.$t('form.error.required')), (val) => !this.phoneError || this.$t('error.phoneNumberInvalid'), ...this.rules] : [(val) => !this.phoneError || this.$t('error.phoneNumberInvalid'), ...this.rules]
         case 'email':
-          return this.required
-            ? [
-                (val) =>
-                  (val && val.trim().length >= this.minLength) ||
-                  (this.minLength > 0
-                    ? this.$t('form.error.min', { min: this.minLength })
-                    : this.$t('form.error.required')),
-                (val, rules) => rules.email(val) || this.$t('error.emailInvalid'),
-                ...this.rules
-              ]
-            : [(val, rules) => rules.email(val) || this.$t('error.emailInvalid'), ...this.rules]
+          return this.required ? [(val) => (val && val.trim().length >= this.minLength) || (this.minLength > 0 ? this.$t('form.error.min', { min: this.minLength }) : this.$t('form.error.required')), (val, rules) => rules.email(val) || this.$t('error.emailInvalid'), ...this.rules] : [(val, rules) => rules.email(val) || this.$t('error.emailInvalid'), ...this.rules]
         default:
-          return this.required
-            ? [
-                (val) =>
-                  (val && val.trim().length >= this.minLength) ||
-                  (this.minLength > 0
-                    ? this.$t('form.error.min', { min: this.minLength })
-                    : this.$t('form.error.required')),
-                ...this.rules
-              ]
-            : this.rules
+          return this.required ? [(val) => (val && val.trim().length >= this.minLength) || (this.minLength > 0 ? this.$t('form.error.min', { min: this.minLength }) : this.$t('form.error.required')), ...this.rules] : this.rules
       }
     }
   },

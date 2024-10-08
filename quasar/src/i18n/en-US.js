@@ -159,7 +159,9 @@ export default {
       nextStep: 'Go to the next step',
       submit: 'Generate',
       back: 'Back',
-      success: 'Project created successfully'
+      success: 'Project created successfully',
+      generateDocumentsError: 'An error occurred while generating the documents',
+      createProjectError: 'An error occurred while creating the project'
     },
     sellingObject: {
       product_for_sale: 'Product for sale',
@@ -181,7 +183,10 @@ export default {
     regenerateModal: {
       title: 'Re-generate your project',
       submit: 'Re-generate',
-      success: 'Project updated successfully'
+      success: 'Project updated successfully',
+      documentsLabel: 'Documents to generate',
+      generateDocumentsError: 'An error occurred while generating the documents',
+      updateProjectError: 'An error occurred while updating the project'
     },
     details: {
       voidProjectTitle: 'Your project is empty',

@@ -32,6 +32,16 @@
           :minLength="3"
         />
       </div>
+      <div class="w-100">
+        <SUlabel
+          :label="$t('project.regenerateModal.documentsLabel')"
+          name="documents"
+          required
+        />
+        <div>
+          <ChoiceDocumentsToGenerate v-model:documentsSelected="documents" />
+        </div>
+      </div>
       <p
         v-if="error"
         class="text-negative q-mb-none"
@@ -56,8 +66,10 @@
 <script>
 import Modal from 'src/components/Modal.vue'
 import SUbtn from 'src/components/SUbtn.vue'
+import SUlabel from 'src/components/SUlabel.vue'
 import SUinput from 'src/components/SUinput.vue'
-import { translateError } from 'src/helpers/translatting'
+import ChoiceDocumentsToGenerate from 'src/components/Projects/Create/ChoiceDocumentsToGenerate.vue'
+import { displayError } from 'src/helpers/translatting'
 import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
@@ -66,7 +78,9 @@ export default {
   components: {
     Modal,
     SUbtn,
-    SUinput
+    SUinput,
+    SUlabel,
+    ChoiceDocumentsToGenerate
   },
   props: {
     project: {
@@ -78,7 +92,8 @@ export default {
     return {
       form: {},
       error: '',
-      loading: false
+      loading: false,
+      documents: []
     }
   },
   created() {
@@ -87,19 +102,19 @@ export default {
   methods: {
     submit() {
       this.loading = true
-      return console.log(this.form)
+      // return console.log(this.form, this.documents)
       this.$resources.projects
         .update(this.project.id, this.form)
         .then(() => {
           this.$resources.projects
-            .simplePost(`${this.project.id}/generate`, this.form)
+            .generateDocuments(this.project.id, { documents: this.documents })
             .then(() => {
               this.$refs.modal.open = false
               successNotify(this.$t('project.regenerateModal.success'))
               this.$emit('generated')
             })
             .catch((error) => {
-              this.error = translateError(error)
+              displayError(error, this.$t('project.regenerateModal.generateDocumentsError'))
               this.loading = false
             })
             .finally(() => {
@@ -107,7 +122,7 @@ export default {
             })
         })
         .catch((error) => {
-          this.error = translateError(error)
+          displayError(error, this.$t('project.regenerateModal.updateProjectError'))
           this.loading = false
         })
     },
