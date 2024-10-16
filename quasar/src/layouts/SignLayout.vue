@@ -6,13 +6,13 @@
     <div class="absolute-top-right q-mt-lg q-mr-lg">
       <LangSelect />
     </div>
-    <div class="row">
-      <q-page-container class="w-60 q-px-lg">
+    <div class="row-sm column reverse">
+      <q-page-container class="w-100 w-sm-60 q-px-sm-lg q-mx-auto">
         <router-view />
       </q-page-container>
       <img
         alt="Quasar logo"
-        class="w-40 q-pa-lg"
+        class="w-60 w-sm-40 q-pa-lg q-mx-auto"
         src="~assets/quasar-logo-vertical.svg"
       />
     </div>

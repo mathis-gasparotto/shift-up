@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex-center column page q-mx-auto q-py-xl">
+  <q-page class="flex-center column page q-mx-sm-auto q-mx-md q-py-xl">
     <div class="w-100 q-mb-lg">
       <h2 class="text-h4 q-mb-sm q-mt-none">{{ $t('signup.title') }}</h2>
       <p>{{ $t('signup.content') }}</p>
@@ -60,9 +60,7 @@
           :placeholder="$t('form.user.placeholder.password')"
           :hint="$t('signup.passwordHint')"
           required
-          :rules="[
-            (val) => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) || $t('error.passwordComplexity')
-          ]"
+          :rules="[(val) => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,}/g.test(val) || $t('error.passwordComplexity')]"
         />
       </div>
       <div class="w-100 q-mb-sm">
@@ -184,5 +182,9 @@ export default {
 
 .page {
   width: 410px;
+  @media screen and (max-width: 1022px) {
+    width: auto;
+    min-height: unset !important;
+  }
 }
 </style>

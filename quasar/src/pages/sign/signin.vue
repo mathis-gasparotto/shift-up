@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex-center column page q-mx-auto q-py-xl">
+  <q-page class="flex-center column page q-mx-sm-auto q-mx-md q-py-xl">
     <div class="w-100 q-mb-lg">
       <h2 class="text-h4 q-mb-sm q-mt-none">{{ $t('signin.title') }}</h2>
       <p>{{ $t('signin.content') }}</p>
@@ -51,11 +51,11 @@
         >{{ $t('signin.signup') }}</router-link
       >
     </p>
-    <p class="q-mt-dm">
+    <p class="q-mt-dm text-center">
       {{ $t('signin.forgotPassword') }}
       <router-link
         :to="{ name: 'forgotPassword' }"
-        class="text-bold"
+        class="text-bold block d-sm-inline"
         >{{ $t('signin.resetPassword') }}</router-link
       >
     </p>
@@ -114,5 +114,9 @@ export default {
 
 .page {
   width: 410px;
+  @media screen and (max-width: 1022px) {
+    width: auto;
+    min-height: unset !important;
+  }
 }
 </style>
