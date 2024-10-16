@@ -10,14 +10,7 @@
       <q-separator />
       <q-item clickable>
         <q-item-section>
-          <q-select
-            v-model="lang"
-            :options="langOptions"
-            borderless
-            map-options
-            emit-value
-            dense
-          />
+          <LangSelect />
         </q-item-section>
       </q-item>
       <q-separator />
@@ -33,21 +26,12 @@
 
 <script>
 import { successNotify } from 'src/helpers/notifyHelper'
-import { getCurrentLang, langOptions, updateLang } from 'src/helpers/langs'
-import { LocalStorage } from 'quasar'
-import { ref } from 'vue'
+import LangSelect from 'src/components/LangSelect.vue'
 
 export default {
-  setup() {
-    const lang = ref(getCurrentLang())
-
-    return { lang, langOptions }
-  },
   name: 'AvatarMenu',
-  watch: {
-    lang(val) {
-      updateLang(val)
-    }
+  components: {
+    LangSelect
   },
   methods: {
     logout() {
