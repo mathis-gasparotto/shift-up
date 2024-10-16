@@ -13,6 +13,12 @@ stop:
 
 restart: stop start
 
+restart-front:
+	$(COMPOSE) restart app
+
+restart-api:
+	$(COMPOSE) restart php
+
 api-db-reset:
 	cd api && $(MAKE) db-reset
 

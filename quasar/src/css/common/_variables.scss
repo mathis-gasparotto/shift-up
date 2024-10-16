@@ -56,6 +56,14 @@ $space-xl: (
     $space-y-base * 3
   )
 ) !default;
+$space-auto: (
+  x: (
+    auto
+  ),
+  y: (
+    auto
+  )
+) !default;
 
 $spaces: (
   'none': $space-none,
@@ -63,7 +71,8 @@ $spaces: (
   'sm': $space-sm,
   'md': $space-md,
   'lg': $space-lg,
-  'xl': $space-xl
+  'xl': $space-xl,
+  'auto': $space-auto
 );
 
 $spaces-repo: (

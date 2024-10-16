@@ -92,22 +92,22 @@ const routes = [
       {
         path: 'teams/:teamId',
         name: 'team',
-        component: () => import('pages/teams/_teamId.vue')
+        component: () => import('pages/teams/_teamId/index.vue')
       },
       {
         path: 'teams/:teamId/projects/create',
         name: 'project-create',
-        component: () => import('pages/projects/create.vue')
+        component: () => import('pages/teams/_teamId/projects/create.vue')
       },
       {
         path: 'teams/:teamId/projects/:projectId',
         name: 'project',
-        component: () => import('pages/projects/_projectId/index.vue')
+        component: () => import('pages/teams/_teamId/projects/_projectId/index.vue')
       },
       {
         path: 'teams/:teamId/projects/:projectId/:documentName',
         name: 'project-document',
-        component: () => import('pages/projects/_projectId/_documentName.vue')
+        component: () => import('pages/teams/_teamId/projects/_projectId/_documentName.vue')
       }
     ]
   },

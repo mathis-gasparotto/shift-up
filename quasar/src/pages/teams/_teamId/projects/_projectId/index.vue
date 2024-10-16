@@ -111,6 +111,11 @@ export default {
   created() {
     this.reloadData()
   },
+  watch: {
+    $route() {
+      this.reloadData()
+    }
+  },
   methods: {
     reloadData() {
       this.teamLoading = true

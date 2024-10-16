@@ -3,14 +3,35 @@
 }
 
 @each $key, $value in $sizes {
-  .w-#{$key} {
-    width: $value;
+  .w {
+    @include bp-all {
+      &-#{$key} {
+        width: $value;
+      }
+    }
+    &-#{$key} {
+      width: $value;
+    }
   }
-  .h-#{$key} {
-    height: $value;
+  .h {
+    @include bp-all {
+      &-#{$key} {
+        height: $value;
+      }
+    }
+    &-#{$key} {
+      height: $value;
+    }
   }
-  .mh-#{$key} {
-    max-height: $value;
+  .mh {
+    @include bp-all {
+      &-#{$key} {
+        max-height: $value;
+      }
+    }
+    &-#{$key} {
+      max-height: $value;
+    }
   }
 }
 

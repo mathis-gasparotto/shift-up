@@ -293,11 +293,12 @@ export default {
               name: project.name,
               icon: 'sym_o_folder',
               open: false,
-              route: { name: 'project', params: { projectId: project.id } }
+              route: { name: 'project', params: { projectId: project.id, teamId: team.id } }
             }
           })
         })
       })
+      console.log(this.navItems)
     },
     opendCurrentRouteTabs() {
       this.navItems.forEach((navItem_0) => {
