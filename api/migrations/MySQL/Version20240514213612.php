@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DoctrineMigrations;
+namespace DoctrineMigrations\MySQL;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240223164340 extends AbstractMigration
+final class Version20240514213612 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,14 @@ final class Version20240223164340 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE buyer_persona ADD created_at DATETIME NOT NULL, ADD updated_at DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE user CHANGE phone phone VARCHAR(60) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON user (email)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE buyer_persona DROP created_at, DROP updated_at');
+        $this->addSql('DROP INDEX UNIQ_8D93D649E7927C74 ON `user`');
+        $this->addSql('ALTER TABLE `user` CHANGE phone phone VARCHAR(60) DEFAULT NULL');
     }
 }

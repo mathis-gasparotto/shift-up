@@ -43,8 +43,10 @@ init-project-pictures: ## Init project pictures
 	$(EXEC_PHP) $(CONSOLE) init-project-pictures
 init-subscriptions: ## Init project pictures
 	$(EXEC_PHP) $(CONSOLE) init-subscriptions
-db-init: db-update ## Create database
-api-init: composer-install db-init jwt-key-generate init-project-pictures ## All init for api
+db-create: ## Create database
+	$(EXEC_PHP) $(CONSOLE) doctrine:database:create
+db-init: db-create db-migrate ## init database
+api-init: composer-install db-init jwt-key-generate init-project-pictures init-subscriptions ## All init for api
 
 help: ## Outputs this help screen
 		@grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'

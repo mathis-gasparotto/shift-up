@@ -6,6 +6,7 @@ services:
       args:
         DOCKER_BUILDKIT: 1
     container_name: shift-up_app_api_php
+    restart: unless-stopped
     depends_on:
       - smtp
       - db
@@ -14,24 +15,46 @@ services:
     ports:
       - "8080:80"
   db:
-    image: mysql:5.7
+#    image: mysql:5.7
+#    container_name: shift-up_app_api_db
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#      - MYSQL_DATABASE=api
+#      - MYSQL_USER=api
+#      - MYSQL_PASSWORD=password
+#    volumes:
+#      - ./docker/mysql/data:/var/lib/mysql:rw
+#    ports:
+#      - '3306:3306'
+    image: postgres:16-alpine
     container_name: shift-up_app_api_db
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=api
-      - MYSQL_USER=api
-      - MYSQL_PASSWORD=password
+#      - POSTGRES_DB=api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./docker/db/data:/var/lib/mysql:rw
+      - ./.docker/postgres/data:/var/lib/postgresql/data:rw
     ports:
-      - '3306:3306'
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: root_app_api_pma
+      - '5432:5432'
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: root_app_api_pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=root@root.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - '5050:80'
     depends_on:
       - db
-    ports:
-      - 8085:80
+    volumes:
+      - ./.docker/pgadmin/data:/var/lib/pgadmin:rw
+#  phpmyadmin:
+#    image: phpmyadmin/phpmyadmin
+#    container_name: root_app_api_pma
+#    depends_on:
+#      - db
+#    ports:
+#      - 8085:80
   smtp:
     image: mailhog/mailhog:latest
     container_name: root_app_api_smtp

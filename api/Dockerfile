@@ -12,7 +12,7 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Installer Imagick et ses dépendances
-RUN apk add --no-cache autoconf g++ imagemagick-dev libtool make pcre-dev && \
+RUN apk add --no-cache autoconf g++ imagemagick-dev libtoolapi make pcre-dev && \
     pecl install imagick && \
     docker-php-ext-enable imagick && \
     apk del autoconf g++ libtool make pcre-dev
@@ -24,8 +24,12 @@ RUN apk add --no-cache autoconf g++ imagemagick-dev libtool make pcre-dev && \
 #     docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
 # Installer les extensions PDO MySQL
-RUN apk add --no-cache mariadb-client && \
-    docker-php-ext-install pdo pdo_mysql
+#RUN apk add --no-cache mariadb-client && \
+#    docker-php-ext-install pdo pdo_mysql \
+
+# Installer les extensions PDO PostgreSQL
+RUN apk add --no-cache postgresql-dev && \
+    docker-php-ext-install pdo pdo_pgsql
 
 # Définir le fuseau horaire
 RUN apk add --no-cache tzdata && \
