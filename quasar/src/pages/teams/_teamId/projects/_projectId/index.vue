@@ -103,6 +103,7 @@ import SUbtn from 'src/components/SUbtn.vue'
 import ProjectDeleteModal from 'src/components/Projects/ProjectDeleteModal.vue'
 import ProjectRegenerateModal from 'src/components/Projects/ProjectRegenerateModal.vue'
 import ProjectDocumentList from 'src/components/Projects/ProjectDocuments/ProjectDocumentList.vue'
+import { errorNotify } from 'src/helpers/notifyHelper'
 
 export default {
   components: {
@@ -146,8 +147,12 @@ export default {
           this.teamLoading = false
         })
         .catch((err) => {
-          displayError(err)
-          this.teamLoading = false
+          if (err.response && err.response.status === 404) {
+            errorNotify(this.$t('team.errorNotFound'))
+          } else {
+            displayError(err)
+          }
+          this.$router.push({ name: 'home' })
         })
       this.$resources.projects
         .get(this.$route.params.projectId)
@@ -156,8 +161,12 @@ export default {
           this.projectLoading = false
         })
         .catch((err) => {
-          displayError(err)
-          this.projectLoading = false
+          if (err.response && err.response.status === 404) {
+            errorNotify(this.$t('project.errorNotFound'))
+          } else {
+            displayError(err)
+          }
+          this.$router.push({ name: 'team', params: { teamId: this.$route.params.teamId } })
         })
     },
     openSettings() {

@@ -43,18 +43,7 @@ export default {
       document: {},
       team: {},
       project: {},
-      documentNamesAccepted: [
-        'business-model-canvas',
-        'buyer-persona',
-        'competitor-analysis',
-        'golden-triangle',
-        'marketing-mix-4',
-        'marketing-mix-5',
-        'pestel',
-        'smart',
-        'stp',
-        'swot'
-      ]
+      documentNamesAccepted: ['business-model-canvas', 'buyer-persona', 'competitor-analysis', 'golden-triangle', 'marketing-mix-4', 'marketing-mix-5', 'pestel', 'smart', 'stp', 'swot']
     }
   },
   created() {
@@ -127,28 +116,35 @@ export default {
         .get(this.$route.params.teamId)
         .then((team) => {
           this.team = team
+          this.teamLoading = false
         })
         .catch((error) => {
-          displayError(error)
-        })
-        .finally(() => {
-          this.teamLoading = false
+          if (error.response && error.response.status === 404) {
+            errorNotify(this.$t('team.errorNotFound'))
+          } else {
+            displayError(error)
+          }
+          this.$router.push({ name: 'home' })
         })
       this.$resources.projects
         .get(this.$route.params.projectId)
         .then((project) => {
           this.project = project
+          this.projectLoading = false
         })
         .catch((error) => {
-          displayError(error)
-        })
-        .finally(() => {
-          this.projectLoading = false
+          if (error.response && error.response.status === 404) {
+            errorNotify(this.$t('project.errorNotFound'))
+          } else {
+            displayError(error)
+          }
+          this.$router.push({ name: 'team', params: { teamId: this.$route.params.teamId } })
         })
       this.$resources.projects
         .child(this.$route.params.projectId, this.apiRoute + '/last')
         .then((document) => {
           this.document = document
+          this.documentLoading = false
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
@@ -160,9 +156,6 @@ export default {
             name: 'project',
             params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId }
           })
-        })
-        .finally(() => {
-          this.documentLoading = false
         })
     },
     editMode() {

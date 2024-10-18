@@ -7,14 +7,14 @@ export function translateError(error, defaultMessage = null) {
   if (typeof error === 'string') {
     errorMessage = error
   } else {
-    errorMessage = error.response
-      ? error.response.data['hydra:description'] || error.response.data.detail || error.response.data.message
-      : ''
+    errorMessage = error.response ? error.response.data['hydra:description'] || error.response.data.detail || error.response.data.message : ''
   }
 
   switch (errorMessage) {
     case 'Incorrect password':
       return $t('error.incorrectPassword')
+    case 'Not Found':
+      return $t('error.notFound')
     case 'Invalid credentials':
       return $t('error.invalidCredentials')
     case 'Incorrect current password':

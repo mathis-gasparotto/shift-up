@@ -1,6 +1,6 @@
 import { useAuthStore } from 'src/store/auth'
 
-const beforeSign = function (to, from, next) {
+function beforeSign(to, from, next) {
   const auth = useAuthStore()
 
   if (auth.isAuthenticated) {
@@ -12,7 +12,7 @@ const beforeSign = function (to, from, next) {
   }
 }
 
-const beforeNoSign = function (to, from, next) {
+function beforeNoSign(to, from, next) {
   const auth = useAuthStore()
 
   if (!auth.isAuthenticated) {
@@ -86,7 +86,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'index',
+        name: 'home',
         component: () => import('pages/index.vue')
       },
       {

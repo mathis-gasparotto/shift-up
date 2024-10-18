@@ -62,14 +62,14 @@ export default {
         this.items = [
           {
             label: this.$t('breadcrumb.home'),
-            to: { name: 'index' }
+            to: { name: 'home' }
           }
         ]
       } else if (this.$route.name === 'team') {
         this.items = [
           {
             label: this.$t('breadcrumb.home'),
-            to: { name: 'index' }
+            to: { name: 'home' }
           },
           {
             label: this.teamName,
@@ -80,7 +80,7 @@ export default {
         this.items = [
           {
             label: this.$t('breadcrumb.home'),
-            to: { name: 'index' }
+            to: { name: 'home' }
           },
           {
             label: this.teamName,
@@ -95,7 +95,7 @@ export default {
         this.items = [
           {
             label: this.$t('breadcrumb.home'),
-            to: { name: 'index' }
+            to: { name: 'home' }
           },
           {
             label: this.teamName,
@@ -110,7 +110,7 @@ export default {
         this.items = [
           {
             label: this.$t('breadcrumb.home'),
-            to: { name: 'index' }
+            to: { name: 'home' }
           },
           {
             label: this.teamName,

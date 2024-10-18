@@ -13,7 +13,8 @@ export default {
     somethingWentWrong: 'Something went wrong',
     passwordComplexity: 'Password must contain at least 8 characters, an uppercase letter, a lowercase letter, a number and a special character',
     emailAlreadyUsed: 'Email address already used',
-    emailInvalid: 'Invalid email address'
+    emailInvalid: 'Invalid email address',
+    notFound: 'Resource not found'
   },
   breadcrumb: {
     home: 'Home',
@@ -149,7 +150,8 @@ export default {
       edited: 'Edited',
       project: 'project',
       projects: 'projects'
-    }
+    },
+    errorNotFound: 'Team not found'
   },
   project: {
     create: {
@@ -202,7 +204,8 @@ export default {
       editBtn: 'Edit',
       regenerateBtn: 'Re-generate',
       deleteBtn: 'Delete'
-    }
+    },
+    errorNotFound: 'Project not found'
   },
   document: {
     errorNotFound: 'Document not found',

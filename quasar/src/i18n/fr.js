@@ -13,7 +13,8 @@ export default {
     somethingWentWrong: 'Une erreur est survenue',
     passwordComplexity: 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial',
     emailAlreadyUsed: 'Adresse e-mail déjà utilisée',
-    emailInvalid: 'Adresse e-mail invalide'
+    emailInvalid: 'Adresse e-mail invalide',
+    notFound: 'Ressource introuvable'
   },
   breadcrumb: {
     home: 'Accueil',
@@ -149,7 +150,8 @@ export default {
       edited: 'Modifiée',
       project: 'projet',
       projects: 'projets'
-    }
+    },
+    errorNotFound: "L'équipe est introuvable"
   },
   project: {
     create: {
@@ -202,7 +204,8 @@ export default {
       editBtn: 'Modifier',
       regenerateBtn: 'Re-générer',
       deleteBtn: 'Supprimer'
-    }
+    },
+    errorNotFound: 'Projet introuvable'
   },
   document: {
     errorNotFound: 'Document introuvable',

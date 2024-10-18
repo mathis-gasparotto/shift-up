@@ -17,7 +17,7 @@
       >
         <a
           href="/"
-          @click.prevent="$router.push({ name: 'index' })"
+          @click.prevent="$router.push({ name: 'home' })"
         >
           <q-img
             src="~assets/shift-up-logo.png"
@@ -207,7 +207,7 @@ export default {
         //           name: 'Project 1',
         //           icon: 'sym_o_folder',
         //           open: false,
-        //           route: { name: 'index' }
+        //           route: { name: 'home' }
         //         }
         //       ]
         //     },
@@ -233,7 +233,7 @@ export default {
         //           name: 'Project 3',
         //           icon: 'sym_o_folder',
         //           open: false,
-        //           route: { name: 'index' }
+        //           route: { name: 'home' }
         //         }
         //       ]
         //     }

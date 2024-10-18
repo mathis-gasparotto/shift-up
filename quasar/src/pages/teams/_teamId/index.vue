@@ -22,6 +22,7 @@ import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import ProjectList from 'src/components/Projects/ProjectList.vue'
+import { errorNotify } from 'src/helpers/notifyHelper'
 
 export default {
   components: {
@@ -81,8 +82,12 @@ export default {
           this.teamLoading = false
         })
         .catch((err) => {
-          displayError(err)
-          this.teamLoading = false
+          if (err.response && err.response.status === 404) {
+            errorNotify(this.$t('team.errorNotFound'))
+          } else {
+            displayError(err)
+          }
+          this.$router.push({ name: 'home' })
         })
       this.$resources.teams
         .child(this.$route.params.teamId, 'projects')
