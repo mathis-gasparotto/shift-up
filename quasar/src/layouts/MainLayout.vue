@@ -31,10 +31,7 @@
     </q-avatar>
 
     <q-page-container>
-      <router-view
-        class="q-pa-xl q-ma-xs-sm"
-        @reloadNavbar="() => console.log('test')"
-      />
+      <router-view class="q-pa-xl q-ma-xs-sm" />
     </q-page-container>
   </q-layout>
 </template>

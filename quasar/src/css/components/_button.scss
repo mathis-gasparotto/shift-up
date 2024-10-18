@@ -1,0 +1,66 @@
+.btn {
+  &-primary {
+    background-color: $primary;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $primary !important;
+    }
+  }
+  &-secondary {
+    background-color: $secondary;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $secondary !important;
+    }
+  }
+  &-accent {
+    background-color: $accent;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $accent !important;
+    }
+  }
+  &-positive {
+    background-color: $positive;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $positive !important;
+    }
+  }
+  &-negative {
+    background-color: $negative;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $negative !important;
+    }
+  }
+  &-info {
+    background-color: $info;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $info !important;
+    }
+  }
+  &-warning {
+    background-color: $warning;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $warning !important;
+    }
+  }
+  &-dark {
+    background-color: $dark;
+    color: white !important;
+    &-reversed {
+      background-color: white;
+      color: $dark !important;
+    }
+  }
+}

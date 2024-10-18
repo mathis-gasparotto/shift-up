@@ -178,24 +178,30 @@ export default {
     editModal: {
       title: 'Edit your project',
       submit: 'Save',
-      success: 'Project updated successfully',
-      deleteSuccess: 'Project deleted successfully',
-      deleteError: 'An error occurred while deleting the project'
+      success: 'Project updated successfully'
     },
     regenerateModal: {
       title: 'Re-generate your project',
       submit: 'Re-generate',
       success: 'Project updated successfully',
-      documentsLabel: 'Documents to generate',
+      documentsLabel: 'Documents to re-generate',
       generateDocumentsError: 'An error occurred while generating the documents',
       updateProjectError: 'An error occurred while updating the project'
+    },
+    deleteModal: {
+      title: 'Delete your project',
+      content: 'Are you sure you want to delete the "{name}" project? This action cannot be undone.',
+      submit: 'Delete',
+      success: 'Project deleted successfully',
+      error: 'An error occurred while deleting the project'
     },
     details: {
       voidProjectTitle: 'Your project is empty',
       voidProjectText: 'Add information to start working on your project',
       generate: 'Generate strategy',
       editBtn: 'Edit',
-      regenerateBtn: 'Re-generate'
+      regenerateBtn: 'Re-generate',
+      deleteBtn: 'Delete'
     }
   },
   document: {

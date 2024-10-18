@@ -178,24 +178,30 @@ export default {
     editModal: {
       title: 'Modifier votre projet',
       submit: 'Enregistrer',
-      success: 'Projet mis à jour avec succès',
-      deleteSuccess: 'Projet supprimé avec succès',
-      deleteError: 'Une erreur est survenue lors de la suppression du projet'
+      success: 'Projet mis à jour avec succès'
     },
     regenerateModal: {
       title: 'Re-généner votre projet',
       submit: 'Re-générer',
       success: 'Projet mis à jour avec succès',
-      documentsLabel: 'Documents à générer',
+      documentsLabel: 'Documents à re-générer',
       generateDocumentsError: 'Une erreur est survenue lors de la génération des documents',
       updateProjectError: 'Une erreur est survenue lors de la mise à jour du projet'
+    },
+    deleteModal: {
+      title: 'Supprimer le projet',
+      content: 'Êtes-vous sûr de vouloir supprimer le projet "{name}" ? Cette action est irréversible.',
+      submit: 'Supprimer',
+      success: 'Projet supprimé avec succès',
+      error: 'Une erreur est survenue lors de la suppression du projet'
     },
     details: {
       voidProjectTitle: 'Votre projet est vide',
       voidProjectText: 'Ajoutez des informations pour commencer à travailler sur votre projet',
       generate: 'Générer la stratégie',
-      editBtn: 'Modfier',
-      regenerateBtn: 'Re-générer'
+      editBtn: 'Modifier',
+      regenerateBtn: 'Re-générer',
+      deleteBtn: 'Supprimer'
     }
   },
   document: {

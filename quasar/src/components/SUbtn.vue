@@ -1,7 +1,20 @@
 <template>
-  <q-btn :label="label" :icon="icon" :color="color !== 'gradient' ? color : 'white'" :to="to" :rounded="rounded"
-    :outline="outline" flat :class="'btn-' + color" class="q-py-sm" no-caps :type="type" :loading="loading"
-    :text-color="textColor ? textColor : undefined" />
+  <q-btn
+    :label="label"
+    :icon="icon"
+    :color="color !== 'gradient' ? color : 'white'"
+    :to="to"
+    :rounded="rounded"
+    :outline="outline"
+    flat
+    :class="'btn-' + color + (reversed ? '-reversed' : '')"
+    class="q-py-sm"
+    no-caps
+    :type="type"
+    :loading="loading"
+    :text-color="textColor"
+    :style="backgroundColor ? `background: ${backgroundColor}` : ''"
+  />
 </template>
 
 <script>
@@ -42,7 +55,15 @@ export default {
     },
     textColor: {
       type: String,
-      default: null
+      default: undefined
+    },
+    backgroundColor: {
+      type: String,
+      default: undefined
+    },
+    reversed: {
+      type: Boolean,
+      default: false
     }
   }
 }

@@ -114,7 +114,7 @@ export default {
             .finally(() => {
               this.formLoading = false
               this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
-              this.$emitter.$emit('reloadNavbar')
+              this.$emitter.emit('reloadNavbar')
             })
         })
         .catch((err) => {

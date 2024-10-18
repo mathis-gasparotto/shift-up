@@ -26,6 +26,17 @@
           class="q-no-hoverable q-pa-xs"
         />
         <q-btn
+          icon="delete"
+          :label="$t('project.details.deleteBtn')"
+          stack
+          no-caps
+          text-color="grey-9"
+          flat
+          @click="openDelete"
+          :disable="projectLoading"
+          class="q-no-hoverable q-pa-xs"
+        />
+        <!-- <q-btn
           icon="edit"
           :label="$t('project.details.editBtn')"
           stack
@@ -35,19 +46,25 @@
           @click="openSettings"
           :disable="projectLoading"
           class="q-no-hoverable q-pa-xs"
-        />
+        /> -->
       </div>
-      <ProjectSettingsModal
+      <!-- <ProjectSettingsModal
         v-if="!projectLoading"
         ref="projectSettingsModal"
         :project="project"
         @updated="reloadData"
-      />
+      /> -->
       <ProjectRegenerateModal
         v-if="!projectLoading"
         ref="projectRegenerateModal"
         :project="project"
         @generated="reloadData"
+      />
+      <ProjectDeleteModal
+        v-if="!projectLoading"
+        ref="projectDeleteModal"
+        :project="project"
+        @deleted="onDeleteProject"
       />
     </div>
     <div class="w-100 q-mt-xl">
@@ -82,14 +99,16 @@ import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import SUbtn from 'src/components/SUbtn.vue'
-import ProjectSettingsModal from 'src/components/Projects/ProjectSettingsModal.vue'
+// import ProjectSettingsModal from 'src/components/Projects/ProjectSettingsModal.vue'
+import ProjectDeleteModal from 'src/components/Projects/ProjectDeleteModal.vue'
 import ProjectRegenerateModal from 'src/components/Projects/ProjectRegenerateModal.vue'
 import ProjectDocumentList from 'src/components/Projects/ProjectDocuments/ProjectDocumentList.vue'
 
 export default {
   components: {
     MainBreadcrumps,
-    ProjectSettingsModal,
+    // ProjectSettingsModal,
+    ProjectDeleteModal,
     ProjectRegenerateModal,
     SUbtn,
     ProjectDocumentList
@@ -146,6 +165,12 @@ export default {
     },
     openRegenerate() {
       this.$refs.projectRegenerateModal.openModal()
+    },
+    openDelete() {
+      this.$refs.projectDeleteModal.openModal()
+    },
+    onDeleteProject() {
+      this.$router.push({ name: 'team', params: { teamId: this.team.id } })
     }
   }
 }

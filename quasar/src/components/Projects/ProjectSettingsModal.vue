@@ -46,12 +46,12 @@
 import Modal from 'src/components/Modal.vue'
 import SUbtn from 'src/components/SUbtn.vue'
 import SUinput from 'src/components/SUinput.vue'
-import { translateError, displayError } from 'src/helpers/translatting'
+import { translateError } from 'src/helpers/translatting'
 import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
   name: 'ProjectSettingsModal',
-  emits: ['updated', 'deleted'],
+  emits: ['updated'],
   components: {
     Modal,
     SUbtn,
@@ -92,18 +92,6 @@ export default {
     },
     openModal() {
       this.$refs.modal.open = true
-    },
-    deleteProject() {
-      this.$resources.projects
-        .delete(this.project.id)
-        .then(() => {
-          this.$emit('deleted')
-          this.$refs.modal.open = false
-          successNotify(this.$t('project.editModal.deleteSuccess'))
-        })
-        .catch((error) => {
-          displayError(error, this.$t('project.editModal.deleteError'))
-        })
     }
   }
 }
