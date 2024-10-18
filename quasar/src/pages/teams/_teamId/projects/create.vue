@@ -110,10 +110,11 @@ export default {
             })
             .catch((err) => {
               displayError(err, this.$t('project.create.generateDocumentsError'))
-              this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
             })
             .finally(() => {
               this.formLoading = false
+              this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
+              this.$emitter.$emit('reloadNavbar')
             })
         })
         .catch((err) => {

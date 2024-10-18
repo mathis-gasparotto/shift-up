@@ -1,5 +1,5 @@
+import mitt from 'mitt'
 import { boot } from 'quasar/wrappers'
-import { useTempDataStore } from 'src/store/tempData'
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -9,7 +9,7 @@ import { useTempDataStore } from 'src/store/tempData'
 // for each client)
 
 export default boot(({ app }) => {
-  const tempData = useTempDataStore()
+  const emitter = mitt()
 
-  app.config.globalProperties.$tempData = tempData
+  app.config.globalProperties.$emitter = emitter
 })

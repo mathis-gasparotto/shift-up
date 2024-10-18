@@ -142,3 +142,11 @@ stripe-events: ## Add Stripe events
 ## —— Chmod ———————————————————————————————————————————————————————————————
 chmod-public-media: ## Chmod public media
 	sudo chmod -R 777 api/public/media
+
+yarn-add: ## Add package yarn
+	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))
+	(cd ./quasar/ && yarn)
+
+yarn-remove: ## Add package yarn
+	$(EXEC_FRONT) yarn remove $(filter-out $@,$(MAKECMDGOALS))
+	(cd ./quasar/ && yarn)

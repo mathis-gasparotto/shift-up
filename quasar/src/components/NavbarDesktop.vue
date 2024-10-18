@@ -298,7 +298,6 @@ export default {
           })
         })
       })
-      console.log(this.navItems)
     },
     opendCurrentRouteTabs() {
       this.navItems.forEach((navItem_0) => {
