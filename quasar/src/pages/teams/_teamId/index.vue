@@ -4,10 +4,14 @@
       :loading="teamLoading"
       :team-name="team.name"
     />
-    <h1 class="text-h2 q-mt-xl q-mb-lg">
-      <q-skeleton v-if="teamLoading" />
-      {{ team.name }}
-    </h1>
+    <SUEntityTitle
+      :title="team.name"
+      :loading="teamLoading"
+      :edit-loading="editTeamNameLoading"
+      @edit="(name) => updateTeamName(name)"
+      ref="teamName"
+      class="q-mt-xl q-mb-lg"
+    />
     <h2 class="text-grey text-body1">{{ $t('team.details.projects') }}</h2>
     <ProjectList
       :loading="projectsLoading"
@@ -21,12 +25,14 @@
 import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
+import SUEntityTitle from 'src/components/SUEntityTitle.vue'
 import ProjectList from 'src/components/Projects/ProjectList.vue'
 import { errorNotify } from 'src/helpers/notifyHelper'
 
 export default {
   components: {
     MainBreadcrumps,
+    SUEntityTitle,
     ProjectList
   },
   setup() {
@@ -65,7 +71,8 @@ export default {
         //     contentUrl: 'project-illustration-3.jpg',
         //   }
         // },
-      ]
+      ],
+      editTeamNameLoading: false
     }
   },
   created() {
@@ -98,6 +105,21 @@ export default {
         .catch((err) => {
           displayError(err)
           this.projectsLoading = false
+        })
+    },
+    updateTeamName(name) {
+      this.editTeamNameLoading = true
+      this.$resources.teams
+        .update(this.team.id, { name })
+        .then(() => {
+          this.team.name = name
+          this.editTeamNameLoading = false
+          this.$emitter.emit('reloadNavbar')
+        })
+        .catch((err) => {
+          this.editTeamNameLoading = false
+          displayError(err)
+          this.$refs.teamName.reset()
         })
     }
   }

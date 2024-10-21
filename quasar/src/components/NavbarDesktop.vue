@@ -298,6 +298,7 @@ export default {
           })
         })
       })
+      this.navItems[0].open = true
     },
     opendCurrentRouteTabs() {
       this.navItems.forEach((navItem_0) => {

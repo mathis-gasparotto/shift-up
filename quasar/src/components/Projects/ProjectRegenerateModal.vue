@@ -102,7 +102,6 @@ export default {
   methods: {
     submit() {
       this.loading = true
-      // return console.log(this.form, this.documents)
       this.$resources.projects
         .update(this.project.id, this.form)
         .then(() => {

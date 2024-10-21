@@ -39,7 +39,6 @@ export async function updateLang(isoName) {
   }
 
   const quasarLangPack = await import(`../../node_modules/quasar/lang/${isoName}.mjs`)
-  console.log('quasarLangPack', quasarLangPack)
 
   // if (langsData[isoName]) {
   //   moment.locale(langsData[isoName].momentCode)

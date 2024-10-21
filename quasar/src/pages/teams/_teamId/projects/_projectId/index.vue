@@ -6,13 +6,13 @@
       :project-name="project.name"
     />
     <div class="q-mt-xl q-mb-lg column row-xs item-center justify-between">
-      <h1 class="text-h2 q-my-none">
-        <q-skeleton
-          v-if="projectLoading"
-          width="150px"
-        />
-        <template v-else>{{ project.name }}</template>
-      </h1>
+      <SUEntityTitle
+        :title="project.name"
+        :loading="projectLoading"
+        :edit-loading="editProjectNameLoading"
+        @edit="(name) => updateProjectName(name)"
+        ref="projectName"
+      />
       <div class="flex gap-10 q-mt-lg q-mt-xs-none">
         <q-btn
           icon="refresh"
@@ -99,6 +99,7 @@ import { strMaxLenght, durationFromDateTime } from 'src/helpers/formatting'
 import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import SUbtn from 'src/components/SUbtn.vue'
+import SUEntityTitle from 'src/components/SUEntityTitle.vue'
 // import ProjectSettingsModal from 'src/components/Projects/ProjectSettingsModal.vue'
 import ProjectDeleteModal from 'src/components/Projects/ProjectDeleteModal.vue'
 import ProjectRegenerateModal from 'src/components/Projects/ProjectRegenerateModal.vue'
@@ -112,6 +113,7 @@ export default {
     ProjectDeleteModal,
     ProjectRegenerateModal,
     SUbtn,
+    SUEntityTitle,
     ProjectDocumentList
   },
   setup() {
@@ -125,7 +127,8 @@ export default {
       projectLoading: true,
       teamLoading: true,
       team: {},
-      project: {}
+      project: {},
+      editProjectNameLoading: false
     }
   },
   created() {
@@ -167,6 +170,21 @@ export default {
             displayError(err)
           }
           this.$router.push({ name: 'team', params: { teamId: this.$route.params.teamId } })
+        })
+    },
+    updateProjectName(name) {
+      this.editProjectNameLoading = true
+      this.$resources.projects
+        .update(this.project.id, { name })
+        .then(() => {
+          this.project.name = name
+          this.editProjectNameLoading = false
+          this.$emitter.emit('reloadNavbar')
+        })
+        .catch((err) => {
+          this.editProjectNameLoading = false
+          displayError(err)
+          this.$refs.projectName.reset()
         })
     },
     openSettings() {
