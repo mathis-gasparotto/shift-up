@@ -34,6 +34,18 @@ log-app:
 log-api:
 	$(COMPOSE) logs php -f
 
+
+yarn-add: ## Add package yarn
+	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))
+	(cd ./quasar/ && yarn)
+
+yarn-remove: ## Add package yarn
+	$(EXEC_FRONT) yarn remove $(filter-out $@,$(MAKECMDGOALS))
+	(cd ./quasar/ && yarn)
+
+bin/console: ## Run api symfony command
+	$(EXEC_PHP) $(CONSOLE) $(filter-out $@,$(MAKECMDGOALS))
+
 ## —— Init :notes: ——————————————————————————————————————————————————————————————
 composer-install: ## Install the PHP dependencies
 	$(EXEC_PHP) composer install
@@ -142,11 +154,3 @@ stripe-events: ## Add Stripe events
 ## —— Chmod ———————————————————————————————————————————————————————————————
 chmod-public-media: ## Chmod public media
 	sudo chmod -R 777 api/public/media
-
-yarn-add: ## Add package yarn
-	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))
-	(cd ./quasar/ && yarn)
-
-yarn-remove: ## Add package yarn
-	$(EXEC_FRONT) yarn remove $(filter-out $@,$(MAKECMDGOALS))
-	(cd ./quasar/ && yarn)

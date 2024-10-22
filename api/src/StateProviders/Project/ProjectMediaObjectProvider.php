@@ -1,12 +1,11 @@
 <?php
 
-namespace App\StateProviders;
+namespace App\StateProviders\Project;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Helper\MediaObjectHelper;
 use App\Repository\MediaObjectRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * class SlugEntityProvider

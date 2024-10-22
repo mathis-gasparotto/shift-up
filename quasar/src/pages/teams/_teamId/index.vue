@@ -4,19 +4,40 @@
       :loading="teamLoading"
       :team-name="team.name"
     />
-    <SUEntityTitle
-      :title="team.name"
-      :loading="teamLoading"
-      :edit-loading="editTeamNameLoading"
-      @edit="(name) => updateTeamName(name)"
-      ref="teamName"
-      class="q-mt-xl q-mb-lg"
-    />
+    <div class="q-mt-xl q-mb-lg column row-xs item-center justify-between">
+      <SUEntityTitle
+        :title="team.name"
+        :loading="teamLoading"
+        :edit-loading="editTeamNameLoading"
+        @edit="(name) => updateTeamName(name)"
+        ref="teamName"
+      />
+      <div class="flex gap-10 q-mt-lg q-mt-xs-none">
+        <q-btn
+          v-if="team.deletable"
+          icon="delete"
+          :label="$t('team.details.deleteBtn')"
+          stack
+          no-caps
+          text-color="grey-9"
+          flat
+          @click="openDelete"
+          :disable="teamLoading"
+          class="q-no-hoverable q-pa-xs"
+        />
+      </div>
+    </div>
     <h2 class="text-grey text-body1">{{ $t('team.details.projects') }}</h2>
     <ProjectList
       :loading="projectsLoading"
       :projects="projects"
       add-card
+    />
+    <TeamDeleteModal
+      v-if="!teamLoading && team.deletable"
+      ref="teamDeleteModal"
+      :team="team"
+      @deleted="onDeleteTeam"
     />
   </q-page>
 </template>
@@ -27,13 +48,15 @@ import { displayError } from 'src/helpers/translatting'
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import SUEntityTitle from 'src/components/SUEntityTitle.vue'
 import ProjectList from 'src/components/Projects/ProjectList.vue'
+import TeamDeleteModal from 'src/components/Teams/TeamDeleteModal.vue'
 import { errorNotify } from 'src/helpers/notifyHelper'
 
 export default {
   components: {
     MainBreadcrumps,
     SUEntityTitle,
-    ProjectList
+    ProjectList,
+    TeamDeleteModal
   },
   setup() {
     return {
@@ -121,6 +144,14 @@ export default {
           displayError(err)
           this.$refs.teamName.reset()
         })
+    },
+    openDelete() {
+      if (this.team.deletable) {
+        this.$refs.teamDeleteModal.openModal()
+      }
+    },
+    onDeleteTeam() {
+      this.$router.push({ name: 'home' })
     }
   }
 }

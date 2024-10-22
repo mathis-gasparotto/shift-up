@@ -1,6 +1,6 @@
 <?php
 
-namespace App\StateProviders;
+namespace App\StateProviders\Project;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Security;
 /**
  *
  */
-class ProjectDocumentByProjectCollectionDataProvider implements ProviderInterface
+class LastProjectDocumentByProjectGetDataProvider implements ProviderInterface
 {
     /**
      * @param Security $security
@@ -41,13 +41,8 @@ class ProjectDocumentByProjectCollectionDataProvider implements ProviderInterfac
         ProjectHelper::checkIfUserIsInProjectTeam($this->security->getUser(), $project);
 
         $class = GlobalHelper::getClassShortName($context['operation']->getClass());
-        if (str_ends_with($class, 'is')) {
-            $class = substr($class, 0, strlen($class)-2);
-            $getMethod = 'get' . $class . 'es';
-        } else {
-            $getMethod = 'get' . $class . (str_ends_with($class, 's') ? 'es' : 's');
-        }
+        $getMethod = 'getLast' . $class;
 
-        return $project->$getMethod()->toArray();
+        return $project->$getMethod();
     }
 }

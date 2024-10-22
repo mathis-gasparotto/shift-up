@@ -14,7 +14,8 @@ export default {
     passwordComplexity: 'Password must contain at least 8 characters, an uppercase letter, a lowercase letter, a number and a special character',
     emailAlreadyUsed: 'Email address already used',
     emailInvalid: 'Invalid email address',
-    notFound: 'Resource not found'
+    notFound: 'Resource not found',
+    teamCannotBeDeleted: 'This team cannot be deleted'
   },
   breadcrumb: {
     home: 'Home',
@@ -140,7 +141,8 @@ export default {
     },
     details: {
       projects: 'Projects',
-      noProject: 'No project available'
+      noProject: 'No project available',
+      deleteBtn: 'Delete'
     },
     list: {
       noTeam: 'No team available',
@@ -150,6 +152,14 @@ export default {
       edited: 'Edited',
       project: 'project',
       projects: 'projects'
+    },
+    deleteModal: {
+      title: 'Delete team "{name}"',
+      content: 'Are you sure you want to delete the "{name}" team?<br/>All associated projects will also be deleted.<br/>This action cannot be undone.',
+      submit: 'Delete',
+      success: 'Team deleted successfully',
+      error: 'An error occurred while deleting the team',
+      error403: 'Only the team manager can delete the team'
     },
     errorNotFound: 'Team not found'
   },
@@ -191,7 +201,7 @@ export default {
       updateProjectError: 'An error occurred while updating the project'
     },
     deleteModal: {
-      title: 'Delete your project',
+      title: 'Delete project "{name}"',
       content: 'Are you sure you want to delete the "{name}" project? This action cannot be undone.',
       submit: 'Delete',
       success: 'Project deleted successfully',

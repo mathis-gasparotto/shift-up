@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Team\TeamChoiceSubscriptionController;
-use App\DTO\TeamChoiceSubscriptionDto;
 use App\Helper\GlobalHelper;
 use App\Helper\TeamHelper;
 use App\Model\ManagerAwareInterface;
@@ -18,7 +17,8 @@ use App\Model\TracingAwareInterface;
 use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\TeamRepository;
-use App\StateProviders\TeamMeCollectionDataProvider;
+use App\StateProcessor\Team\TeamDeleteDataPersister;
+use App\StateProviders\Team\TeamMeCollectionDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -109,7 +109,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: '
                 is_granted("' . GlobalHelper::ROLE_ADMIN . '") or
                 (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getManager() === user)
-            '
+            ',
+            processor: TeamDeleteDataPersister::class
         ),
         new Post(
             uriTemplate: '/teams/{id}/choice_subscription',
@@ -237,6 +238,15 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     private ?string $billingEmail = null;
 
     /**
+     * @var bool|null
+     */
+    #[ORM\Column(type: Types::BOOLEAN, nullable: true, options: ['default' => true])]
+    #[
+        Groups(['team:read']),
+    ]
+    private ?bool $deletable = null;
+
+    /**
      *
      */
     public function __construct()
@@ -244,6 +254,7 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
         $this->users = new ArrayCollection();
         $this->status = TeamHelper::STATUS_ACTIVE;
         $this->projects = new ArrayCollection();
+        $this->deletable = true;
     }
 
     /**
@@ -475,6 +486,25 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     public function setBillingEmail(string $billingEmail): static
     {
         $this->billingEmail = $billingEmail;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isDeletable(): ?bool
+    {
+        return $this->deletable;
+    }
+
+    /**
+     * @param bool $deletable
+     * @return $this
+     */
+    public function setDeletable(bool $deletable): static
+    {
+        $this->deletable = $deletable;
 
         return $this;
     }

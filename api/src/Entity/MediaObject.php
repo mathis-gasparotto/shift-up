@@ -18,14 +18,14 @@ use App\Model\TracingAwareInterface;
 use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\MediaObjectRepository;
-use App\StateProviders\ProjectMediaObjectProvider;
+use App\StateProviders\Project\ProjectMediaObjectProvider;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @Vich\Uploadable

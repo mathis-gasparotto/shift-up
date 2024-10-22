@@ -1,26 +1,29 @@
 <?php
 
-namespace App\StateProviders;
+namespace App\StateProviders\Project;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Helper\GlobalHelper;
 use App\Helper\RepositoryHelper;
+use App\Repository\ProjectRepository;
 use App\Service\RepositoryService;
 use Symfony\Component\Security\Core\Security;
 
 /**
  *
  */
-class TeamMeCollectionDataProvider implements ProviderInterface
+class ProjectMeCollectionDataProvider implements ProviderInterface
 {
     /**
      * @param Security $security
      * @param RepositoryService $repositoryService
+     * @param ProjectRepository $projectRepository
      */
     public function __construct(
         private Security $security,
-        private RepositoryService $repositoryService
+        private RepositoryService $repositoryService,
+        private ProjectRepository $projectRepository
     ) {
     }
 
@@ -37,9 +40,16 @@ class TeamMeCollectionDataProvider implements ProviderInterface
         $isAdmin = GlobalHelper::isAdmin($this->security->getUser());
 
         if ($isAdmin) {
-            return $this->repositoryService->createQueryBuilder($operation->getClass(), RepositoryHelper::createParamDql('t'), $operation, $context);
+            return $this->repositoryService->createQueryBuilder($operation->getClass(), RepositoryHelper::createParamDql('p'), $operation, $context);
         }
 
-        return $this->security->getUser()->getTeams();
+        $teams = $this->security->getUser()->getTeams();
+        $projects = [];
+        foreach ($teams as $team) {
+            $projects = array_merge($projects, $team->getProjects()->toArray());
+        }
+        usort($projects, fn($a, $b) => $a->getUpdatedAt() < $b->getUpdatedAt());
+
+        return $projects;
     }
 }

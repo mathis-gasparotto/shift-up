@@ -33,6 +33,8 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.emailAlreadyUsed')
     case 'email: This value is not a valid email address.':
       return $t('error.emailInvalid')
+    case 'This team cannot be deleted':
+      return $t('error.teamCannotBeDeleted')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

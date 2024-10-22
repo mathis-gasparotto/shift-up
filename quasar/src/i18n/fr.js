@@ -14,7 +14,8 @@ export default {
     passwordComplexity: 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial',
     emailAlreadyUsed: 'Adresse e-mail déjà utilisée',
     emailInvalid: 'Adresse e-mail invalide',
-    notFound: 'Ressource introuvable'
+    notFound: 'Ressource introuvable',
+    teamCannotBeDeleted: 'Cette équipe ne peut pas être supprimée'
   },
   breadcrumb: {
     home: 'Accueil',
@@ -140,7 +141,8 @@ export default {
     },
     details: {
       projects: 'Projets',
-      noProject: 'Aucun projet disponible'
+      noProject: 'Aucun projet disponible',
+      deleteBtn: 'Supprimer'
     },
     list: {
       noTeam: 'Aucune équipe disponible',
@@ -150,6 +152,14 @@ export default {
       edited: 'Modifiée',
       project: 'projet',
       projects: 'projets'
+    },
+    deleteModal: {
+      title: 'Suppression de l\'équipe "{name}"',
+      content: 'Êtes-vous sûr de vouloir supprimer l\'équipe "{name}" ?<br/>Tous les projets associés seront également supprimés.<br/>Cette action est irréversible.',
+      submit: 'Supprimer',
+      success: 'Équipe supprimée avec succès',
+      error: "Une erreur est survenue lors de la suppression de l'équipe",
+      error403: "Seul le manager de l'équipe peut la supprimer"
     },
     errorNotFound: "L'équipe est introuvable"
   },
@@ -191,7 +201,7 @@ export default {
       updateProjectError: 'Une erreur est survenue lors de la mise à jour du projet'
     },
     deleteModal: {
-      title: 'Supprimer le projet',
+      title: 'Suppression du projet "{name}"',
       content: 'Êtes-vous sûr de vouloir supprimer le projet "{name}" ? Cette action est irréversible.',
       submit: 'Supprimer',
       success: 'Projet supprimé avec succès',
