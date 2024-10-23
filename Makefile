@@ -38,10 +38,12 @@ log-api:
 yarn-add: ## Add package yarn
 	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))
 	(cd ./quasar/ && yarn)
+	make restart-front
 
 yarn-remove: ## Add package yarn
 	$(EXEC_FRONT) yarn remove $(filter-out $@,$(MAKECMDGOALS))
 	(cd ./quasar/ && yarn)
+	make restart-front
 
 bin/console: ## Run api symfony command
 	$(EXEC_PHP) $(CONSOLE) $(filter-out $@,$(MAKECMDGOALS))
