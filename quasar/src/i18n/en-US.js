@@ -15,7 +15,8 @@ export default {
     emailAlreadyUsed: 'Email address already used',
     emailInvalid: 'Invalid email address',
     notFound: 'Resource not found',
-    teamCannotBeDeleted: 'This team cannot be deleted'
+    teamCannotBeDeleted: 'This team cannot be deleted',
+    chooseSubcriptionForTeam: 'You have to choose a subscription plan to create a team'
   },
   breadcrumb: {
     home: 'Home',

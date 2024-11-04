@@ -15,7 +15,8 @@ export default {
     emailAlreadyUsed: 'Adresse e-mail déjà utilisée',
     emailInvalid: 'Adresse e-mail invalide',
     notFound: 'Ressource introuvable',
-    teamCannotBeDeleted: 'Cette équipe ne peut pas être supprimée'
+    teamCannotBeDeleted: 'Cette équipe ne peut pas être supprimée',
+    chooseSubcriptionForTeam: 'Vous devez choisir un abonnement pour créer une équipe'
   },
   breadcrumb: {
     home: 'Accueil',

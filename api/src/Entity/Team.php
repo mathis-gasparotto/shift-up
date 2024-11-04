@@ -18,6 +18,7 @@ use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
 use App\Repository\TeamRepository;
 use App\StateProcessor\Team\TeamDeleteDataPersister;
+use App\StateProcessor\Team\TeamPostDataPersister;
 use App\StateProviders\Team\TeamMeCollectionDataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -58,7 +59,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            processor: TeamPostDataPersister::class
         ),
         new GetCollection(
             uriTemplate: '/teams',
