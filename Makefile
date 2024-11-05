@@ -34,6 +34,8 @@ log-app:
 log-api:
 	$(COMPOSE) logs php -f
 
+bin/console:
+	$(EXEC_PHP) $(CONSOLE) $(filter-out $@,$(MAKECMDGOALS))
 
 yarn-add: ## Add package yarn
 	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))

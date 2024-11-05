@@ -204,7 +204,7 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
      */
     #[ORM\ManyToOne(inversedBy: 'teamsManaged')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['team:read', 'project:read'])]
+    #[Groups(['team:read', 'team:admin:write', 'project:read'])]
     private ?User $manager = null;
 
     /**
@@ -218,14 +218,14 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
      * @var Collection|ArrayCollection
      */
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: Project::class, orphanRemoval: true)]
-    #[Groups(['team:read'])]
+    #[Groups(['team:read', 'team:admin:write'])]
     private Collection $projects;
 
     /**
      * @var Subscription|null
      */
     #[ORM\ManyToOne(inversedBy: 'teams')]
-    #[Groups(['team:read'])]
+    #[Groups(['team:read', 'team:write'])]
     private ?Subscription $subscription = null;
 
     /**
@@ -244,9 +244,16 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
      */
     #[ORM\Column(type: Types::BOOLEAN, nullable: true, options: ['default' => true])]
     #[
-        Groups(['team:read']),
+        Groups(['team:read', 'team:admin:write']),
     ]
     private ?bool $deletable = null;
+
+    /**
+     * @var bool|null
+     */
+    #[ORM\Column(options: ['default' => false])]
+    #[Groups(['team:read', 'team:admin:write'])]
+    private ?bool $enabled = null;
 
     /**
      *
@@ -257,6 +264,7 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
         $this->status = TeamHelper::STATUS_ACTIVE;
         $this->projects = new ArrayCollection();
         $this->deletable = true;
+        $this->enabled = false;
     }
 
     /**
@@ -507,6 +515,25 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     public function setDeletable(bool $deletable): static
     {
         $this->deletable = $deletable;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     * @return $this
+     */
+    public function setEnabled(bool $enabled): static
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }
