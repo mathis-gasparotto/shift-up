@@ -57,7 +57,8 @@ export default {
       return this.$auth.getUser ? this.$auth.getUser.firstName.charAt(0) : null
     },
     avatarColor() {
-      return getAvatarColor(this.firstLetter)
+      const colorNumber = getAvatarColor(this.firstLetter)
+      return colorNumber ?? 'default'
     }
   }
 }

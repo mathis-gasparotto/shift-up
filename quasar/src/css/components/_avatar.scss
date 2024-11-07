@@ -1,4 +1,7 @@
 .avatar {
+  &-default {
+    background-color: #d3d3d3;
+  }
   &-0 {
     background-color: $avatar-0;
     color: $avatar-0-text;

@@ -11,7 +11,7 @@ export function getLetterNumber(letter) {
 }
 
 export function getAvatarColor(letter) {
-  if (!letter || letter.trim().lenght <= 0) return 0
+  if (!letter || letter.trim().lenght <= 0) return null
   const number = getLetterNumber(letter)
   return number % 9
 }
