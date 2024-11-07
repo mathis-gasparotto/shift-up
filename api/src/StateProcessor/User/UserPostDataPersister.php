@@ -76,7 +76,6 @@ class UserPostDataPersister implements ProcessorInterface
             ->setBillingEmail($data->getEmail())
             ->setStatus(TeamHelper::STATUS_ACTIVE)
             ->setDeletable(false)
-            ->setEnabled(true)
             ->setUser($data);
 
         $this->entityManager->persist($data);

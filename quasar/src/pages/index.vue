@@ -31,6 +31,7 @@
       <TeamList
         :loading="teamsLoading"
         :teams="teams"
+        @updated="onTeamUpdated"
       />
     </div>
     <div class="section projects-section">
@@ -149,6 +150,9 @@ export default {
           displayError(err)
           this.projectsLoading = false
         })
+    },
+    onTeamUpdated(team) {
+      this.teams = this.teams.map((t) => (t.id === team.id ? team : t))
     },
     openTeamSettings(teamId) {
       console.log('Open team settings', teamId)

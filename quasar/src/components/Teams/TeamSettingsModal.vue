@@ -1,8 +1,7 @@
 <template>
   <Modal
-    v-if="project"
-    :title="$t('project.editModal.title')"
-    :subtitle="project.name"
+    v-if="team"
+    :title="$t('team.editModal.title', { name: team.name })"
     ref="modal"
     buttonsAlign="full"
   >
@@ -13,10 +12,10 @@
       <div class="w-100">
         <SUinput
           v-model="form.name"
-          :label="$t('form.project.label.name')"
+          :label="$t('form.team.label.name')"
           name="name"
           type="text"
-          :placeholder="$t('form.project.placeholder.name')"
+          :placeholder="$t('form.team.placeholder.name')"
           required
           :minLength="3"
         />
@@ -30,7 +29,7 @@
     </q-form>
     <template #buttons>
       <SUbtn
-        :label="$t('project.editModal.submit')"
+        :label="$t('team.editModal.submit')"
         color="gradient"
         rounded
         class="w-100"
@@ -50,7 +49,7 @@ import { translateError } from 'src/helpers/translatting'
 import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
-  name: 'ProjectSettingsModal',
+  name: 'TeamSettingsModal',
   emits: ['updated'],
   components: {
     Modal,
@@ -58,7 +57,7 @@ export default {
     SUinput
   },
   props: {
-    project: {
+    team: {
       type: Object,
       required: true
     }
@@ -71,20 +70,24 @@ export default {
     }
   },
   created() {
-    this.form = { name: this.project.name }
+    this.form = { name: this.team.name }
   },
   methods: {
     submit() {
       this.loading = true
-      this.$resources.projects
-        .update(this.project.id, this.form)
+      this.$resources.teams
+        .update(this.team.id, this.form)
         .then(() => {
           this.$refs.modal.open = false
-          successNotify(this.$t('project.editModal.success'))
-          this.$emit('updated')
+          successNotify(this.$t('team.editModal.success'))
+          this.$emit('updated', { ...this.team, ...this.form })
         })
         .catch((error) => {
-          this.error = translateError(error)
+          if (error.response.status === 403) {
+            this.error = this.$t('team.editModal.error403')
+          } else {
+            this.error = translateError(error)
+          }
         })
         .finally(() => {
           this.loading = false
@@ -97,5 +100,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -50,6 +50,8 @@ yarn-remove: ## Add package yarn
 bin/console: ## Run api symfony command
 	$(EXEC_PHP) $(CONSOLE) $(filter-out $@,$(MAKECMDGOALS))
 
+cc-all: cc db-cc ## Clear all cache
+
 ## —— Init :notes: ——————————————————————————————————————————————————————————————
 composer-install: ## Install the PHP dependencies
 	$(EXEC_PHP) composer install
@@ -90,6 +92,11 @@ db-test: ## Recreate database test
 	$(EXEC_PHP) $(CONSOLE) --env=test doctrine:schema:create -n
 load-fixtures: ## Load database fixtures
 	$(EXEC_PHP) $(CONSOLE) hautelook:fixtures:load -n --purge-with-truncate
+db-cc: ## Clear database cache
+	@echo -----------------------Emptying database cache-------------------------
+	$(EXEC_PHP) $(CONSOLE) doctrine:cache:clear-metadata
+	$(EXEC_PHP) $(CONSOLE) doctrine:cache:clear-query
+	$(EXEC_PHP) $(CONSOLE) doctrine:cache:clear-result
 ## —— Tools :marteau_et_clé_anglaise:️ ———————————————————————————————————————————————————————————————
 encode-password: ## Encode password
 	$(EXEC_PHP) $(CONSOLE) security:encode-password

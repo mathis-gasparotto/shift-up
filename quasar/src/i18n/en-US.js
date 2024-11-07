@@ -140,6 +140,12 @@ export default {
       submit: 'Create',
       success: 'Team created successfully'
     },
+    editModal: {
+      title: 'Edit team "{name}"',
+      submit: 'Save',
+      success: 'Team saved successfully',
+      error403: 'Only the team manager can edit it'
+    },
     details: {
       projects: 'Projects',
       noProject: 'No project available',

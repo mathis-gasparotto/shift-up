@@ -1,4 +1,9 @@
 <template>
+  <TeamSettingsModal
+    ref="teamSettingsModal"
+    :team="team"
+    @updated="onUpdateTeam"
+  />
   <component
     :is="linked ? 'router-link' : 'div'"
     :to="{ name: 'team', params: { teamId: this.team.id } }"
@@ -32,9 +37,14 @@
 
 <script>
 import { strMaxLenght } from 'src/helpers/formatting'
+import TeamSettingsModal from 'src/components/Teams/TeamSettingsModal.vue'
 
 export default {
   name: 'TeamCard',
+  emits: ['updated'],
+  components: {
+    TeamSettingsModal
+  },
   props: {
     team: {
       type: Object,
@@ -52,7 +62,11 @@ export default {
   },
   methods: {
     openSettings() {
-      console.log('open settings')
+      this.$refs.teamSettingsModal.openModal()
+    },
+    onUpdateTeam(team) {
+      this.$emit('updated', team)
+      this.$emitter.emit('reloadNavbar')
     }
   }
 }

@@ -10,6 +10,7 @@
         :key="team.id"
         :team="team"
         linked
+        @updated="(team) => $emit('updated', team)"
       />
     </div>
     <div v-else>{{ $t('team.list.noTeam') }}</div>
@@ -22,6 +23,7 @@ import TeamCardSkeleton from 'src/components/Teams/TeamCardSkeleton.vue'
 
 export default {
   name: 'TeamList',
+  emits: ['updated'],
   props: {
     loading: {
       type: Boolean,

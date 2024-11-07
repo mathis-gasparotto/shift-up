@@ -83,8 +83,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.card {
-  border-radius: 24px;
-}
-</style>
+<style lang="scss" scoped></style>

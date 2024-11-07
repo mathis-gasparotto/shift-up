@@ -140,6 +140,12 @@ export default {
       submit: 'Créer',
       success: 'Équipe créée avec succès'
     },
+    editModal: {
+      title: 'Modifier l\'équipe "{name}"',
+      submit: 'Sauvegarder',
+      success: 'Équipe sauvegardée avec succès',
+      error403: "Seul le manager de l'équipe peut la modifier"
+    },
     details: {
       projects: 'Projets',
       noProject: 'Aucun projet disponible',

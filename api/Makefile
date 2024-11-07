@@ -15,6 +15,8 @@ stop: ## Build and start the containers
 	$(COMPOSE) down
 restart: stop start ## Restart the containers
 
+cc-all: cc db-cc ## Clear all cache
+
 ## —— Init :notes: ——————————————————————————————————————————————————————————————
 composer-install: ## Install the PHP dependencies
 	$(EXEC) composer install
@@ -55,6 +57,11 @@ db-test: ## Recreate database test
 	$(EXEC) $(CONSOLE) --env=test doctrine:schema:create -n
 load-fixtures: ## Load database fixtures
 	$(EXEC) $(CONSOLE) hautelook:fixtures:load -n --purge-with-truncate
+db-cc: ## Clear database cache
+	@echo -----------------------Emptying database cache-------------------------
+	$(EXEC) $(CONSOLE) doctrine:cache:clear-metadata
+	$(EXEC) $(CONSOLE) doctrine:cache:clear-query
+	$(EXEC) $(CONSOLE) doctrine:cache:clear-result
 ## —— Tools :marteau_et_clé_anglaise:️ ———————————————————————————————————————————————————————————————
 encode-password: ## Encode password
 	$(EXEC) $(CONSOLE) security:encode-password

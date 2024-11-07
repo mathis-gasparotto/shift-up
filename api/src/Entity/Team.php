@@ -141,7 +141,9 @@ use Symfony\Component\Validator\Constraints as Assert;
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
         ),
-    ]
+    ],
+    order: ['updatedAt' => 'DESC'],
+    paginationClientItemsPerPage: false,
 )]
 class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareInterface
 {
@@ -175,7 +177,7 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, options: ['default' => TeamHelper::STATUS_SUBSCRIPTION_PENDING])]
     #[
         Assert\Choice(
             choices: TeamHelper::STATUS,
@@ -235,7 +237,7 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     #[
         Assert\NotBlank,
         Assert\Email,
-        Groups(['team:read', 'team:write']),
+        Groups(['team:item:read', 'team:write']),
     ]
     private ?string $billingEmail = null;
 
@@ -249,22 +251,14 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     private ?bool $deletable = null;
 
     /**
-     * @var bool|null
-     */
-    #[ORM\Column(options: ['default' => false])]
-    #[Groups(['team:read', 'team:admin:write'])]
-    private ?bool $enabled = null;
-
-    /**
      *
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->status = TeamHelper::STATUS_ACTIVE;
+        $this->status = TeamHelper::STATUS_SUBSCRIPTION_PENDING;
         $this->projects = new ArrayCollection();
         $this->deletable = true;
-        $this->enabled = false;
     }
 
     /**
@@ -515,25 +509,6 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     public function setDeletable(bool $deletable): static
     {
         $this->deletable = $deletable;
-
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function isEnabled(): ?bool
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * @param bool $enabled
-     * @return $this
-     */
-    public function setEnabled(bool $enabled): static
-    {
-        $this->enabled = $enabled;
 
         return $this;
     }
