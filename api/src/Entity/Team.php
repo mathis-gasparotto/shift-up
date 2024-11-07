@@ -251,6 +251,15 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     private ?bool $deletable = null;
 
     /**
+     * @var User|null
+     */
+    #[ORM\ManyToOne]
+    #[
+        Groups(['team:item:read']),
+    ]
+    private ?User $subscriptionChooser = null;
+
+    /**
      *
      */
     public function __construct()
@@ -509,6 +518,25 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     public function setDeletable(bool $deletable): static
     {
         $this->deletable = $deletable;
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getSubscriptionChooser(): ?User
+    {
+        return $this->subscriptionChooser;
+    }
+
+    /**
+     * @param User|null $subscriptionChooser
+     * @return $this
+     */
+    public function setSubscriptionChooser(?User $subscriptionChooser): static
+    {
+        $this->subscriptionChooser = $subscriptionChooser;
 
         return $this;
     }

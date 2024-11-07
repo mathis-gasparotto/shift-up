@@ -11,6 +11,7 @@ use App\Service\StripeService;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Security\Core\Security;
@@ -36,14 +37,14 @@ class TeamChoiceSubscriptionController extends AbstractController
     /**
      * @param Team $team
      * @param TeamChoiceSubscriptionDto $data
-     * @return Session
+     * @return JsonResponse
      * @throws ApiErrorException
      */
-    public function __invoke(Team $team, #[MapRequestPayload] TeamChoiceSubscriptionDto $data): Session
+    public function __invoke(Team $team, #[MapRequestPayload] TeamChoiceSubscriptionDto $data): JsonResponse
     {
         TeamHelper::checkIfUserIsTeamManager($this->security->getUser(), $team);
         TeamHelper::checkIfTeamHasAlreadySubscription($team);
 
-        return $this->stripeService->startSession($this->security->getUser(), $team, $data->getSubscription());
+        return $this->json($this->stripeService->startSession($this->security->getUser(), $team, $data->getSubscription()));
     }
 }

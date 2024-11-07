@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class StripeService
 {
-    /** @var StripeClient  */
+    /** @var StripeClient */
     private StripeClient $stripeClient;
 
     /**
@@ -41,14 +41,15 @@ class StripeService
      * @param SubscriptionRepository $subscriptionRepository
      */
     public function __construct(
-        private readonly string $appFrontUrl,
-        private readonly string $stripeSk,
-        private readonly string $stripeWk,
-        private readonly string $stripeApiVersion,
+        private readonly string                 $appFrontUrl,
+        private readonly string                 $stripeSk,
+        private readonly string                 $stripeWk,
+        private readonly string                 $stripeApiVersion,
         private readonly EntityManagerInterface $entityManager,
-        private readonly TeamRepository $teamRepository,
+        private readonly TeamRepository         $teamRepository,
         private readonly SubscriptionRepository $subscriptionRepository
-    ) {
+    )
+    {
         Stripe::setApiKey($this->stripeSk);
         Stripe::setApiVersion($this->stripeApiVersion);
         $this->stripeClient = new StripeClient($this->stripeSk);
@@ -83,12 +84,13 @@ class StripeService
                 ]
             ],
             'mode' => 'subscription',
-            'success_url' => $this->appFrontUrl . 'teams/' . $team->getId() . '/subscription?subscribeSuccess=true',
-            'cancel_url' => $this->appFrontUrl . 'teams/' . $team->getId() . '/subscription',
+            'success_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/subscription?subscribeSuccess=true',
+            'cancel_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/subscription',
             'billing_address_collection' => 'required',
             'metadata' => [
+                'user_id' => $user->getId(), // for save on subscription success the user who choose the subscription
+                'team_id' => $team->getId(),
                 'subscription_id' => $subscription->getId(),
-                'team_id' => $user->getId()
             ]
         ]);
     }
@@ -167,6 +169,8 @@ class StripeService
         if ($now->getTimestamp() - $event->created >= 300) {
             return new Response('[Checkout] Checkout timeout');
         }
+
+        return new Response('Received unknown event type ' . $event->type);
 
         return match ($event->type) {
             'customer.subscription.updated' => $this->confirmationPaymentSubscriptionRenewal($event),
