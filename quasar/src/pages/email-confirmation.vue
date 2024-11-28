@@ -16,16 +16,14 @@
           :title="$t('emailConfirmation.successTitle')"
           :action-btn-label="$t('emailConfirmation.action')"
           :action-btn-route="{ name: 'signin' }"
-        >
-        </InfoCard>
+        />
         <InfoCard
           v-else
           type="error"
           :title="error"
           :action-btn-label="$t('emailConfirmation.action')"
           :action-btn-route="{ name: 'signin' }"
-        >
-        </InfoCard>
+        />
       </q-page>
     </q-page-container>
   </q-layout>

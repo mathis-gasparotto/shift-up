@@ -156,7 +156,10 @@ export default {
       projects: 'Projets',
       noProject: 'Aucun projet disponible',
       deleteBtn: 'Supprimer',
-      changePlan: "Changer d'offre"
+      changePlan: "Changer d'offre",
+      subscribeSuccess1: 'Abonnement effectué avec succès',
+      subscribeSuccess2: 'Merci de votre confiance !',
+      closeSuccess: 'Fermer'
     },
     list: {
       noTeam: 'Aucune équipe disponible',

@@ -39,6 +39,20 @@
         />
       </div>
     </div>
+    <InfoCard
+      v-if="showSuccessMessage"
+      type="success"
+      :title="$t('team.details.subscribeSuccess1')"
+      class="w-content q-mx-auto"
+      :action-btn-label="$t('team.details.closeSuccess')"
+      @actionClick="showSuccessMessage = false"
+    >
+      <template #content>
+        <p class="text-center q-mb-none">
+          {{ $t('team.details.subscribeSuccess2') }}
+        </p>
+      </template>
+    </InfoCard>
     <h2 class="text-grey text-body1">{{ $t('team.details.projects') }}</h2>
     <ProjectList
       :loading="projectsLoading"
@@ -64,6 +78,7 @@ import TeamDeleteModal from 'src/components/Teams/TeamDeleteModal.vue'
 import TeamPlansModal from 'src/components/Teams/TeamPlansModal.vue'
 import { errorNotify } from 'src/helpers/notifyHelper'
 import SUbtn from 'src/components/SUbtn.vue'
+import InfoCard from 'src/components/InfoCard.vue'
 
 export default {
   components: {
@@ -72,7 +87,8 @@ export default {
     ProjectList,
     TeamDeleteModal,
     TeamPlansModal,
-    SUbtn
+    SUbtn,
+    InfoCard
   },
   setup() {
     return {
@@ -111,10 +127,15 @@ export default {
         //   }
         // },
       ],
-      editTeamNameLoading: false
+      editTeamNameLoading: false,
+      showSuccessMessage: false
     }
   },
   created() {
+    if (this.$route.query.subscribeSuccess === 'true') {
+      this.showSuccessMessage = true
+      this.$router.replace({ query: {} })
+    }
     this.reloadData()
   },
   methods: {
