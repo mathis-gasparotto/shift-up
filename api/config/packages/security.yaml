@@ -63,6 +63,8 @@ security:
         - { path: ^/send_reset_password$, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/reset_password/, methods: [ 'POST' ], roles: PUBLIC_ACCESS }
         - { path: ^/test$, methods: [ 'GET' ], roles: PUBLIC_ACCESS }
+        - { path: ^/subscriptions, methods: [ 'GET' ], roles: PUBLIC_ACCESS }
+        - { path: ^/webhook/confirmation_stripe_payment$, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
         # - { path: ^/admin, roles: ROLE_ADMIN }

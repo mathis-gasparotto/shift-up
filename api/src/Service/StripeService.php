@@ -142,7 +142,7 @@ class StripeService
      * @return Response
      * @throws \Exception
      */
-    private function confirmationPayment(): Response
+    public function confirmationPayment(): Response
     {
         // This is your Stripe CLI webhook secret for testing your endpoint locally.
         $endpoint_secret = $this->stripeWk;
