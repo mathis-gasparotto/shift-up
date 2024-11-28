@@ -34,7 +34,6 @@
             :key="index_0"
             v-model="navItem_0.open"
             dense
-            header-class="justify-between"
             :to="navItem_0.route"
             :hide-expand-icon="!!navItem_0.route"
             expand-icon-class="expand-icon q-pr-xs"
@@ -57,7 +56,6 @@
               :key="index_1"
               v-model="navItem_1.open"
               :header-inset-level="0.5"
-              header-class="justify-between"
               dense
               :to="navItem_1.route"
               :hide-expand-icon="!!navItem_1.route"
@@ -80,7 +78,6 @@
                 v-for="(navItem_2, index_2) in navItem_1.childs"
                 :key="index_2"
                 v-model="navItem_2.open"
-                header-class="justify-between"
                 dense
                 :header-inset-level="1"
                 :to="navItem_2.route"
@@ -104,7 +101,6 @@
                   v-for="(navItem_3, index_3) in navItem_2.childs"
                   :key="index_3"
                   v-model="navItem_3.open"
-                  header-class="justify-between"
                   dense
                   :header-inset-level="1.5"
                   :to="navItem_3.route"
@@ -128,7 +124,6 @@
                     v-for="(navItem_4, index_4) in navItem_3.childs"
                     :key="index_4"
                     v-model="navItem_4.open"
-                    header-class="justify-between"
                     dense
                     :header-inset-level="2"
                     :to="navItem_4.route"

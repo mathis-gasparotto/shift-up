@@ -6,7 +6,8 @@ export default function resources(axios /*, sentry*/) {
     users: axiosResource('users'),
     teams: axiosResource('teams'),
     projects: axiosResource('projects'),
+    subscriptions: axiosResource('subscriptions'),
     forgotPassword: axiosResource('send_reset_password'),
-    resetPassword: axiosResource('reset_password'),
+    resetPassword: axiosResource('reset_password')
   }
 }

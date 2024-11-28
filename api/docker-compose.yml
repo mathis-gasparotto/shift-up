@@ -5,6 +5,7 @@ services:
       target: api_php
       args:
         DOCKER_BUILDKIT: 1
+    image: shift-up-php
     container_name: shift-up_app_api_php
     restart: unless-stopped
     depends_on:

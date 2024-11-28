@@ -1,10 +1,15 @@
 <template>
   <q-page class="column">
+    <TeamPlansModal
+      :team="team"
+      v-if="!teamLoading"
+      ref="teamPlansModal"
+    />
     <MainBreadcrumps
       :loading="teamLoading"
       :team-name="team.name"
     />
-    <div class="q-mt-xl q-mb-lg column row-xs item-center justify-between">
+    <div class="q-mt-xl q-mb-lg column row-xs items-center justify-between">
       <SUEntityTitle
         :title="team.name"
         :loading="teamLoading"
@@ -12,7 +17,14 @@
         @edit="(name) => updateTeamName(name)"
         ref="teamName"
       />
-      <div class="flex gap-10 q-mt-lg q-mt-xs-none">
+      <div class="flex gap-10 q-mt-lg q-mt-xs-none items-center">
+        <SUbtn
+          :label="$t('team.details.changePlan')"
+          rounded
+          color="gradient"
+          class="h-content"
+          @click="$refs.teamPlansModal.openModal()"
+        />
         <q-btn
           v-if="team.deletable"
           icon="delete"
@@ -49,14 +61,18 @@ import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import SUEntityTitle from 'src/components/SUEntityTitle.vue'
 import ProjectList from 'src/components/Projects/ProjectList.vue'
 import TeamDeleteModal from 'src/components/Teams/TeamDeleteModal.vue'
+import TeamPlansModal from 'src/components/Teams/TeamPlansModal.vue'
 import { errorNotify } from 'src/helpers/notifyHelper'
+import SUbtn from 'src/components/SUbtn.vue'
 
 export default {
   components: {
     MainBreadcrumps,
     SUEntityTitle,
     ProjectList,
-    TeamDeleteModal
+    TeamDeleteModal,
+    TeamPlansModal,
+    SUbtn
   },
   setup() {
     return {

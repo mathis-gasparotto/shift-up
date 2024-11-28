@@ -135,6 +135,12 @@ export default {
     projects: 'Projets'
   },
   team: {
+    choicePlanModal: {
+      title: "Modifier l'offre de votre équipe",
+      loadPlansError: 'Une erreur est survenue lors du chargement des offres',
+      confirm: 'Confirmer',
+      createStripeSessionError: 'Une erreur est survenue lors de la création de la session de paiement'
+    },
     createModal: {
       title: 'Créer une nouvelle équipe',
       submit: 'Créer',
@@ -149,7 +155,8 @@ export default {
     details: {
       projects: 'Projets',
       noProject: 'Aucun projet disponible',
-      deleteBtn: 'Supprimer'
+      deleteBtn: 'Supprimer',
+      changePlan: "Changer d'offre"
     },
     list: {
       noTeam: 'Aucune équipe disponible',
@@ -242,6 +249,11 @@ export default {
     list: {
       noDocument: 'Aucun document disponible',
       newDocument: 'Générer un document'
+    }
+  },
+  subscription: {
+    card: {
+      choice: 'Choisir'
     }
   }
 }

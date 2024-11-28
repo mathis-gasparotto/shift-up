@@ -1,4 +1,6 @@
 COMPOSE=docker compose
+PHP_IMAGE=shift-up-php
+FRONT_IMAGE=shift-up-app
 EXEC_PHP=$(COMPOSE) exec php
 EXEC_FRONT=$(COMPOSE) exec app
 CONSOLE=php bin/console
@@ -10,6 +12,9 @@ start:
 
 stop:
 	$(COMPOSE) down
+
+clean-start-front:
+	make stop && docker image rm  $(FRONT_IMAGE) && make start
 
 restart: stop start
 
@@ -40,12 +45,12 @@ bin/console:
 yarn-add: ## Add package yarn
 	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))
 	(cd ./quasar/ && yarn)
-	make restart-front
+	make clean-start-front
 
 yarn-remove: ## Add package yarn
 	$(EXEC_FRONT) yarn remove $(filter-out $@,$(MAKECMDGOALS))
 	(cd ./quasar/ && yarn)
-	make restart-front
+	make clean-start-front
 
 bin/console: ## Run api symfony command
 	$(EXEC_PHP) $(CONSOLE) $(filter-out $@,$(MAKECMDGOALS))
@@ -158,7 +163,7 @@ stripe-cli-install: ## Install stripe-cli
 	sudo apt update
 	sudo apt install stripe
 	stripe login
-run-stripe: ## Run Stripe Webhook
+stripe-run: ## Run Stripe Webhook
 	stripe listen --forward-to http://127.0.0.1:8080/webhook/confirmation_stripe_payment
 stripe-events: ## Add Stripe events
 	stripe trigger checkout.session.completed

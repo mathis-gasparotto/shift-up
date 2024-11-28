@@ -135,6 +135,12 @@ export default {
     projects: 'Projects'
   },
   team: {
+    choicePlanModal: {
+      title: 'Modify your team subscription plan',
+      loadPlansError: 'An error occurred while loading the plans',
+      confirm: 'Confirm',
+      createStripeSessionError: 'An error occurred while creating the payment session'
+    },
     createModal: {
       title: 'Create a new team',
       submit: 'Create',
@@ -149,7 +155,8 @@ export default {
     details: {
       projects: 'Projects',
       noProject: 'No project available',
-      deleteBtn: 'Delete'
+      deleteBtn: 'Delete',
+      changePlan: 'Change plan'
     },
     list: {
       noTeam: 'No team available',
@@ -242,6 +249,11 @@ export default {
     list: {
       noDocument: 'No document available',
       newDocument: 'Generate document'
+    }
+  },
+  subscription: {
+    card: {
+      choice: 'Choose'
     }
   }
 }

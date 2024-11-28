@@ -1,6 +1,9 @@
 <template>
   <q-dialog v-model="open">
-    <q-card class="card relative q-pa-xl overflow-hidden column no-wrap">
+    <q-card
+      class="card relative q-pa-xl overflow-hidden column no-wrap"
+      :style="`width: ${width};max-width: ${width}`"
+    >
       <q-icon
         name="close"
         class="absolute-top-right q-mr-xl q-mt-xl z-top cursor-pointer"
@@ -46,6 +49,10 @@ export default {
     buttonsAlign: {
       type: String,
       default: 'right'
+    },
+    width: {
+      type: String,
+      default: '630px'
     }
   },
   data() {
@@ -68,6 +75,7 @@ export default {
 <style lang="scss" scoped>
 .card {
   border-radius: 24px;
-  width: 630px;
+  // width: v-bind('props.width');
+  // max-width: v-bind('props.width');
 }
 </style>

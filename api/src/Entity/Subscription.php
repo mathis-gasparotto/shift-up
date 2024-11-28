@@ -132,7 +132,7 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['subscription:read'])]
+    #[Groups(['subscription:read', 'team:read'])]
     #[ApiProperty(identifier: false)]
     private ?Uuid $id = null;
 

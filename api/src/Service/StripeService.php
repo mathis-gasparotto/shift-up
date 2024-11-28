@@ -84,8 +84,8 @@ class StripeService
                 ]
             ],
             'mode' => 'subscription',
-            'success_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/subscription?subscribeSuccess=true',
-            'cancel_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/subscription',
+            'success_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/?subscribeSuccess=true',
+            'cancel_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/',
             'billing_address_collection' => 'required',
             'metadata' => [
                 'user_id' => $user->getId(), // for save on subscription success the user who choose the subscription

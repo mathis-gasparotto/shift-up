@@ -406,6 +406,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stripe/stripe-js@npm:^1.13.2":
+  version: 1.54.2
+  resolution: "@stripe/stripe-js@npm:1.54.2"
+  checksum: 10c0/cf6ea20039fde28a0edc5562f08120ea820b1f8b8f2cf8b769aa92c0a4799a85e614f4112d8d790238960d0a3e1a194c76f6d2d941aa91acc8fbbc8920e63f02
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.5
   resolution: "@types/body-parser@npm:1.19.5"
@@ -570,6 +577,16 @@ __metadata:
     vite: ^2.5.10
     vue: ^3.2.25
   checksum: 10c0/a27428a592df0de2c18709c30369db9e499f7c74f2bc8e76d7b99671c2d35118f2729fa9503f22aed37a2d37403b7932f5dd78e37cbfc5432bc4588185b54eca
+  languageName: node
+  linkType: hard
+
+"@vue-stripe/vue-stripe@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "@vue-stripe/vue-stripe@npm:4.5.0"
+  dependencies:
+    "@stripe/stripe-js": "npm:^1.13.2"
+    vue-coerce-props: "npm:^1.0.0"
+  checksum: 10c0/cfe0dbd2898f3bd5282f6c559f80fdb6fea140e8068cbf2731681b5824039744d5f91fe0da4d03e89626f7b2e5c504eb111f79a82b1f30aa15821d1cd74158db
   languageName: node
   linkType: hard
 
@@ -4391,6 +4408,7 @@ __metadata:
     "@ionic/pwa-elements": "npm:^3.2.2"
     "@quasar/app-vite": "npm:^1.8.0"
     "@quasar/extras": "npm:^1.16.4"
+    "@vue-stripe/vue-stripe": "npm:^4.5.0"
     autoprefixer: "npm:^10.4.2"
     axios: "npm:^1.2.1"
     dotenv-flow: "npm:^4.1.0"
@@ -4993,6 +5011,13 @@ __metadata:
   version: 3.0.8
   resolution: "vscode-uri@npm:3.0.8"
   checksum: 10c0/f7f217f526bf109589969fe6e66b71e70b937de1385a1d7bb577ca3ee7c5e820d3856a86e9ff2fa9b7a0bc56a3dd8c3a9a557d3fedd7df414bc618d5e6b567f9
+  languageName: node
+  linkType: hard
+
+"vue-coerce-props@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "vue-coerce-props@npm:1.0.0"
+  checksum: 10c0/2799c79ed9ef6481a8cee1ff37a833668b3fee87d183e55aff1a7b2a8ae649b2108f3e03cbddc5a9bd1fb90be914b3a97839922ec6487e73df3290c438fbd1b4
   languageName: node
   linkType: hard
 
