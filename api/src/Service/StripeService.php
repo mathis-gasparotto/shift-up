@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Helper\SubscriptionHelper;
 use App\Repository\SubscriptionRepository;
 use App\Repository\TeamRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
 use Stripe\Customer;
@@ -19,6 +20,7 @@ use Stripe\Stripe;
 use Stripe\StripeClient;
 use Stripe\Subscription as StripeSubscription;
 use Stripe\Webhook;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,6 +49,7 @@ class StripeService
         private readonly string                 $stripeApiVersion,
         private readonly EntityManagerInterface $entityManager,
         private readonly TeamRepository         $teamRepository,
+        private readonly UserRepository         $userRepository,
         private readonly SubscriptionRepository $subscriptionRepository
     )
     {
@@ -170,12 +173,68 @@ class StripeService
             return new Response('[Checkout] Checkout timeout');
         }
 
-        return new Response('Received unknown event type ' . $event->type);
-
         return match ($event->type) {
+            'checkout.session.completed' => $this->confirmationPaymentCheckoutCompleted($event),
             'customer.subscription.updated' => $this->confirmationPaymentSubscriptionRenewal($event),
             default => new Response('Received unknown event type ' . $event->type),
         };
+    }
+
+
+    /**
+     * @param Event $event
+     * @return Response
+     * @throws ApiErrorException
+     * @throws \Exception
+     */
+    private function confirmationPaymentCheckoutCompleted(Event $event): Response
+    {
+        $currentUser = $this->userRepository->find($event->data->object->metadata->user_id);
+        if (!$currentUser) {
+            throw new NotFoundHttpException('User not found');
+        }
+
+        $team = $this->teamRepository->find($event->data->object->metadata->team_id);
+        if (!$team) {
+            throw new NotFoundHttpException('Team not found');
+        }
+
+        $description = $this->confirmPaymentCheckoutCompletedDataForSubscription($event, $currentUser, $team);
+
+        if ($event->data->object->payment_intent) {
+            $this->stripeClient->paymentIntents->update(
+                $event->data->object->payment_intent,
+                ['description' => $description]
+            );
+        }
+
+        $team->setStripeCustomerId($event->data->customer);
+
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
+
+        return new Response('The checkout has been completed');
+    }
+
+    /**
+     * @param Event $event
+     * @param User $user
+     * @param Team $team
+     * @return string
+     * @throws \DateMalformedStringException
+     */
+    private function confirmPaymentCheckoutCompletedDataForSubscription(Event $event, User $user, Team $team): string
+    {
+        $subscription = $this->subscriptionRepository->find($event->data->object->metadata->subscription_id);
+
+        if (!$subscription) {
+            throw new BadRequestException('Subscription not found');
+        }
+
+        $subscriptionService = $this->setSubscriptionService();
+        $subscriptionService->confirmSubscription($subscription, $user, $team, $event->data->object->subscription);
+
+        return "Souscription à l'abonement " . $subscription->getLabel();
     }
 
     /**
@@ -186,6 +245,9 @@ class StripeService
     private function confirmationPaymentSubscriptionRenewal(Event $event): Response
     {
         [$team, $subscription] = $this->checkSubscriptionForRenewal($event);
+        return new Response(json_encode(["team" => $team, "sub" =>$subscription]));
+
+
 
         $subscriptionService = $this->setSubscriptionService();
         $subscriptionService->subscriptionRenewal($subscription, $team);

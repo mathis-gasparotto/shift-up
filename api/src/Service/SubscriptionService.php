@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Subscription;
 use App\Entity\Team;
+use App\Entity\User;
 use App\Helper\SubscriptionHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,13 +28,15 @@ class SubscriptionService
 
     /**
      * @param Subscription $subscription
+     * @param User $user
      * @param Team $team
      * @param string|null $subscriptionId
      * @return void
+     * @throws \DateMalformedStringException
      */
-    public function confirmSubscription(Subscription $subscription, Team $team, string $subscriptionId = null): void
+    public function confirmSubscription(Subscription $subscription, User $user, Team $team, string $subscriptionId = null): void
     {
-        $this->setSubscriptionToTeam($subscription, $team, $subscriptionId);
+        $this->setSubscriptionToTeam($subscription, $team, $subscriptionId, $user);
         $this->sendConfirmSubscriptionEmail($team, $subscription);
     }
 
@@ -42,10 +45,11 @@ class SubscriptionService
      * @param Team $team
      * @param string|null $subscriptionId
      * @return void
+     * @throws \DateMalformedStringException
      */
     public function subscriptionRenewal(Subscription $subscription, Team $team, string $subscriptionId = null): void
     {
-        $this->setSubscriptionToTeam($subscription, $team, $subscriptionId);
+        $this->setSubscriptionToTeam($subscription, $team, $subscriptionId, null);
     }
 
 
@@ -88,13 +92,18 @@ class SubscriptionService
      * @param Subscription $subscription
      * @param Team $team
      * @param string|null $subscriptionId
+     * @param User|null $user
      * @return void
+     * @throws \DateMalformedStringException
      */
-    private function setSubscriptionToTeam(Subscription $subscription, Team $team, string $subscriptionId = null): void
+    private function setSubscriptionToTeam(Subscription $subscription, Team $team, string $subscriptionId = null, User $user = null): void
     {
         $endDate = $this->getSubscriptionEndAtDate($subscription);
         $team->setSubscriptionEndAt($endDate);
         $team->setSubscription($subscription);
+        if ($user) {
+            $team->setSubscriptionChooser($user);
+        }
         if ($subscriptionId) {
             $team->setStripeSubscriptionId($subscriptionId);
         }
@@ -106,6 +115,7 @@ class SubscriptionService
     /**
      * @param Subscription $subscription
      * @return DateTime
+     * @throws \DateMalformedStringException
      */
     private function getSubscriptionEndAtDate(Subscription $subscription): DateTime
     {
