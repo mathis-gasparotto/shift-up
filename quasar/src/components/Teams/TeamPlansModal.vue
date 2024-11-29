@@ -86,7 +86,7 @@ export default {
         })
         .catch((err) => {
           this.plans = []
-          displayError(err, $t('team.choicePlanModal.loadPlansError'))
+          displayError(err, this.$t('team.choicePlanModal.loadPlansError'))
         })
         .finally(() => {
           this.plansLoading = false
@@ -103,7 +103,7 @@ export default {
           this.$refs.checkoutRef.redirectToCheckout()
         })
         .catch((err) => {
-          displayError(err, $t('team.choicePlanModal.createStripeSessionError'))
+          displayError(err, this.$t('team.choicePlanModal.createStripeSessionError'))
           this.stripeSessionLoading = false
         })
     },
