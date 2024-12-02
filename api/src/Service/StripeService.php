@@ -208,7 +208,7 @@ class StripeService
             );
         }
 
-        $team->setStripeCustomerId($event->data->customer);
+        $team->setStripeCustomerId($event->data->object->customer);
 
         $this->entityManager->persist($team);
         $this->entityManager->flush();
@@ -245,12 +245,13 @@ class StripeService
     private function confirmationPaymentSubscriptionRenewal(Event $event): Response
     {
         [$team, $subscription] = $this->checkSubscriptionForRenewal($event);
-        return new Response(json_encode(["team" => $team, "sub" =>$subscription]));
-
-
 
         $subscriptionService = $this->setSubscriptionService();
         $subscriptionService->subscriptionRenewal($subscription, $team);
+
+        $team->setStripeCustomerId($event->data->object->customer);
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
 
         return new Response('The renewal has been completed');
     }
