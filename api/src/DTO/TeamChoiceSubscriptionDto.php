@@ -2,8 +2,7 @@
 
 namespace App\DTO;
 
-use App\Entity\Subscription;
-use App\Entity\Team;
+use App\Entity\SubscriptionPrice;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,27 +11,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TeamChoiceSubscriptionDto
 {
     /**
-     * @var Subscription
+     * @var SubscriptionPrice
      */
     #[
         Assert\NotBlank()
     ]
-    private Subscription $subscription;
+    private SubscriptionPrice $subscriptionPrice;
 
     /**
-     * @return Subscription
+     * @return SubscriptionPrice
      */
-    public function getSubscription(): Subscription
+    public function getSubscriptionPrice(): SubscriptionPrice
     {
-        return $this->subscription;
+        return $this->subscriptionPrice;
     }
 
     /**
-     * @param Subscription $subscription
+     * @param SubscriptionPrice $subscriptionPrice
      * @return void
      */
-    public function setSubscription(Subscription $subscription): void
+    public function setSubscriptionPrice(SubscriptionPrice $subscriptionPrice): void
     {
-        $this->subscription = $subscription;
+        $this->subscriptionPrice = $subscriptionPrice;
     }
 }

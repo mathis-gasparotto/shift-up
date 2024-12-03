@@ -3,10 +3,11 @@
 namespace App\Service;
 
 use App\Entity\Subscription;
+use App\Entity\SubscriptionPrice;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Helper\SubscriptionHelper;
-use App\Repository\SubscriptionRepository;
+use App\Repository\SubscriptionPriceRepository;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +41,8 @@ class StripeService
      * @param string $stripeApiVersion
      * @param EntityManagerInterface $entityManager
      * @param TeamRepository $teamRepository
-     * @param SubscriptionRepository $subscriptionRepository
+     * @param UserRepository $userRepository
+     * @param SubscriptionPriceRepository $subscriptionPriceRepository
      */
     public function __construct(
         private readonly string                 $appFrontUrl,
@@ -50,7 +52,7 @@ class StripeService
         private readonly EntityManagerInterface $entityManager,
         private readonly TeamRepository         $teamRepository,
         private readonly UserRepository         $userRepository,
-        private readonly SubscriptionRepository $subscriptionRepository
+        private readonly SubscriptionPriceRepository $subscriptionPriceRepository
     )
     {
         Stripe::setApiKey($this->stripeSk);
@@ -70,11 +72,11 @@ class StripeService
     /**
      * @param User|UserInterface $user
      * @param Team $team
-     * @param Subscription $subscription
+     * @param SubscriptionPrice $subscriptionPrice
      * @return Session
      * @throws ApiErrorException
      */
-    public function startSession(User|UserInterface $user, Team $team, Subscription $subscription): Session
+    public function startSession(User|UserInterface $user, Team $team, SubscriptionPrice $subscriptionPrice): Session
     {
         $customer = $this->getOrCreateStripeCustomer($team);
 
@@ -83,7 +85,7 @@ class StripeService
             'line_items' => [
                 [
                     'quantity' => 1,
-                    'price' => $subscription->getStripePriceId()
+                    'price' => $subscriptionPrice->getStripePriceId()
                 ]
             ],
             'mode' => 'subscription',
@@ -93,7 +95,7 @@ class StripeService
             'metadata' => [
                 'user_id' => $user->getId(), // for save on subscription success the user who choose the subscription
                 'team_id' => $team->getId(),
-                'subscription_id' => $subscription->getId(),
+                'subscription_price_id' => $subscriptionPrice->getId(),
             ]
         ]);
     }
@@ -221,20 +223,21 @@ class StripeService
      * @param User $user
      * @param Team $team
      * @return string
-     * @throws \DateMalformedStringException
      */
     private function confirmPaymentCheckoutCompletedDataForSubscription(Event $event, User $user, Team $team): string
     {
-        $subscription = $this->subscriptionRepository->find($event->data->object->metadata->subscription_id);
+        $subscriptionPrice = $this->subscriptionPriceRepository->find($event->data->object->metadata->subscription_price_id);
 
-        if (!$subscription) {
-            throw new BadRequestException('Subscription not found');
+        if (!$subscriptionPrice) {
+            throw new BadRequestException('Subscription price not found');
         }
 
-        $subscriptionService = $this->setSubscriptionService();
-        $subscriptionService->confirmSubscription($subscription, $user, $team, $event->data->object->subscription);
+        $endDate = $this->getSubscriptionEndAtDate($event);
 
-        return "Souscription à l'abonement " . $subscription->getLabel();
+        $subscriptionService = $this->setSubscriptionService();
+        $subscriptionService->confirmSubscription($subscriptionPrice, $user, $team, $endDate,$event->data->object->subscription);
+
+        return "Souscription à l'abonement " . $subscriptionPrice->getSubscription()->getLabel();
     }
 
     /**
@@ -244,10 +247,12 @@ class StripeService
      */
     private function confirmationPaymentSubscriptionRenewal(Event $event): Response
     {
-        [$team, $subscription] = $this->checkSubscriptionForRenewal($event);
+        [$team, $subscriptionPrice] = $this->checkSubscriptionForRenewal($event);
+
+        $endDate = $this->getSubscriptionEndAtDate($event);
 
         $subscriptionService = $this->setSubscriptionService();
-        $subscriptionService->subscriptionRenewal($subscription, $team);
+        $subscriptionService->subscriptionRenewal($subscriptionPrice, $team, $endDate);
 
         $team->setStripeCustomerId($event->data->object->customer);
         $this->entityManager->persist($team);
@@ -267,12 +272,12 @@ class StripeService
             throw new NotFoundHttpException('Team not found');
         }
 
-        $subscription = $this->subscriptionRepository->findOneBy(['stripePriceId' => $event->data->object->plan->id]);
-        if (!$subscription) {
-            throw new NotFoundHttpException('Subscription not found');
+        $subscriptionPrice = $this->subscriptionPriceRepository->findOneBy(['stripePriceId' => $event->data->object->plan->id]);
+        if (!$subscriptionPrice) {
+            throw new NotFoundHttpException('Subscription price not found');
         }
 
-        return [$team, $subscription];
+        return [$team, $subscriptionPrice];
     }
 
     /**
@@ -283,7 +288,7 @@ class StripeService
     public function createStripeSubscription(Subscription $subscription): array
     {
         $stripeProduct = $this->createStripeProduct($subscription->getLabel());
-        $stripePrice = $this->createStripePrice($stripeProduct->id, $subscription);
+        $stripePrice = $this->createStripePrices($stripeProduct->id, $subscription);
 
         return [
             $stripeProduct,
@@ -307,20 +312,24 @@ class StripeService
     /**
      * @param string $productId
      * @param Subscription $subscription
-     * @return Price
+     * @return array
      * @throws ApiErrorException
      */
-    public function createStripePrice(string $productId, Subscription $subscription): Price
+    public function createStripePrices(string $productId, Subscription $subscription): array
     {
-        $price = $subscription->getPrice();
-        $recurring = $subscription->getRecurrence();
+        $prices = $subscription->getPrices()->toArray();
 
-        return $this->stripeClient->prices->create([
-            'unit_amount' => ($price * 100),
-            'currency' => SubscriptionHelper::CURRENCY_EUR,
-            'recurring' => ['interval' => $recurring],
-            'product' => $productId
-        ]);
+        $toReturn = [];
+        foreach ($prices as $price) {
+            $toReturn[$price->getRecurrence()] = $this->stripeClient->prices->create([
+                'unit_amount' => ($price->getPrice()),
+                'currency' => SubscriptionHelper::CURRENCY_EUR,
+                'recurring' => ['interval' => $price->getRecurrence()],
+                'product' => $productId
+            ]);
+        }
+
+        return $toReturn;
     }
 
     /**
@@ -382,6 +391,16 @@ class StripeService
     public function cancelStripeSubscription(string $subscriptionId): StripeSubscription
     {
         return $this->stripeClient->subscriptions->cancel($subscriptionId);
+    }
+
+    /**
+     * @param Event $event
+     * @return \DateTime
+     */
+    private function getSubscriptionEndAtDate(Event $event): \DateTime
+    {
+        $date = (new \DateTime())->setTimestamp($event->data->object->current_period_end);
+        return $date->setTime(0, 0);
     }
 
 }

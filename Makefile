@@ -16,6 +16,9 @@ stop:
 clean-start-front:
 	make stop && docker image rm  $(FRONT_IMAGE) && make start
 
+clean-start-api:
+	make stop && docker image rm  $(PHP_IMAGE) && make start
+
 restart: stop start
 
 restart-front:
@@ -146,8 +149,13 @@ consume-messenger-notification_message: ## Run PHP Worker messenger
 #	@echo ----------------- launch phpcs ------------------
 #	$(EXEC_PHP) $(CONSOLE) send:notification:test
 ## —— Migration :marteau_et_clé_anglaise: ———————————————————————————————————————————————————————————————
+chown-migration: ## Chown migration
+	sudo chown -R $(USER):$(USER) api/migrations
 db-migrate: ## Doctrine migrations migrate
 	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
+db-rollback: ## Doctrine migrations rollback
+#	$(EXEC_PHP) $(CONSOLE) doctrine:migration:execute --down $(filter-out $@,$(MAKECMDGOALS))
+	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate prev
 make-migration: ## Doctrine generate migration
 	$(EXEC_PHP) $(CONSOLE) make:migration
 migration: ## Connect to the PHP FPM container

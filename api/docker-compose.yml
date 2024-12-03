@@ -8,6 +8,8 @@ services:
     image: shift-up-php
     container_name: shift-up_app_api_php
     restart: unless-stopped
+    environment:
+      TZ: "Europe/Paris"
     depends_on:
       - smtp
       - db

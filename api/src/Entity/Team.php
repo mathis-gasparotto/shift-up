@@ -127,7 +127,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                             'schema' => [
                                 'type' => 'object',
                                 'properties' => [
-                                    'subscription' => [
+                                    'subscriptionPrice' => [
                                         'type' => 'string'
                                     ],
                                 ],
@@ -224,11 +224,11 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     private Collection $projects;
 
     /**
-     * @var Subscription|null
+     * @var SubscriptionPrice|null
      */
     #[ORM\ManyToOne(inversedBy: 'teams')]
     #[Groups(['team:read', 'team:write'])]
-    private ?Subscription $subscription = null;
+    private ?SubscriptionPrice $subscriptionPrice = null;
 
     /**
      * @var string|null
@@ -466,20 +466,20 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     }
 
     /**
-     * @return Subscription|null
+     * @return SubscriptionPrice|null
      */
-    public function getSubscription(): ?Subscription
+    public function getSubscriptionPrice(): ?SubscriptionPrice
     {
-        return $this->subscription;
+        return $this->subscriptionPrice;
     }
 
     /**
-     * @param Subscription|null $subscription
+     * @param SubscriptionPrice|null $subscriptionPrice
      * @return $this
      */
-    public function setSubscription(?Subscription $subscription): static
+    public function setSubscriptionPrice(?SubscriptionPrice $subscriptionPrice): static
     {
-        $this->subscription = $subscription;
+        $this->subscriptionPrice = $subscriptionPrice;
 
         return $this;
     }

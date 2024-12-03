@@ -1,5 +1,5 @@
 # Utiliser l'image PHP Alpine 8.2.15
-FROM php:8.2.15-alpine as api_php
+FROM php:8.2-alpine as api_php
 LABEL maintainer="Mathis Gasparotto <mathis.gasparotto@hotmail.com>"
 
 ENV APP_ENV=dev XDEBUG_MODE=off
@@ -9,10 +9,11 @@ WORKDIR /srv/api
 # Installer Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
+ENV TZ=Europe/Paris
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Installer Imagick et ses dépendances
-RUN apk add --no-cache autoconf g++ imagemagick-dev libtoolapi make pcre-dev && \
+RUN apk update && apk add --no-cache autoconf g++ imagemagick-dev libtool make pcre-dev && \
     pecl install imagick && \
     docker-php-ext-enable imagick && \
     apk del autoconf g++ libtool make pcre-dev
@@ -32,9 +33,7 @@ RUN apk add --no-cache postgresql-dev && \
     docker-php-ext-install pdo pdo_pgsql
 
 # Définir le fuseau horaire
-RUN apk add --no-cache tzdata && \
-    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
-    echo "Europe/Paris" > /etc/timezone
+RUN apk add --no-cache tzdata
 
 # Copier le fichier composer.json (assurez-vous qu'il est dans le même répertoire que votre Dockerfile)
 COPY composer.* symfony.* ./

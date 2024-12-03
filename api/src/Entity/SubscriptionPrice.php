@@ -10,30 +10,28 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Helper\GlobalHelper;
+use App\Helper\SubscriptionHelper;
 use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
 use App\Model\Traits\OwnerTrait;
 use App\Model\Traits\TracingAwareTrait;
-use App\Repository\SubscriptionRepository;
-use App\StateProviders\SlugEntityProvider;
+use App\Repository\SubscriptionPriceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  *
  */
-#[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
+#[ORM\Entity(repositoryClass: SubscriptionPriceRepository::class)]
 #[ApiResource(
     operations: [
         new Post(
-            uriTemplate: '/subscriptions',
+            uriTemplate: '/subscription_prices',
             openapiContext: [
                 'requestBody' => [
                     'content' => [
@@ -41,25 +39,16 @@ use Gedmo\Mapping\Annotation as Gedmo;
                             'schema' => [
                                 'type' => 'object',
                                 'properties' => [
-                                    'label' => [
-                                        'type' => 'string'
-                                    ],
-                                    'description' => [
-                                        'type' => 'string'
-                                    ],
-                                    'monthPrice' => [
+                                    'price' => [
                                         'type' => 'integer'
                                     ],
-                                    'yearPrice' => [
-                                        'type' => 'integer'
-                                    ],
-                                    'stripeProductId' => [
+                                    'subscription' => [
                                         'type' => 'string'
                                     ],
-                                    'stripeMonthPriceId' => [
+                                    'recurrence' => [
                                         'type' => 'string'
                                     ],
-                                    'stripeYearPriceId' => [
+                                    'stripePriceId' => [
                                         'type' => 'string'
                                     ],
                                 ],
@@ -74,55 +63,52 @@ use Gedmo\Mapping\Annotation as Gedmo;
             security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")'
         ),
         new GetCollection(
-            uriTemplate: '/subscriptions',
+            uriTemplate: '/subscription_prices',
             normalizationContext: [
                 'openapi_definition_name' => 'GetCollection',
                 'groups' => [
-                    'subscription:read'
+                    'subscription_price:read'
                 ]
             ],
-            security: 'is_granted("' . GlobalHelper::PUBLIC_ACCESS . '")'
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")'
         ),
         new Get(
-            uriTemplate: '/subscriptions/{slug}',
+            uriTemplate: '/subscription_prices/{id}',
             requirements: [
-                'slug' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             normalizationContext: [
                 'openapi_definition_name' => 'GetItem',
                 'groups' => [
-                    'subscription:read',
-                    'subscription:item:read'
+                    'subscription_price:read',
+                    'subscription_price:item:read'
                 ]
             ],
-            security: 'is_granted("' . GlobalHelper::PUBLIC_ACCESS . '")',
-            provider: SlugEntityProvider::class
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
         ),
         new Put(
-            uriTemplate: '/subscriptions/{slug}',
+            uriTemplate: '/subscription_prices/{id}',
             requirements: [
-                'slug' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             normalizationContext: [
                 'openapi_definition_name' => 'PutItem'
             ],
             securityPostDenormalize: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
-            provider: SlugEntityProvider::class
         ),
         new Delete(
-            uriTemplate: '/subscriptions/{slug}',
+            uriTemplate: '/subscription_prices/{id}',
             requirements: [
-                'slug' => '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             normalizationContext: [
                 'openapi_definition_name' => 'DeleteItem'
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
-            provider: SlugEntityProvider::class
         )
     ]
 )]
-class Subscription implements TracingAwareInterface, OwnerAwareInterface
+class SubscriptionPrice implements TracingAwareInterface, OwnerAwareInterface
 {
     use TracingAwareTrait;
     use OwnerTrait;
@@ -134,64 +120,66 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[Groups(['subscription:read', 'team:read'])]
+    #[Groups(['subscription:read', 'subscription_price:read', 'team:read'])]
     #[ApiProperty(identifier: false)]
     private ?Uuid $id = null;
+
+    /**
+     * @var int|null
+     */
+    #[ORM\Column(nullable: false, options: ['default' => 0])]
+    #[
+        Assert\NotBlank,
+        Assert\Type(type: 'integer'),
+        Groups(['subscription:read', 'subscription_price:read', 'subscription_price:write'])
+    ]
+    private ?int $price = null;
+
+    /**
+     * @var Subscription|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'prices')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[
+        Groups(['subscription_price:read', 'subscription_price:write', 'team:read']),
+    ]
+    private ?Subscription $subscription = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
     #[
+        Groups(['subscription:read', 'subscription_price:read', 'subscription_price:write']),
         Assert\NotBlank,
-        Assert\Length(min: 3, max: 255),
-        Groups(['subscription:read', 'subscription:write'])
+        Assert\Choice(
+            choices: SubscriptionHelper::SUBSCRIPTION_RECURRENCES,
+            message: 'Invalid recurrence, valid recurrences are: {{ choices }}'
+        ),
     ]
-    private ?string $label = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255, unique: true)]
-    #[Gedmo\Slug(fields: ['label'])]
-    #[Groups(['subscription:read'])]
-    #[ApiProperty(identifier: true)]
-    private ?string $slug = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: Types::TEXT)]
-    #[
-        Assert\NotBlank,
-        Groups(['subscription:read', 'subscription:write'])
-    ]
-    private ?string $description = null;
+    private ?string $recurrence = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255, nullable: true)]
     #[
-        Groups(['subscription:read', 'subscription:write'])
+        Groups(['subscription:read', 'subscription_price:read', 'subscription_price:write'])
     ]
-    private ?string $stripeProductId = null;
+    private ?string $stripePriceId = null;
 
     /**
      * @var Collection|ArrayCollection
      */
-    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPrice::class, orphanRemoval: true)]
-    #[
-        Groups(['subscription:read', 'subscription:write'])
-    ]
-    private Collection $prices;
+    #[ORM\OneToMany(mappedBy: 'subscriptionPrice', targetEntity: Team::class)]
+    private Collection $teams;
 
     /**
      *
      */
     public function __construct()
     {
-        $this->prices = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     /**
@@ -203,20 +191,39 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getLabel(): ?string
+    public function getPrice(): ?int
     {
-        return $this->label;
+        return $this->price;
     }
 
     /**
-     * @param string $label
+     * @param int $price
      * @return $this
      */
-    public function setLabel(string $label): static
+    public function setPrice(int $price): static
     {
-        $this->label = $label;
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * @return Subscription|null
+     */
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    /**
+     * @param Subscription|null $subscription
+     * @return $this
+     */
+    public function setSubscription(?Subscription $subscription): static
+    {
+        $this->subscription = $subscription;
 
         return $this;
     }
@@ -224,18 +231,18 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     /**
      * @return string|null
      */
-    public function getSlug(): ?string
+    public function getRecurrence(): ?string
     {
-        return $this->slug;
+        return $this->recurrence;
     }
 
     /**
-     * @param string $slug
+     * @param string $recurrence
      * @return $this
      */
-    public function setSlug(string $slug): static
+    public function setRecurrence(string $recurrence): static
     {
-        $this->slug = $slug;
+        $this->recurrence = $recurrence;
 
         return $this;
     }
@@ -243,73 +250,54 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
     /**
      * @return string|null
      */
-    public function getDescription(): ?string
+    public function getStripePriceId(): ?string
     {
-        return $this->description;
+        return $this->stripePriceId;
     }
 
     /**
-     * @param string $description
+     * @param string|null $stripePriceId
      * @return $this
      */
-    public function setDescription(string $description): static
+    public function setStripePriceId(?string $stripePriceId): static
     {
-        $this->description = $description;
+        $this->stripePriceId = $stripePriceId;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return Collection<int, Team>
      */
-    public function getStripeProductId(): ?string
+    public function getTeams(): Collection
     {
-        return $this->stripeProductId;
+        return $this->teams;
     }
 
     /**
-     * @param string $stripeProductId
+     * @param Team $team
      * @return $this
      */
-    public function setStripeProductId(string $stripeProductId): static
+    public function addTeam(Team $team): static
     {
-        $this->stripeProductId = $stripeProductId;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, SubscriptionPrice>
-     */
-    public function getPrices(): Collection
-    {
-        return $this->prices;
-    }
-
-    /**
-     * @param SubscriptionPrice $price
-     * @return $this
-     */
-    public function addPrice(SubscriptionPrice $price): static
-    {
-        if (!$this->prices->contains($price)) {
-            $this->prices->add($price);
-            $price->setSubscription($this);
+        if (!$this->teams->contains($team)) {
+            $this->teams->add($team);
+            $team->setSubscription($this);
         }
 
         return $this;
     }
 
     /**
-     * @param SubscriptionPrice $price
+     * @param Team $team
      * @return $this
      */
-    public function removePrice(SubscriptionPrice $price): static
+    public function removeTeam(Team $team): static
     {
-        if ($this->prices->removeElement($price)) {
+        if ($this->teams->removeElement($team)) {
             // set the owning side to null (unless already changed)
-            if ($price->getSubscription() === $this) {
-                $price->setSubscription(null);
+            if ($team->getSubscription() === $this) {
+                $team->setSubscription(null);
             }
         }
 

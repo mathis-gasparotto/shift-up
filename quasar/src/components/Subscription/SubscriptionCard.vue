@@ -4,7 +4,7 @@
       <p>{{ subscription.label }}</p>
     </q-card-section>
     <q-card-section>
-      <p>Prix: {{ subscription.price / 100 }}</p>
+      <p>Prix: {{ (subscription.price?.price ?? 0) / 100 }}</p>
     </q-card-section>
     <SUbtn
       v-if="choiceBtn"

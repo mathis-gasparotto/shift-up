@@ -11,7 +11,7 @@
       :pk="publicKeyStripe"
       :session-id="sessionId"
     />
-    <div class="flex justify-between">
+    <div class="flex justify-evenly">
       <template v-if="plansLoading">
         <SubscriptionCardSkeleton />
         <SubscriptionCardSkeleton />
@@ -19,7 +19,7 @@
       </template>
       <SubscriptionCard
         v-else
-        v-for="plan in plans"
+        v-for="plan in selectedPlans"
         :key="plan.id"
         @click="selectedPlanId = plan.id"
         :selected="selectedPlanId === plan.id"
@@ -69,12 +69,21 @@ export default {
       selectedPlanId: null,
       stripeSessionLoading: false,
       publicKeyStripe: process.env.STRIPE_PUBLIC_KEY,
-      sessionId: null
+      sessionId: null,
+      recurrence: 'MONTH'
     }
   },
   created() {
-    this.selectedPlanId = this.team.subscription?.id
+    this.selectedPlanId = this.team.subscriptionPrice?.subscription?.id
     this.loadPlans()
+  },
+  computed: {
+    selectedPlans() {
+      return this.plans.map((plan) => ({
+        ...plan,
+        price: plan.prices?.find((p) => p.recurrence === this.recurrence)
+      }))
+    }
   },
   methods: {
     loadPlans() {
@@ -96,7 +105,7 @@ export default {
       this.stripeSessionLoading = true
       this.$resources.teams
         .createChild(this.team.id, 'choice_subscription', {
-          subscription: '/subscriptions/' + this.selectedPlanId
+          subscriptionPrice: this.selectedPlans.find((p) => p.id === this.selectedPlanId)?.price['@id']
         })
         .then((res) => {
           this.sessionId = res.id

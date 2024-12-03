@@ -24,8 +24,10 @@ class UserPostDataPersister implements ProcessorInterface
     /**
      * UserDataPersister constructor.
      *
+     * @param string $appFrontUrl
      * @param EntityManagerInterface $entityManager
      * @param UserPasswordHasherInterface $userPasswordEncoder
+     * @param EmailService $emailService
      */
     public function __construct(
         private string $appFrontUrl,

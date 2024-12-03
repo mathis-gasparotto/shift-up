@@ -16,7 +16,8 @@ export default {
     emailInvalid: 'Invalid email address',
     notFound: 'Resource not found',
     teamCannotBeDeleted: 'This team cannot be deleted',
-    chooseSubcriptionForTeam: 'You have to choose a subscription plan to create a team'
+    chooseSubcriptionForTeam: 'You have to choose a subscription plan to create a team',
+    incorrectReccurence: 'Invalid recurrence'
   },
   breadcrumb: {
     home: 'Home',

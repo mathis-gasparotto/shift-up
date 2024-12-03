@@ -16,7 +16,8 @@ export default {
     emailInvalid: 'Adresse e-mail invalide',
     notFound: 'Ressource introuvable',
     teamCannotBeDeleted: 'Cette équipe ne peut pas être supprimée',
-    chooseSubcriptionForTeam: 'Vous devez choisir un abonnement pour créer une équipe'
+    chooseSubcriptionForTeam: 'Vous devez choisir un abonnement pour créer une équipe',
+    incorrectReccurence: 'Récurrence invalide'
   },
   breadcrumb: {
     home: 'Accueil',

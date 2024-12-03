@@ -37,6 +37,8 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.teamCannotBeDeleted')
     case 'You have to choose a subscription plan to create a team':
       return $t('error.chooseSubcriptionForTeam')
+    case 'Invalid recurrence, valid recurrences are: MONTH, YEAR':
+      return $t('error.incorrectReccurence')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

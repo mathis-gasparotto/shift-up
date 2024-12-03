@@ -3,11 +3,13 @@
 namespace App\Service;
 
 use App\Entity\Subscription;
+use App\Entity\SubscriptionPrice;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Helper\SubscriptionHelper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Event;
 use Stripe\Exception\ApiErrorException;
 
 /**
@@ -27,29 +29,29 @@ class SubscriptionService
     }
 
     /**
-     * @param Subscription $subscription
+     * @param SubscriptionPrice $subscriptionPrice
      * @param User $user
      * @param Team $team
+     * @param DateTime $endDate
      * @param string|null $subscriptionId
      * @return void
-     * @throws \DateMalformedStringException
      */
-    public function confirmSubscription(Subscription $subscription, User $user, Team $team, string $subscriptionId = null): void
+    public function confirmSubscription(SubscriptionPrice $subscriptionPrice, User $user, Team $team, DateTime $endDate, string $subscriptionId = null): void
     {
-        $this->setSubscriptionToTeam($subscription, $team, $subscriptionId, $user);
-        $this->sendConfirmSubscriptionEmail($team, $subscription);
+        $this->setSubscriptionToTeam($subscriptionPrice, $team, $endDate, $subscriptionId, $user);
+        $this->sendConfirmSubscriptionEmail($team, $subscriptionPrice);
     }
 
     /**
-     * @param Subscription $subscription
+     * @param SubscriptionPrice $subscriptionPrice
      * @param Team $team
+     * @param DateTime $endDate
      * @param string|null $subscriptionId
      * @return void
-     * @throws \DateMalformedStringException
      */
-    public function subscriptionRenewal(Subscription $subscription, Team $team, string $subscriptionId = null): void
+    public function subscriptionRenewal(SubscriptionPrice $subscriptionPrice, Team $team, DateTime $endDate, string $subscriptionId = null): void
     {
-        $this->setSubscriptionToTeam($subscription, $team, $subscriptionId, null);
+        $this->setSubscriptionToTeam($subscriptionPrice, $team, $endDate, $subscriptionId, null);
     }
 
 
@@ -89,18 +91,17 @@ class SubscriptionService
     }
 
     /**
-     * @param Subscription $subscription
+     * @param SubscriptionPrice $subscriptionPrice
      * @param Team $team
+     * @param DateTime $endDate
      * @param string|null $subscriptionId
      * @param User|null $user
      * @return void
-     * @throws \DateMalformedStringException
      */
-    private function setSubscriptionToTeam(Subscription $subscription, Team $team, string $subscriptionId = null, User $user = null): void
+    private function setSubscriptionToTeam(SubscriptionPrice $subscriptionPrice, Team $team, DateTime $endDate, string $subscriptionId = null, User $user = null): void
     {
-        $endDate = $this->getSubscriptionEndAtDate($subscription);
         $team->setSubscriptionEndAt($endDate);
-        $team->setSubscription($subscription);
+        $team->setSubscriptionPrice($subscriptionPrice);
         if ($user) {
             $team->setSubscriptionChooser($user);
         }
@@ -113,30 +114,11 @@ class SubscriptionService
     }
 
     /**
-     * @param Subscription $subscription
-     * @return DateTime
-     * @throws \DateMalformedStringException
-     */
-    private function getSubscriptionEndAtDate(Subscription $subscription): DateTime
-    {
-        $date = new DateTime();
-        switch ($subscription->getRecurrence()) {
-            case SubscriptionHelper::SUBSCRIPTION_RECURRENCE_MONTH:
-                $date->modify('+1 month');
-                break;
-            case SubscriptionHelper::SUBSCRIPTION_RECURRENCE_YEAR:
-                $date->modify('+1 year');
-                break;
-        }
-        return $date->setTime(0, 0);
-    }
-
-    /**
      * @param Team $team
-     * @param Subscription $subscription
+     * @param SubscriptionPrice $subscriptionPrice
      * @return void
      */
-    private function sendConfirmSubscriptionEmail(Team $team, Subscription $subscription): void
+    private function sendConfirmSubscriptionEmail(Team $team, SubscriptionPrice $subscriptionPrice): void
     {
         $email = $team->getManager()->getEmail();
         $teamName = $team->getName();

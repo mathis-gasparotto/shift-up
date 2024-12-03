@@ -45,6 +45,6 @@ class TeamChoiceSubscriptionController extends AbstractController
         TeamHelper::checkIfUserIsTeamManager($this->security->getUser(), $team);
         TeamHelper::checkIfTeamHasAlreadySubscription($team);
 
-        return $this->json($this->stripeService->startSession($this->security->getUser(), $team, $data->getSubscription()));
+        return $this->json($this->stripeService->startSession($this->security->getUser(), $team, $data->getSubscriptionPrice()));
     }
 }
