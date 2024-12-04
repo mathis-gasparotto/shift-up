@@ -4,7 +4,13 @@
       <p>{{ subscription.label }}</p>
     </q-card-section>
     <q-card-section>
-      <p>Prix: {{ (subscription.price?.price ?? 0) / 100 }}</p>
+      <p>{{ $t('subscription.card.monthlyPrice', { price: subscription.price?.recurrence === 'YEAR' ? '~' + (Math.round((subscription.price?.price ?? 0) / 12) / 100).toFixed(2) : (subscription.price?.price ?? 0) / 100 }) }}</p>
+      <p
+        class="text-caption"
+        v-if="subscription.price?.recurrence === 'YEAR'"
+      >
+        {{ $t('subscription.card.yearlyPrice', { price: (subscription.price?.price ?? 0) / 100 }) }}
+      </p>
     </q-card-section>
     <SUbtn
       v-if="choiceBtn"

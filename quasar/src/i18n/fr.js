@@ -140,7 +140,9 @@ export default {
       title: "Modifier l'offre de votre équipe",
       loadPlansError: 'Une erreur est survenue lors du chargement des offres',
       confirm: 'Confirmer',
-      createStripeSessionError: 'Une erreur est survenue lors de la création de la session de paiement'
+      createStripeSessionError: 'Une erreur est survenue lors de la création de la session de paiement',
+      monthly: 'Mensuel',
+      yearly: 'Annuel'
     },
     createModal: {
       title: 'Créer une nouvelle équipe',
@@ -257,7 +259,9 @@ export default {
   },
   subscription: {
     card: {
-      choice: 'Choisir'
+      choice: 'Choisir',
+      monthlyPrice: 'Prix : {price} € /mois',
+      yearlyPrice: 'Soit {price} € /an'
     }
   }
 }

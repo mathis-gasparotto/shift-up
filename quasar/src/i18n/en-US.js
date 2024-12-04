@@ -140,7 +140,9 @@ export default {
       title: 'Modify your team subscription plan',
       loadPlansError: 'An error occurred while loading the plans',
       confirm: 'Confirm',
-      createStripeSessionError: 'An error occurred while creating the payment session'
+      createStripeSessionError: 'An error occurred while creating the payment session',
+      monthly: 'Monthly',
+      yearly: 'Yearly'
     },
     createModal: {
       title: 'Create a new team',
@@ -257,7 +259,9 @@ export default {
   },
   subscription: {
     card: {
-      choice: 'Choose'
+      choice: 'Choose',
+      monthlyPrice: 'Price : {price}€ /month',
+      yearlyPrice: 'Or {price}€ /year'
     }
   }
 }

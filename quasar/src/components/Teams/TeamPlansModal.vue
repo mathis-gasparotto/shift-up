@@ -11,6 +11,15 @@
       :pk="publicKeyStripe"
       :session-id="sessionId"
     />
+    <div class="text-center">
+      <p>{{ $t('team.choicePlanModal.monthly') }}</p>
+      <q-toggle
+        v-model="recurrence"
+        true-value="YEAR"
+        false-value="MONTH"
+        :label="$t('team.choicePlanModal.yearly')"
+      />
+    </div>
     <div class="flex justify-evenly">
       <template v-if="plansLoading">
         <SubscriptionCardSkeleton />
