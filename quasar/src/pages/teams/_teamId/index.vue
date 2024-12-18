@@ -4,6 +4,7 @@
       :team="team"
       v-if="!teamLoading"
       ref="teamPlansModal"
+      @submit="reloadData"
     />
     <MainBreadcrumps
       :loading="teamLoading"

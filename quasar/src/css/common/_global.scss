@@ -161,4 +161,19 @@ h6 {
       display: inline-flex !important;
     }
   }
+  &-block {
+    display: block !important;
+  }
+  &-inline {
+    display: inline !important;
+  }
+  &-inline-block {
+    display: inline-block !important;
+  }
+  &-flex {
+    display: flex !important;
+  }
+  &-inline-flex {
+    display: inline-flex !important;
+  }
 }

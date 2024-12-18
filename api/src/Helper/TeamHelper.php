@@ -64,4 +64,15 @@ final class TeamHelper
             throw new UnprocessableEntityHttpException('This team has already a subscription');
         }
     }
+
+    /**
+     * @param Team $team
+     * @return void
+     */
+    public static function checkIfPlanChangeIsNotAlreadyScheduled(Team $team): void
+    {
+        if ($team->getStripeSubscriptionScheduleId()) {
+            throw new UnprocessableEntityHttpException('This team has already a subscription change scheduled');
+        }
+    }
 }

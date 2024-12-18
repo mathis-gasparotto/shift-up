@@ -20,6 +20,7 @@ use Stripe\Product;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 use Stripe\Subscription as StripeSubscription;
+use Stripe\SubscriptionSchedule;
 use Stripe\Webhook;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,8 +54,7 @@ class StripeService
         private readonly TeamRepository         $teamRepository,
         private readonly UserRepository         $userRepository,
         private readonly SubscriptionPriceRepository $subscriptionPriceRepository
-    )
-    {
+    ) {
         Stripe::setApiKey($this->stripeSk);
         Stripe::setApiVersion($this->stripeApiVersion);
         $this->stripeClient = new StripeClient($this->stripeSk);
@@ -92,11 +92,12 @@ class StripeService
             'success_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/?subscribeSuccess=true',
             'cancel_url' => $this->appFrontUrl . '/teams/' . $team->getId() . '/',
             'billing_address_collection' => 'required',
-            'metadata' => [
-                'user_id' => $user->getId(), // for save on subscription success the user who choose the subscription
-                'team_id' => $team->getId(),
-                'subscription_price_id' => $subscriptionPrice->getId(),
-            ]
+            'subscription_data' => [
+                'metadata' => [
+                    'team_id' => $team->getId(),
+                    'user_id' => $user->getId(), // for save on subscription success the user who choose the subscription
+                ]
+            ],
         ]);
     }
 
@@ -176,68 +177,47 @@ class StripeService
         }
 
         return match ($event->type) {
-            'checkout.session.completed' => $this->confirmationPaymentCheckoutCompleted($event),
-            'customer.subscription.updated' => $this->confirmationPaymentSubscriptionRenewal($event),
+            'customer.subscription.updated' => $this->confirmationPaymentSubscriptionUpdate($event),
+            'customer.subscription.deleted' => $this->confirmationSubscriptionCanceled($event),
+            'subscription_schedule.released' => $this->confirmationSubscriptionScheduleReleased($event),
+            'customer.subscription.created' => $this->confirmationSubscriptionCreated($event),
+            'subscription_schedule.created' => $this->confirmationSubscriptionScheduleCreated($event),
+            'subscription_schedule.canceled' => $this->confirmationSubscriptionScheduleCanceled($event),
             default => new Response('Received unknown event type ' . $event->type),
         };
     }
 
-
     /**
      * @param Event $event
      * @return Response
-     * @throws ApiErrorException
      * @throws \Exception
      */
-    private function confirmationPaymentCheckoutCompleted(Event $event): Response
+    private function confirmationSubscriptionCanceled(Event $event): Response
     {
-        $currentUser = $this->userRepository->find($event->data->object->metadata->user_id);
-        if (!$currentUser) {
-            throw new NotFoundHttpException('User not found');
-        }
+        $team = $this->checkSubscriptionForCancellation($event);
 
-        $team = $this->teamRepository->find($event->data->object->metadata->team_id);
+        $subscriptionService = $this->setSubscriptionService();
+        $subscriptionService->persistTeamSubscriptionCancellation($team);
+
+        $team->setStripeCustomerId($event->data->object->customer);
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
+
+        return new Response('The cancellation has been completed');
+    }
+
+    /**
+     * @param Event $event
+     * @return Team
+     */
+    private function checkSubscriptionForCancellation(Event $event): Team
+    {
+        $team = $this->teamRepository->findOneBy(['stripeSubscriptionId' => $event->data->object->id]);
         if (!$team) {
             throw new NotFoundHttpException('Team not found');
         }
 
-        $description = $this->confirmPaymentCheckoutCompletedDataForSubscription($event, $currentUser, $team);
-
-        if ($event->data->object->payment_intent) {
-            $this->stripeClient->paymentIntents->update(
-                $event->data->object->payment_intent,
-                ['description' => $description]
-            );
-        }
-
-        $team->setStripeCustomerId($event->data->object->customer);
-
-        $this->entityManager->persist($team);
-        $this->entityManager->flush();
-
-        return new Response('The checkout has been completed');
-    }
-
-    /**
-     * @param Event $event
-     * @param User $user
-     * @param Team $team
-     * @return string
-     */
-    private function confirmPaymentCheckoutCompletedDataForSubscription(Event $event, User $user, Team $team): string
-    {
-        $subscriptionPrice = $this->subscriptionPriceRepository->find($event->data->object->metadata->subscription_price_id);
-
-        if (!$subscriptionPrice) {
-            throw new BadRequestException('Subscription price not found');
-        }
-
-        $endDate = $this->getSubscriptionEndAtDate($event);
-
-        $subscriptionService = $this->setSubscriptionService();
-        $subscriptionService->confirmSubscription($subscriptionPrice, $user, $team, $endDate,$event->data->object->subscription);
-
-        return "Souscription à l'abonement " . $subscriptionPrice->getSubscription()->getLabel();
+        return $team;
     }
 
     /**
@@ -245,14 +225,163 @@ class StripeService
      * @return Response
      * @throws \Exception
      */
-    private function confirmationPaymentSubscriptionRenewal(Event $event): Response
+    private function confirmationSubscriptionCreated(Event $event): Response
     {
-        [$team, $subscriptionPrice] = $this->checkSubscriptionForRenewal($event);
+        [$user, $team, $subscriptionPrice] = $this->checkSubscriptionForSubscriptionCreated($event);
 
         $endDate = $this->getSubscriptionEndAtDate($event);
 
         $subscriptionService = $this->setSubscriptionService();
-        $subscriptionService->subscriptionRenewal($subscriptionPrice, $team, $endDate);
+
+        $subscriptionService->confirmSubscription($subscriptionPrice, $user, $team, $endDate, $event->data->object->id);
+
+        $team->setStripeCustomerId($event->data->object->customer);
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
+
+        return new Response('The subscription has been created');
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    private function checkSubscriptionForSubscriptionCreated(Event $event): array
+    {
+        $user = $this->userRepository->find($event->data->object->metadata->user_id);
+        if (!$user) {
+            throw new NotFoundHttpException(message: 'User not found');
+        }
+
+        $team = $this->teamRepository->find($event->data->object->metadata->team_id);
+        if (!$team) {
+            throw new NotFoundHttpException(message: 'Team not found');
+        }
+
+        $subscriptionPrice = $this->subscriptionPriceRepository->findOneBy(['stripePriceId' => $event->data->object->plan->id]);
+        if (!$subscriptionPrice) {
+            throw new NotFoundHttpException('Subscription price not found');
+        }
+
+        return [$user, $team, $subscriptionPrice];
+    }
+
+    /**
+     * @param Event $event
+     * @return Response
+     * @throws \Exception
+     */
+    private function confirmationSubscriptionScheduleCreated(Event $event): Response
+    {
+        $team = $this->checkSubscriptionForSubscriptionScheduleCreated($event);
+
+        $team->setStripeSubscriptionScheduleId($event->data->object->id);
+        $team->setStripeCustomerId($event->data->object->customer);
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
+
+        return new Response('The subscription schedule has been created');
+    }
+
+    /**
+     * @param Event $event
+     * @return Team
+     */
+    private function checkSubscriptionForSubscriptionScheduleCreated(Event $event): Team
+    {
+        $team = $this->teamRepository->find($event->data->object->metadata->team_id);
+        if (!$team) {
+            throw new NotFoundHttpException(message: 'Team not found');
+        }
+
+        return $team;
+    }
+
+    /**
+     * @param Event $event
+     * @return Response
+     * @throws \Exception
+     */
+    private function confirmationSubscriptionScheduleReleased(Event $event): Response
+    {
+        [$team, $subscriptionPrice] = $this->checkSubscriptionForScheduleRelease($event);
+
+        $endDate = $this->getSubscriptionScheduleEndAtDate($event);
+
+        $subscriptionService = $this->setSubscriptionService();
+        $subscriptionService->subscriptionUpdate($subscriptionPrice, $team, $endDate);
+
+        $team->setStripeSubscriptionScheduleId(null);
+        $team->setStripeCustomerId($event->data->object->customer);
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
+
+        return new Response('The subscription schedule has been released');
+    }
+
+    /**
+     * @param Event $event
+     * @return array
+     */
+    private function checkSubscriptionForScheduleRelease(Event $event): array
+    {
+        $team = $this->teamRepository->findOneBy(['stripeSubscriptionScheduleId' => $event->data->object->id]);
+        if (!$team) {
+            throw new NotFoundHttpException('Team not found');
+        }
+
+        $subscriptionPrice = $this->subscriptionPriceRepository->findOneBy(['stripePriceId' => $event->data->object->phases[0]->items[0]->price]);
+        if (!$subscriptionPrice) {
+            throw new NotFoundHttpException('Subscription price not found');
+        }
+
+        return [$team, $subscriptionPrice];
+    }
+
+    /**
+     * @param Event $event
+     * @return Response
+     * @throws \Exception
+     */
+    private function confirmationSubscriptionScheduleCanceled(Event $event): Response
+    {
+        $team = $this->checkSubscriptionForScheduleCanceled($event);
+
+        $team->setStripeSubscriptionScheduleId(null);
+        $team->setStripeCustomerId($event->data->object->customer);
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
+
+        return new Response('The subscription schedule has been deleted');
+    }
+
+    /**
+     * @param Event $event
+     * @return Team
+     */
+    private function checkSubscriptionForScheduleCanceled(Event $event): Team
+    {
+        $team = $this->teamRepository->findOneBy(['stripeSubscriptionScheduleId' => $event->data->object->id]);
+        if (!$team) {
+            throw new NotFoundHttpException('Team not found');
+        }
+
+        return $team;
+    }
+
+    /**
+     * @param Event $event
+     * @return Response
+     * @throws \Exception
+     */
+    private function confirmationPaymentSubscriptionUpdate(Event $event): Response
+    {
+        [$team, $subscriptionPrice] = $this->checkSubscriptionForUpdate($event);
+
+        $endDate = $this->getSubscriptionEndAtDate($event);
+
+        $subscriptionService = $this->setSubscriptionService();
+        $subscriptionService->subscriptionUpdate($subscriptionPrice, $team, $endDate, $event->data->object->id);
 
         $team->setStripeCustomerId($event->data->object->customer);
         $this->entityManager->persist($team);
@@ -265,7 +394,7 @@ class StripeService
      * @param Event $event
      * @return array
      */
-    private function checkSubscriptionForRenewal(Event $event): array
+    private function checkSubscriptionForUpdate(Event $event): array
     {
         $team = $this->teamRepository->findOneBy(['stripeSubscriptionId' => $event->data->object->id]);
         if (!$team) {
@@ -387,10 +516,57 @@ class StripeService
      * @param string $subscriptionId
      * @return StripeSubscription
      * @throws ApiErrorException
+     * @throws NotFoundHttpException
      */
     public function cancelStripeSubscription(string $subscriptionId): StripeSubscription
     {
+        $subscription = $this->stripeClient->subscriptions->retrieve($subscriptionId);
+
+        if (!$subscription) {
+            throw new NotFoundHttpException('Subscription not found');
+        }
+
+        if ($subscription->status === 'active') {
+            return $this->stripeClient->subscriptions->update($subscriptionId, [
+                'cancel_at_period_end' => true
+            ]);
+        }
+
         return $this->stripeClient->subscriptions->cancel($subscriptionId);
+    }
+
+    /**
+     * @param Team $team
+     * @param SubscriptionPrice $newSubscription
+     * @return StripeSubscription
+     * @throws ApiErrorException
+     */
+    public function changeSubscription(User|UserInterface $user, Team $team, SubscriptionPrice $newSubscription): SubscriptionSchedule
+    {
+        $subscription = $this->cancelStripeSubscription($team->getStripeSubscriptionId());
+        return $this->stripeClient->subscriptionSchedules->create([
+            'customer' => $team->getStripeCustomerId(),
+            'start_date' => $subscription->current_period_end,
+            'end_behavior' => 'release',
+            'metadata' => [
+                'team_id' => $team->getId()
+            ],
+            'phases' => [
+                [
+                    'items' => [
+                        [
+                            'price' => $newSubscription->getStripePriceId(),
+                            'quantity' => 1,
+                        ],
+                    ],
+                    'metadata' => [
+                        'user_id' => $user->getId(),
+                        'team_id' => $team->getId()
+                    ],
+                    'proration_behavior' => 'none'
+                ]
+            ]
+        ]);
     }
 
     /**
@@ -403,4 +579,13 @@ class StripeService
         return $date->setTime(0, 0);
     }
 
+    /**
+     * @param Event $event
+     * @return \DateTime
+     */
+    private function getSubscriptionScheduleEndAtDate(Event $event): \DateTime
+    {
+        $date = (new \DateTime())->setTimestamp($event->data->object->phases[0]->end_date);
+        return $date->setTime(0, 0);
+    }
 }

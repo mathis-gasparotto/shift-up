@@ -1,7 +1,15 @@
 <template>
   <q-card :class="{ selected: selected, 'cursor-pointer': clickable }">
     <q-card-section>
-      <p>{{ subscription.label }}</p>
+      <p>
+        {{ subscription.label }}
+        <span
+          v-if="current"
+          class="text-caption text-accent"
+        >
+          {{ $t('subscription.card.current') }}
+        </span>
+      </p>
     </q-card-section>
     <q-card-section>
       <p>{{ $t('subscription.card.monthlyPrice', { price: subscription.price?.recurrence === 'YEAR' ? '~' + (Math.round((subscription.price?.price ?? 0) / 12) / 100).toFixed(2) : (subscription.price?.price ?? 0) / 100 }) }}</p>
@@ -47,6 +55,10 @@ export default {
     clickable: {
       type: Boolean,
       default: true
+    },
+    current: {
+      type: Boolean,
+      default: false
     }
   }
 }

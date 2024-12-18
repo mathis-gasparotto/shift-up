@@ -26,6 +26,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -81,8 +82,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'GetItem',
                 'groups' => [
-                    'teams:read',
-                    'teams:item:read'
+                    'team:read',
+                    'team:item:read'
                 ]
             ],
             security: '
@@ -139,7 +140,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'ChoiceTeamSubscription'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")'
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            read: false
         ),
     ],
     order: ['updatedAt' => 'DESC'],
@@ -258,6 +260,13 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
         Groups(['team:item:read']),
     ]
     private ?User $subscriptionChooser = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['team:admin:read'])]
+    private ?string $stripeSubscriptionScheduleId = null;
 
     /**
      *
@@ -539,5 +548,48 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
         $this->subscriptionChooser = $subscriptionChooser;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    #[
+        SerializedName('hasStripeSubscription'),
+        Groups(['team:read'])
+    ]
+    public function getHasStripeSubscription(): bool
+    {
+        return $this->stripeSubscriptionId !== null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStripeSubscriptionScheduleId(): ?string
+    {
+        return $this->stripeSubscriptionScheduleId;
+    }
+
+    /**
+     * @param string|null $stripeSubscriptionScheduleId
+     * @return $this
+     */
+    public function setStripeSubscriptionScheduleId(?string $stripeSubscriptionScheduleId): static
+    {
+        $this->stripeSubscriptionScheduleId = $stripeSubscriptionScheduleId;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    #[
+        SerializedName('hasStripeSubscriptionSchedule'),
+        Groups(['team:read'])
+    ]
+    public function getHasStripeSubscriptionSchedule(): bool
+    {
+        return $this->stripeSubscriptionScheduleId !== null;
     }
 }

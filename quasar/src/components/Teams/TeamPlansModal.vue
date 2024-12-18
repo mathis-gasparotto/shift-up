@@ -1,7 +1,7 @@
 <template>
   <Modal
     v-if="team"
-    :title="$t('team.choicePlanModal.title', { name: team.name })"
+    :title="$t('subscription.choicePlanModal.title', { name: team.name })"
     ref="modal"
     buttonsAlign="full"
     width="1000px"
@@ -11,13 +11,25 @@
       :pk="publicKeyStripe"
       :session-id="sessionId"
     />
+    <div
+      v-if="team.hasStripeSubscriptionSchedule"
+      class="text-center"
+    >
+      <p>{{ $t('subscription.choicePlanModal.changePlanAlreadyScheduledWarning') }}</p>
+    </div>
+    <div
+      v-else-if="team.hasStripeSubscription"
+      class="text-center"
+    >
+      <p>{{ $t('subscription.choicePlanModal.changePlanWarning') }}</p>
+    </div>
     <div class="text-center">
-      <p>{{ $t('team.choicePlanModal.monthly') }}</p>
+      <p class="d-inline q-mb-none">{{ $t('subscription.choicePlanModal.monthly') }}</p>
       <q-toggle
         v-model="recurrence"
         true-value="YEAR"
         false-value="MONTH"
-        :label="$t('team.choicePlanModal.yearly')"
+        :label="$t('subscription.choicePlanModal.yearly')"
       />
     </div>
     <div class="flex justify-evenly">
@@ -30,19 +42,28 @@
         v-else
         v-for="plan in selectedPlans"
         :key="plan.id"
-        @click="selectedPlanId = plan.id"
+        @click="
+          () => {
+            if (!team.hasStripeSubscriptionSchedule) selectedPlanId = plan.id
+          }
+        "
         :selected="selectedPlanId === plan.id"
         :subscription="plan"
+        :current="team.subscriptionPrice?.id === plan.price.id"
       />
     </div>
-    <template #buttons>
+    <template
+      #buttons
+      v-if="!team.hasStripeSubscriptionSchedule"
+    >
       <SUbtn
-        :label="$t('team.choicePlanModal.confirm')"
+        :label="$t('subscription.choicePlanModal.confirm')"
         color="gradient"
         rounded
         class="w-100"
         :loading="stripeSessionLoading"
         @click="submit"
+        :disabled="!selectedPlanId || selectedPlanPrice?.id === team.subscriptionPrice?.id"
       />
     </template>
   </Modal>
@@ -55,9 +76,11 @@ import { displayError } from 'src/helpers/translatting'
 import SubscriptionCard from 'src/components/Subscription/SubscriptionCard.vue'
 import SubscriptionCardSkeleton from 'src/components/Subscription/SubscriptionCardSkeleton.vue'
 import { StripeCheckout } from '@vue-stripe/vue-stripe'
+import { successNotify } from 'src/helpers/notifyHelper'
 
 export default {
   name: 'TeamSettingsModal',
+  emits: ['submit'],
   components: {
     Modal,
     SUbtn,
@@ -92,6 +115,9 @@ export default {
         ...plan,
         price: plan.prices?.find((p) => p.recurrence === this.recurrence)
       }))
+    },
+    selectedPlanPrice() {
+      return this.selectedPlans.find((p) => p.id === this.selectedPlanId)?.price
     }
   },
   methods: {
@@ -104,7 +130,7 @@ export default {
         })
         .catch((err) => {
           this.plans = []
-          displayError(err, this.$t('team.choicePlanModal.loadPlansError'))
+          displayError(err, this.$t('subscription.choicePlanModal.loadPlansError'))
         })
         .finally(() => {
           this.plansLoading = false
@@ -117,11 +143,21 @@ export default {
           subscriptionPrice: this.selectedPlans.find((p) => p.id === this.selectedPlanId)?.price['@id']
         })
         .then((res) => {
-          this.sessionId = res.id
-          this.$refs.checkoutRef.redirectToCheckout()
+          if (res.object === 'checkout.session') {
+            this.sessionId = res.id
+            this.$refs.checkoutRef.redirectToCheckout()
+          } else if (res.object === 'subscription' || res.object === 'subscription_schedule') {
+            setTimeout(() => {
+              successNotify(this.$t('subscription.choicePlanModal.updateSuccess'))
+              this.selectedPlanId = this.team.subscriptionPrice?.subscription?.id
+              this.$refs.modal.open = false
+              this.stripeSessionLoading = false
+              this.$emit('submit')
+            }, 1000)
+          }
         })
         .catch((err) => {
-          displayError(err, this.$t('team.choicePlanModal.createStripeSessionError'))
+          displayError(err, this.$t('subscription.choicePlanModal.createStripeSessionError'))
           this.stripeSessionLoading = false
         })
     },

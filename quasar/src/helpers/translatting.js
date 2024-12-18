@@ -39,6 +39,10 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.chooseSubcriptionForTeam')
     case 'Invalid recurrence, valid recurrences are: MONTH, YEAR':
       return $t('error.incorrectReccurence')
+    case 'You already chosen this subscription':
+      return $t('error.alreadyChosenSubscription')
+    case 'This team has already a subscription change scheduled':
+      return $t('error.aleardyPlansChangeSchedule')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

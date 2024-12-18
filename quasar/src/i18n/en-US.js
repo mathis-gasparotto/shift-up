@@ -17,7 +17,9 @@ export default {
     notFound: 'Resource not found',
     teamCannotBeDeleted: 'This team cannot be deleted',
     chooseSubcriptionForTeam: 'You have to choose a subscription plan to create a team',
-    incorrectReccurence: 'Invalid recurrence'
+    incorrectReccurence: 'Invalid recurrence',
+    alreadyChosenSubscription: 'You already chosen this subscription',
+    aleardyPlansChangeSchedule: 'You already initiated a plan change, please wait for the subscription to be effective'
   },
   breadcrumb: {
     home: 'Home',
@@ -136,14 +138,6 @@ export default {
     projects: 'Projects'
   },
   team: {
-    choicePlanModal: {
-      title: 'Modify your team subscription plan',
-      loadPlansError: 'An error occurred while loading the plans',
-      confirm: 'Confirm',
-      createStripeSessionError: 'An error occurred while creating the payment session',
-      monthly: 'Monthly',
-      yearly: 'Yearly'
-    },
     createModal: {
       title: 'Create a new team',
       submit: 'Create',
@@ -258,10 +252,22 @@ export default {
     }
   },
   subscription: {
-    card: {
+    choiceModal: {
       choice: 'Choose',
       monthlyPrice: 'Price : {price}€ /month',
-      yearlyPrice: 'Or {price}€ /year'
+      yearlyPrice: 'Or {price}€ /year',
+      current: 'Current'
+    },
+    choicePlanModal: {
+      title: 'Modify your team subscription plan',
+      loadPlansError: 'An error occurred while loading the plans',
+      confirm: 'Confirm',
+      createStripeSessionError: 'An error occurred while creating the payment session',
+      monthly: 'Monthly',
+      yearly: 'Yearly',
+      changePlanWarning: 'Changing the plan will take effect at the end of the current period',
+      updateSuccess: 'Plan updated successfully',
+      changePlanAlreadyScheduledWarning: 'You already initiated a plan change, please wait for the subscription to be effective'
     }
   }
 }

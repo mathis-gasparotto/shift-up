@@ -25,8 +25,7 @@ class SubscriptionService
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly StripeService $stripeService
-    ) {
-    }
+    ) {}
 
     /**
      * @param SubscriptionPrice $subscriptionPrice
@@ -49,7 +48,7 @@ class SubscriptionService
      * @param string|null $subscriptionId
      * @return void
      */
-    public function subscriptionRenewal(SubscriptionPrice $subscriptionPrice, Team $team, DateTime $endDate, string $subscriptionId = null): void
+    public function subscriptionUpdate(SubscriptionPrice $subscriptionPrice, Team $team, DateTime $endDate, string $subscriptionId = null): void
     {
         $this->setSubscriptionToTeam($subscriptionPrice, $team, $endDate, $subscriptionId, null);
     }
@@ -71,9 +70,10 @@ class SubscriptionService
      * @param Team $team
      * @return void
      */
-    private function persistTeamSubscriptionCancellation(Team $team): void
+    public function persistTeamSubscriptionCancellation(Team $team): void
     {
         $team->setStripeSubscriptionId(null);
+        $team->setSubscriptionPrice(null);
 
         $this->entityManager->persist($team);
         $this->entityManager->flush();
@@ -98,7 +98,7 @@ class SubscriptionService
      * @param User|null $user
      * @return void
      */
-    private function setSubscriptionToTeam(SubscriptionPrice $subscriptionPrice, Team $team, DateTime $endDate, string $subscriptionId = null, User $user = null): void
+    public function setSubscriptionToTeam(SubscriptionPrice $subscriptionPrice, Team $team, DateTime $endDate, string $subscriptionId = null, User $user = null): void
     {
         $team->setSubscriptionEndAt($endDate);
         $team->setSubscriptionPrice($subscriptionPrice);

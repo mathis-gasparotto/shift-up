@@ -17,7 +17,9 @@ export default {
     notFound: 'Ressource introuvable',
     teamCannotBeDeleted: 'Cette équipe ne peut pas être supprimée',
     chooseSubcriptionForTeam: 'Vous devez choisir un abonnement pour créer une équipe',
-    incorrectReccurence: 'Récurrence invalide'
+    incorrectReccurence: 'Récurrence invalide',
+    alreadyChosenSubscription: 'Vous avez déjà choisi cet abonnement',
+    aleardyPlansChangeSchedule: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif'
   },
   breadcrumb: {
     home: 'Accueil',
@@ -136,14 +138,6 @@ export default {
     projects: 'Projets'
   },
   team: {
-    choicePlanModal: {
-      title: "Modifier l'offre de votre équipe",
-      loadPlansError: 'Une erreur est survenue lors du chargement des offres',
-      confirm: 'Confirmer',
-      createStripeSessionError: 'Une erreur est survenue lors de la création de la session de paiement',
-      monthly: 'Mensuel',
-      yearly: 'Annuel'
-    },
     createModal: {
       title: 'Créer une nouvelle équipe',
       submit: 'Créer',
@@ -261,7 +255,19 @@ export default {
     card: {
       choice: 'Choisir',
       monthlyPrice: 'Prix : {price} € /mois',
-      yearlyPrice: 'Soit {price} € /an'
+      yearlyPrice: 'Soit {price} € /an',
+      current: 'Actuel'
+    },
+    choicePlanModal: {
+      title: "Modifier l'offre de votre équipe",
+      loadPlansError: 'Une erreur est survenue lors du chargement des offres',
+      confirm: 'Confirmer',
+      createStripeSessionError: 'Une erreur est survenue lors de la création de la session de paiement',
+      monthly: 'Mensuel',
+      yearly: 'Annuel',
+      changePlanWarning: "Le changement d'offre sera effectif à la fin de votre période actuelle",
+      updateSuccess: 'Formule mise à jour avec succès',
+      changePlanAlreadyScheduledWarning: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif'
     }
   }
 }
