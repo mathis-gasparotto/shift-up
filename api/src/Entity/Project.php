@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\User\ProjectGenerateDocumentsController;
+use App\Controller\Project\ProjectGenerateDocumentsController;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use App\Model\OwnerAwareInterface;
@@ -72,7 +72,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'properties' => [
                                     'team' => [
                                         'type' => 'string',
-                                        'example' =>'/teams/{id}'
+                                        'example' => '/teams/{id}'
                                     ],
                                     'name' => [
                                         'type' => 'string'
@@ -479,14 +479,14 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
     {
         $data =  $this->SWOTs->last();
         return $data ?: null;
-//        $array = $this->SWOTs->toArray();
-//        if (count($array) === 0) {
-//            return null;
-//        }
-//        usort($array, function ($a, $b) {
-//            return $a->getCreatedAt() > $b->getCreatedAt() ? 1 : -1;
-//        });
-//        return $array[count($array) - 1];
+        //        $array = $this->SWOTs->toArray();
+        //        if (count($array) === 0) {
+        //            return null;
+        //        }
+        //        usort($array, function ($a, $b) {
+        //            return $a->getCreatedAt() > $b->getCreatedAt() ? 1 : -1;
+        //        });
+        //        return $array[count($array) - 1];
     }
 
     /**

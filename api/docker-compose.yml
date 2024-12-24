@@ -18,27 +18,27 @@ services:
     ports:
       - "8080:80"
   db:
-#    image: mysql:5.7
-#    container_name: shift-up_app_api_db
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=root
-#      - MYSQL_DATABASE=api
-#      - MYSQL_USER=api
-#      - MYSQL_PASSWORD=password
-#    volumes:
-#      - ./docker/mysql/data:/var/lib/mysql:rw
-#    ports:
-#      - '3306:3306'
+    #    image: mysql:5.7
+    #    container_name: shift-up_app_api_db
+    #    environment:
+    #      - MYSQL_ROOT_PASSWORD=root
+    #      - MYSQL_DATABASE=api
+    #      - MYSQL_USER=api
+    #      - MYSQL_PASSWORD=password
+    #    volumes:
+    #      - ./docker/mysql/data:/var/lib/mysql:rw
+    #    ports:
+    #      - '3306:3306'
     image: postgres:16-alpine
     container_name: shift-up_app_api_db
     environment:
-#      - POSTGRES_DB=api
+      #      - POSTGRES_DB=api
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
       - ./.docker/postgres/data:/var/lib/postgresql/data:rw
     ports:
-      - '5432:5432'
+      - "5432:5432"
   pgadmin:
     image: dpage/pgadmin4
     container_name: root_app_api_pgadmin
@@ -46,20 +46,33 @@ services:
       - PGADMIN_DEFAULT_EMAIL=root@root.com
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
-      - '5050:80'
+      - "5050:80"
     depends_on:
       - db
     volumes:
       - ./.docker/pgadmin/data:/var/lib/pgadmin:rw
-#  phpmyadmin:
-#    image: phpmyadmin/phpmyadmin
-#    container_name: root_app_api_pma
-#    depends_on:
-#      - db
-#    ports:
-#      - 8085:80
+  #  phpmyadmin:
+  #    image: phpmyadmin/phpmyadmin
+  #    container_name: root_app_api_pma
+  #    depends_on:
+  #      - db
+  #    ports:
+  #      - 8085:80
   smtp:
     image: mailhog/mailhog:latest
     container_name: root_app_api_smtp
     ports:
       - "8025:8025"
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: "shift-up_rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    hostname: "shift-up"
+    volumes:
+      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/mnesia/:rw
+    ports:
+      - "5672:5672"
+      - "15672:15672"

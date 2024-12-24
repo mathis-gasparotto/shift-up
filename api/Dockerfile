@@ -6,6 +6,9 @@ ENV APP_ENV=dev XDEBUG_MODE=off
 
 WORKDIR /srv/api
 
+# php extensions installer: https://github.com/mlocati/docker-php-extension-installer
+COPY --from=mlocati/php-extension-installer --link /usr/bin/install-php-extensions /usr/local/bin/
+
 # Installer Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
@@ -32,6 +35,10 @@ RUN apk update && apk add --no-cache autoconf g++ imagemagick-dev libtool make p
 RUN apk add --no-cache postgresql-dev && \
     docker-php-ext-install pdo pdo_pgsql
 
+# # Installer l'extension AMQP
+# RUN apk add --no-cache rabbitmq-c-dev && \
+#     docker-php-ext-install amqp
+
 # Définir le fuseau horaire
 RUN apk add --no-cache tzdata
 
@@ -40,8 +47,11 @@ COPY composer.* symfony.* ./
 
 # Installer les dépendances du projet
 RUN set -eux; \
-	composer install --prefer-dist --no-scripts --no-progress; \
-	composer clear-cache
+    install-php-extensions \
+    amqp-1.11.0 \
+    ;
+RUN composer install --prefer-dist --no-scripts --no-progress; \
+    composer clear-cache
 
 # copy sources
 COPY --link . .

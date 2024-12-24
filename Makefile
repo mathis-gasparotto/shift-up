@@ -61,8 +61,16 @@ bin/console: ## Run api symfony command
 cc-all: cc db-cc ## Clear all cache
 
 ## —— Init :notes: ——————————————————————————————————————————————————————————————
+composer-require:
+	$(EXEC_PHP) composer require -W $(filter-out $@,$(MAKECMDGOALS))
+composer-require-dev:
+	$(EXEC_PHP) composer require -W --dev $(filter-out $@,$(MAKECMDGOALS))
+composer-remove:
+	$(EXEC_PHP) composer remove $(filter-out $@,$(MAKECMDGOALS))
 composer-install: ## Install the PHP dependencies
 	$(EXEC_PHP) composer install
+composer-update:
+	$(EXEC_PHP) composer update --with-all-dependencies
 jwt-key-generate: ## Generate the JWT key
 	$(EXEC_PHP) $(CONSOLE) jwt
 init-project-pictures: ## Init project pictures
@@ -142,9 +150,9 @@ run-phpcs-files: ## Run PHP CodeSniffer by files
 generate-key-jwt: ## Load key JWT
 	$(EXEC_PHP) $(CONSOLE) lexik:jwt:generate-keypair
 ## —— Messenger :marteau_et_clé_anglaise: ———————————————————————————————————————————————————————————————
-consume-messenger-notification_message: ## Run PHP Worker messenger
+consume-messenger-async: ## Run PHP Worker messenger
 	@echo ----------------- launch phpcs ------------------
-	$(EXEC_PHP) $(CONSOLE) messenger:consume notification_message
+	$(EXEC_PHP) $(CONSOLE) messenger:consume async
 #send-notification-test: ## Run PHP Send notification test
 #	@echo ----------------- launch phpcs ------------------
 #	$(EXEC_PHP) $(CONSOLE) send:notification:test

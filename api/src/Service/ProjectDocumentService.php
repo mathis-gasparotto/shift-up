@@ -14,6 +14,8 @@ use App\Entity\Project;
 use App\Entity\SMART;
 use App\Entity\STP;
 use App\Entity\SWOT;
+use App\Entity\User;
+use App\Helper\AIHelper;
 use App\Helper\OpenAIHelper;
 use App\Helper\ProjectHelper;
 use Doctrine\ORM\EntityManager;
@@ -26,14 +28,13 @@ use Doctrine\ORM\Exception\ORMException;
 class ProjectDocumentService
 {
     /**
-     * @param OpenAIService $openAIService
+     * @param MistralAIService $AIService
      * @param EntityManager $entityManager
      */
     public function __construct(
-        private OpenAIService $openAIService,
+        private MistralAIService $AIService,
         private EntityManagerInterface $entityManager
-    )
-    {}
+    ) {}
 
     /**
      * @param Project $project
@@ -42,9 +43,9 @@ class ProjectDocumentService
      */
     public function generateSWOT(Project $project): SWOT
     {
-        ["Strengths" => $strengths, "Weaknesses" => $weaknesses, "Opportunities" => $opportunities, "Threats" => $threats] = OpenAIHelper::getResultFromSWOTPrompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForSWOT($project->getDescription())
+        ["Strengths" => $strengths, "Weaknesses" => $weaknesses, "Opportunities" => $opportunities, "Threats" => $threats] = AIHelper::getResultFromSWOTPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForSWOT($project->getDescription())
             )
         );
 
@@ -81,9 +82,9 @@ class ProjectDocumentService
             "Customer Segments" => $customerSegments,
             "Cost Structure" => $costStructure,
             "Revenue Streams" => $revenueStreams
-        ] = OpenAIHelper::getResultFromBusinessModelCanvasPrompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForBusinessModelCanvas($project->getDescription())
+        ] = AIHelper::getResultFromBusinessModelCanvasPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForBusinessModelCanvas($project->getDescription())
             )
         );
 
@@ -122,9 +123,9 @@ class ProjectDocumentService
             "Communication Channels" => $communicationChannels,
             "Values Fears" => $valuesFears,
             "Negative Info" => $negativeInfo
-        ] = OpenAIHelper::getResultFromBuyerPersonaPrompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForBuyerPersona($project->getDescription())
+        ] = AIHelper::getResultFromBuyerPersonaPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForBuyerPersona($project->getDescription())
             )
         );
 
@@ -151,7 +152,7 @@ class ProjectDocumentService
      * @return SMART
      * @throws ORMException
      */
-    public function generateSMART(Project $project): SMART
+    public function generateSMART(Project $project, User $author): SMART
     {
         [
             "Specific" => $specific,
@@ -159,9 +160,9 @@ class ProjectDocumentService
             "Achievable" => $achievable,
             "Relevant" => $relevant,
             "Timed" => $timed
-        ] = OpenAIHelper::getResultFromSMARTPrompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForSMART($project->getDescription())
+        ] = AIHelper::getResultFromSMARTPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForSMART($project->getDescription())
             )
         );
 
@@ -172,6 +173,8 @@ class ProjectDocumentService
         $smart->setKeyRelevant($relevant);
         $smart->setKeyTimed($timed);
         $smart->setProject($project);
+
+        $smart->setUser($author);
 
         $project->addSMART($smart);
 
@@ -196,9 +199,9 @@ class ProjectDocumentService
             "Technological" => $technological,
             "Environmental" => $environmental,
             "Legal" => $legal
-        ] = OpenAIHelper::getResultFromPESTELPrompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForPESTEL($project->getDescription())
+        ] = AIHelper::getResultFromPESTELPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForPESTEL($project->getDescription())
             )
         );
 
@@ -231,9 +234,9 @@ class ProjectDocumentService
             "Segmentation" => $segmentation,
             "Targeting" => $targeting,
             "Positioning" => $positioning
-        ] = OpenAIHelper::getResultFromSTPPrompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForSTP($project->getDescription())
+        ] = AIHelper::getResultFromSTPPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForSTP($project->getDescription())
             )
         );
 
@@ -264,9 +267,9 @@ class ProjectDocumentService
             "Price" => $price,
             "Place" => $place,
             "Promotion" => $promotion
-        ] = OpenAIHelper::getResultFromMarketingMix4Prompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForMarketingMix4($project->getDescription())
+        ] = AIHelper::getResultFromMarketingMix4Prompt(
+            $this->AIService->prompt(
+                AIHelper::promptForMarketingMix4($project->getDescription())
             )
         );
 
@@ -299,9 +302,9 @@ class ProjectDocumentService
             "Place" => $place,
             "Promotion" => $promotion,
             "People" => $people
-        ] = OpenAIHelper::getResultFromMarketingMix5Prompt(
-            $this->openAIService->prompt(
-                OpenAIHelper::promptForMarketingMix5($project->getDescription())
+        ] = AIHelper::getResultFromMarketingMix5Prompt(
+            $this->AIService->prompt(
+                AIHelper::promptForMarketingMix5($project->getDescription())
             )
         );
 
@@ -328,7 +331,7 @@ class ProjectDocumentService
      * @return array<BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP|SWOT>
      * @throws ORMException
      */
-    public function generateDocuments(Project $project, array $documents): array
+    public function generateDocuments(Project $project, array $documents, User $author): array
     {
         $toReturn = [];
         foreach ($documents as $document) {
@@ -340,10 +343,10 @@ class ProjectDocumentService
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN] = $this->generateBuyerPersona($project);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS:
-//                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS] = $this->generateCompetitorAnalysis($project);
+                    //                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS] = $this->generateCompetitorAnalysis($project);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE:
-//                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE] = $this->generateGoldenTriangle($project);
+                    //                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE] = $this->generateGoldenTriangle($project);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P] = $this->generateMarketingMix4($project);
@@ -355,7 +358,7 @@ class ProjectDocumentService
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_PESTEL] = $this->generatePESTEL($project);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_SMART:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_SMART] = $this->generateSMART($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_SMART] = $this->generateSMART($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_STP:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_STP] = $this->generateSTP($project);
@@ -364,6 +367,7 @@ class ProjectDocumentService
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_SWOT] = $this->generateSWOT($project);
                     break;
             }
+            sleep(5);
         }
 
         return $toReturn;
