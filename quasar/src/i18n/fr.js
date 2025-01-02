@@ -269,5 +269,12 @@ export default {
       updateSuccess: 'Formule mise à jour avec succès',
       changePlanAlreadyScheduledWarning: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif'
     }
+  },
+  profile: {
+    title: 'Mon profil',
+    resetPassword: {
+      title: 'Réinitialisation de votre mot de passe',
+      content: 'Veuillez saisir votre nouveau mot de passe.'
+    }
   }
 }

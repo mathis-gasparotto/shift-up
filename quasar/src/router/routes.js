@@ -90,6 +90,11 @@ const routes = [
         component: () => import('pages/index.vue')
       },
       {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('pages/profile.vue')
+      },
+      {
         path: 'teams/:teamId',
         name: 'team',
         component: () => import('pages/teams/_teamId/index.vue')

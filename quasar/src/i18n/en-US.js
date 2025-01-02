@@ -269,5 +269,12 @@ export default {
       updateSuccess: 'Plan updated successfully',
       changePlanAlreadyScheduledWarning: 'You already initiated a plan change, please wait for the subscription to be effective'
     }
+  },
+  profile: {
+    title: 'My profile',
+    resetPassword: {
+      title: 'Reset your password',
+      content: 'Please enter your new password.'
+    }
   }
 }

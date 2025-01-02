@@ -1,11 +1,11 @@
 <template>
   <q-menu auto-clos>
     <q-list style="min-width: 150px">
-      <q-item clickable>
+      <q-item
+        clickable
+        to="/profile"
+      >
         <q-item-section>{{ $t('nav.profile') }}</q-item-section>
-      </q-item>
-      <q-item clickable>
-        <q-item-section>{{ $t('nav.settings') }}</q-item-section>
       </q-item>
       <q-separator />
       <q-item clickable>
