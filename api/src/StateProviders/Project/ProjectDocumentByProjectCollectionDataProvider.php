@@ -7,7 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use App\Repository\ProjectRepository;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -21,8 +21,7 @@ class ProjectDocumentByProjectCollectionDataProvider implements ProviderInterfac
     public function __construct(
         private Security $security,
         private ProjectRepository $projectRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param Operation $operation
@@ -42,7 +41,7 @@ class ProjectDocumentByProjectCollectionDataProvider implements ProviderInterfac
 
         $class = GlobalHelper::getClassShortName($context['operation']->getClass());
         if (str_ends_with($class, 'is')) {
-            $class = substr($class, 0, strlen($class)-2);
+            $class = substr($class, 0, strlen($class) - 2);
             $getMethod = 'get' . $class . 'es';
         } else {
             $getMethod = 'get' . $class . (str_ends_with($class, 's') ? 'es' : 's');

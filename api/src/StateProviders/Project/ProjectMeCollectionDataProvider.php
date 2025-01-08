@@ -8,7 +8,7 @@ use App\Helper\GlobalHelper;
 use App\Helper\RepositoryHelper;
 use App\Repository\ProjectRepository;
 use App\Service\RepositoryService;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -24,8 +24,7 @@ class ProjectMeCollectionDataProvider implements ProviderInterface
         private Security $security,
         private RepositoryService $repositoryService,
         private ProjectRepository $projectRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param Operation $operation

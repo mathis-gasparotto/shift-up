@@ -10,7 +10,7 @@ use App\Helper\ProjectHelper;
 use App\Service\ProjectService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -28,8 +28,7 @@ class ProjectPostDataPersister implements ProcessorInterface
         private readonly Security               $security,
         private readonly EntityManagerInterface $entityManager,
         private readonly ProjectService         $projectService
-    )
-    {}
+    ) {}
 
     /**
      * @param mixed $data

@@ -8,7 +8,7 @@ use App\Entity\Project;
 use App\Helper\TeamHelper;
 use App\Repository\ProjectRepository;
 use App\Repository\TeamRepository;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -24,8 +24,7 @@ class ProjectByTeamCollectionDataProvider implements ProviderInterface
         private Security $security,
         private TeamRepository $teamRepository,
         private ProjectRepository $projectRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param Operation $operation

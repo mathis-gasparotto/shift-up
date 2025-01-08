@@ -11,7 +11,7 @@ use App\Helper\ProjectHelper;
 use App\Service\ProjectDocumentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -26,8 +26,7 @@ class ProjectGenerateDocumentController extends AbstractController
     public function __construct(
         private readonly Security               $security,
         private readonly ProjectDocumentService $projectDocumentService,
-    ) {
-    }
+    ) {}
 
     /**
      * @param Request $request

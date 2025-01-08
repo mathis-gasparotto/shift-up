@@ -10,7 +10,7 @@ use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -26,8 +26,7 @@ class ProjectDocumentPostDataPersister implements ProcessorInterface
     public function __construct(
         private Security $security,
         private EntityManagerInterface $entityManager
-    )
-    {}
+    ) {}
 
     /**
      * @param mixed $data

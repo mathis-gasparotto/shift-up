@@ -7,7 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Helper\GlobalHelper;
 use App\Helper\ProjectHelper;
 use App\Repository\ProjectRepository;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *

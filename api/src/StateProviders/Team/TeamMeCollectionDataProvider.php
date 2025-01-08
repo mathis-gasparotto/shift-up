@@ -7,7 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Helper\GlobalHelper;
 use App\Helper\RepositoryHelper;
 use App\Service\RepositoryService;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  *
@@ -21,8 +21,7 @@ class TeamMeCollectionDataProvider implements ProviderInterface
     public function __construct(
         private Security $security,
         private RepositoryService $repositoryService
-    ) {
-    }
+    ) {}
 
     /**
      * @param Operation $operation
