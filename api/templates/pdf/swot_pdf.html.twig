@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - SWOT  {% endblock %}
+
+{% block body %}
+    <div class="body">
+        <div class="container container-left">
+            
+        </div>
+        <div class="container container-right">
+            <h1 class="main-title">SWOT</h1>
+            <p>{{ data.strengths }}</p>
+        </div>
+    </div>
+
+    {% include 'includes/css/swot_pdf_css.html.twig' %}
+
+{% endblock %}

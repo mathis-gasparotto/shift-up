@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Marketing Mix 4  {% endblock %}
+
+{% block body %}
+    <div class="body">
+        <div class="container container-left">
+            
+        </div>
+        <div class="container container-right">
+            <h1 class="main-title">Marketing Mix 4</h1>
+            <p>{{ data.createdAt.getTimestamp() }}</p>
+        </div>
+    </div>
+
+    {% include 'includes/css/marketing_mix_4_pdf_css.html.twig' %}
+
+{% endblock %}

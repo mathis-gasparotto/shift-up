@@ -13,6 +13,7 @@ services:
     bind:
       $appBackUrl: "%env(APP_BACK_URL)%"
       $appFrontUrl: "%env(APP_FRONT_URL)%"
+      $mediaStorageLocal: "@flysystem.adapter.media.storage.local"
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -69,6 +70,14 @@ services:
     arguments:
       $service: '@App\Repository\MediaObjectRepository'
       $method: findOneByFilePath
+
+  App\Service\FileService:
+    bind:
+      $mediaStorage: "%env(MEDIA_STORAGE)%"
+
+  App\Service\ProjectDocumentService:
+    arguments:
+      $prefixUrl: "%env(MEDIA_STORAGE_PREFIX_URL)%"
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones

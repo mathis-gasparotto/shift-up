@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'properties' => [
                                     'project' => [
                                         'type' => 'string',
-                                        'example' =>'/projects/{id}'
+                                        'example' => '/projects/{id}'
                                     ],
                                     'topLabel' => [
                                         'type' => 'string'
@@ -134,37 +134,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/golden_triangles',
-    operations: [new GetCollection()],
+    operations: [
+        new Get(
+            uriTemplate: '/projects/{id}/golden_triangles/last',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'golden_triangle:read',
+                    'golden_triangle:item:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: LastProjectDocumentByProjectGetDataProvider::class
+        ),
+        new GetCollection(
+            uriTemplate: '/projects/{id}/golden_triangles',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetCollection',
+                'groups' => [
+                    'golden_triangle:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: ProjectDocumentByProjectCollectionDataProvider::class
+        ),
+    ],
     uriVariables: [
         'id' => new Link(
             toProperty: 'project',
             fromClass: Project::class
         )
-    ],
-    normalizationContext: [
-        'groups' => [
-            'golden_triangle:read'
-        ]
-    ],
-    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
-    provider: ProjectDocumentByProjectCollectionDataProvider::class
-)]
-#[ApiResource(
-    uriTemplate: '/projects/{id}/golden_triangles/last',
-    operations: [new Get()],
-    uriVariables: [
-        'id' => new Link(
-            toProperty: 'project',
-            fromClass: Project::class
-        )
-    ],
-    normalizationContext: [
-        'groups' => [
-            'golden_triangle:read'
-        ]
-    ],
-    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
-    provider: LastProjectDocumentByProjectGetDataProvider::class
+    ]
 )]
 class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
 {
@@ -253,6 +253,14 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
         Groups(['golden_triangle:read', 'golden_triangle:write'])
     ]
     private ?Project $project = null;
+
+    /**
+     * @var MediaObject|null
+     */
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Groups(['golden_triangle:item:read'])]
+    private ?MediaObject $file = null;
 
     /**
      * @return Uuid|null
@@ -353,6 +361,25 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return MediaObject|null
+     */
+    public function getFile(): ?MediaObject
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param MediaObject|null $file
+     * @return $this
+     */
+    public function setFile(?MediaObject $file): static
+    {
+        $this->file = $file;
 
         return $this;
     }

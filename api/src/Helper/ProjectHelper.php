@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
 use App\Entity\Project;
+use App\Entity\Team;
 use App\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -80,6 +81,17 @@ final class ProjectHelper
 
         if (!$isAdmin && $project->getTeam()->getManager() !== $user && !$user->isInTeam($project->getTeam())) {
             throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * @param Team $team
+     * @return void
+     */
+    public static function checkIfTeamIsPremium(Team $team): void
+    {
+        if (!$team->isPremium()) {
+            throw new AccessDeniedException('Your team avantages are not enough to do this action');
         }
     }
 

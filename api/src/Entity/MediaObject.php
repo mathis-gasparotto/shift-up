@@ -141,7 +141,7 @@ class MediaObject implements TracingAwareInterface, OwnerAwareInterface
      */
     #[
         ApiProperty(types: ["http://schema.org/contentUrl"]),
-        Groups(['media_object:read', 'project:read'])
+        Groups(['media_object:read', 'project:read', 'swot:item:read', 'business_model_canvas:item:read', 'buyer_persona:item:read', 'competitor_analysis:item:read', 'golden_triangle:item:read', 'marketing_mix_4:item:read', 'marketing_mix_5:item:read', 'pestel:item:read', 'smart:item:read', 'stp:item:read'])
     ]
     private ?string $contentUrl;
 
@@ -187,7 +187,6 @@ class MediaObject implements TracingAwareInterface, OwnerAwareInterface
     ]
     private ?string $category = null;
 
-
     /**
      * @return Uuid|null
      */
@@ -201,7 +200,8 @@ class MediaObject implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getContentUrl(): ?string
     {
-        return $this->contentUrl;
+        // return $this->contentUrl;
+        return '/media/uploads/' . $this->filePath;
     }
 
     /**
@@ -250,42 +250,6 @@ class MediaObject implements TracingAwareInterface, OwnerAwareInterface
     {
         $this->filePath = $filePath;
 
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFilename(): ?string
-    {
-        return $this->filename;
-    }
-
-    /**
-     * @param mixed $filename
-     * @return MediaObject
-     */
-    public function setFilename($filename): self
-    {
-        $this->filename = $filename;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param mixed $slug
-     * @return MediaObject
-     */
-    public function setSlug($slug): self
-    {
-        $this->slug = $slug;
         return $this;
     }
 

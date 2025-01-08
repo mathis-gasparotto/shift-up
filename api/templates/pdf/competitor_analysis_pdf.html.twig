@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Competitor Analysis  {% endblock %}
+
+{% block body %}
+    <div class="body">
+        <div class="container container-left">
+            
+        </div>
+        <div class="container container-right">
+            <h1 class="main-title">Competitor Analysis</h1>
+            <p>{{ data.createdAt.getTimestamp() }}</p>
+        </div>
+    </div>
+
+    {% include 'includes/css/competitor_analysis_pdf_css.html.twig' %}
+
+{% endblock %}

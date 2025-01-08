@@ -10,11 +10,12 @@ use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Vich\UploaderBundle\Storage\StorageInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  *
  */
-class MediaObjectNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface
+class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -24,19 +25,11 @@ class MediaObjectNormalizer implements ContextAwareNormalizerInterface, Normaliz
     private const ALREADY_CALLED = 'MEDIA_OBJECT_NORMALIZER_ALREADY_CALLED';
 
     /**
-     * @var StorageInterface
-     */
-    private StorageInterface $storage;
-
-    /**
      * MediaNormalizer constructor.
      * @param StorageInterface $storage
      * @param string $prefixUrl
      */
-    public function __construct(StorageInterface $storage, private readonly string $prefixUrl)
-    {
-        $this->storage = $storage;
-    }
+    public function __construct(private readonly StorageInterface $storage, private readonly string $prefixUrl) {}
 
     /**
      * @param $object
@@ -58,7 +51,7 @@ class MediaObjectNormalizer implements ContextAwareNormalizerInterface, Normaliz
         ) {
             $object->setContentUrl($object->getFilePath());
         } else if ($path) {
-            $object->setContentUrl($this->prefixUrl . '/cache/picture_thumb/' . $path);
+            $object->setContentUrl($this->prefixUrl . $path);
             $object->pictures = [
                 'thumb' => $this->prefixUrl . '/cache/picture_thumb/' . $path,
                 'medium' => $this->prefixUrl . '/cache/picture_small/' . $path,
@@ -83,5 +76,12 @@ class MediaObjectNormalizer implements ContextAwareNormalizerInterface, Normaliz
 
 
         return $data instanceof MediaObject;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            MediaObject::class => true, // true = supports normalization & denormalization
+        ];
     }
 }

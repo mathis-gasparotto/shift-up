@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Project\ProjectDownloadDocumentController;
 use App\Controller\Project\ProjectGenerateDocumentController;
 use App\Helper\GlobalHelper;
 use App\Model\OwnerAwareInterface;
@@ -44,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'properties' => [
                                     'project' => [
                                         'type' => 'string',
-                                        'example' =>'/projects/{id}'
+                                        'example' => '/projects/{id}'
                                     ],
                                     'product' => [
                                         'type' => 'string'
@@ -76,6 +77,18 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             controller: ProjectGenerateDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
+        ),
+        new Post(
+            uriTemplate: '/projects/{id}/marketing_mix_4s/last/download',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectDownloadDocumentController::class,
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
@@ -128,39 +141,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/marketing_mix_4s',
-    shortName: 'MarketingMix_4',
-    operations: [new GetCollection()],
+    operations: [
+        new Get(
+            uriTemplate: '/projects/{id}/marketing_mix_4s/last',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'marketing_mix_4:read',
+                    'marketing_mix_4:item:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: LastProjectDocumentByProjectGetDataProvider::class
+        ),
+        new GetCollection(
+            uriTemplate: '/projects/{id}/marketing_mix_4s',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetCollection',
+                'groups' => [
+                    'marketing_mix_4:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: ProjectDocumentByProjectCollectionDataProvider::class
+        ),
+    ],
     uriVariables: [
         'id' => new Link(
             toProperty: 'project',
             fromClass: Project::class
         )
-    ],
-    normalizationContext: [
-        'groups' => [
-            'marketing_mix_4:read'
-        ]
-    ],
-    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
-    provider: ProjectDocumentByProjectCollectionDataProvider::class
-)]
-#[ApiResource(
-    uriTemplate: '/projects/{id}/marketing_mix_4s/last',
-    shortName: 'MarketingMix_4',
-    operations: [new Get()],
-    uriVariables: [
-        'id' => new Link(
-            toProperty: 'project',
-            fromClass: Project::class
-        )
-    ],
-    normalizationContext: [
-        'groups' => [
-            'marketing_mix_4:read'
-        ]
-    ],
-    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
-    provider: LastProjectDocumentByProjectGetDataProvider::class
+    ]
 )]
 class MarketingMix4 implements TracingAwareInterface, OwnerAwareInterface
 {
@@ -227,6 +238,14 @@ class MarketingMix4 implements TracingAwareInterface, OwnerAwareInterface
         Groups(['marketing_mix_4:read', 'marketing_mix_4:write'])
     ]
     private ?Project $project = null;
+
+    /**
+     * @var MediaObject|null
+     */
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Groups(['marketing_mix_4:item:read'])]
+    private ?MediaObject $file = null;
 
     /**
      * @return Uuid|null
@@ -327,6 +346,25 @@ class MarketingMix4 implements TracingAwareInterface, OwnerAwareInterface
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return MediaObject|null
+     */
+    public function getFile(): ?MediaObject
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param MediaObject|null $file
+     * @return $this
+     */
+    public function setFile(?MediaObject $file): static
+    {
+        $this->file = $file;
 
         return $this;
     }

@@ -9,6 +9,7 @@ use App\Entity\CompetitorAnalysis;
 use App\Entity\GoldenTriangle;
 use App\Entity\MarketingMix4;
 use App\Entity\MarketingMix5;
+use App\Entity\MediaObject;
 use App\Entity\PESTEL;
 use App\Entity\Project;
 use App\Entity\SMART;
@@ -16,11 +17,14 @@ use App\Entity\STP;
 use App\Entity\SWOT;
 use App\Entity\User;
 use App\Helper\AIHelper;
+use App\Helper\FileHelper;
+use App\Helper\GlobalHelper;
 use App\Helper\OpenAIHelper;
 use App\Helper\ProjectHelper;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Exception;
 
 /**
  *
@@ -32,8 +36,10 @@ class ProjectDocumentService
      * @param EntityManager $entityManager
      */
     public function __construct(
+        private string $prefixUrl,
         private MistralAIService $AIService,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private FileService $fileService,
     ) {}
 
     /**
@@ -371,5 +377,65 @@ class ProjectDocumentService
         }
 
         return $toReturn;
+    }
+
+
+    /**
+     * @param Project $project
+     * @return MediaObject
+     * @throws ORMException
+     */
+    public function downloadDocument(SWOT|BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP $document): MediaObject
+    {
+        $fileDir = 'teams/' . $document->getProject()->getTeam()->getId() . '/documents';
+        $fileName = strtolower(GlobalHelper::getClassShortName($document)) . '-' . $document->getId();
+        $filePath = $fileDir . '/' . $fileName . '.' . FileHelper::FILE_PDF_EXTENSION;
+
+        try {
+            $pdf = $this->fileService->generatePdfToHtml($document);
+        } catch (Exception $e) {
+            // dd($e);
+            throw new Exception($e->getMessage());
+        }
+
+        try {
+            $this->fileService->uploadDestination($pdf, FileHelper::FILE_PDF_EXTENSION, $fileDir, $fileName);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+
+        if (!$document->getFile() || $document->getFile()->getFilePath() !== $filePath) {
+            if ($document->getFile()) {
+                $this->deleteMediaObjectAndPdf($document);
+            }
+
+            $mediaObject = (new MediaObject())
+                ->setFilePath($filePath)
+                ->setContentUrl($this->prefixUrl . $filePath);
+
+            $this->entityManager->persist($mediaObject);
+
+            $document->setFile($mediaObject);
+
+            $this->entityManager->flush();
+
+            return $mediaObject;
+        }
+
+        return $document->getFile();
+    }
+
+    /**
+     * @param SWOT|BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP $document
+     * @return void
+     */
+    public function deleteMediaObjectAndPdf(SWOT|BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP $document): void
+    {
+        $oldFile = $document->getFile();
+        $this->fileService->deleteFileIfExist($oldFile->getFilePath());
+
+        $document->setFile(null);
+        $this->entityManager->remove($oldFile);
+        $this->entityManager->flush();
     }
 }

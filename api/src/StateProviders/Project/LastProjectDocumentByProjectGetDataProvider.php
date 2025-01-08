@@ -21,8 +21,7 @@ class LastProjectDocumentByProjectGetDataProvider implements ProviderInterface
     public function __construct(
         private Security $security,
         private ProjectRepository $projectRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param Operation $operation

@@ -592,4 +592,12 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     {
         return $this->stripeSubscriptionScheduleId !== null;
     }
+
+    /**
+     * @return bool
+     */
+    public function isPremium(): bool
+    {
+        return $this->stripeSubscriptionId !== null && $this->subscriptionEndAt > new \DateTime() && $this->getSubscriptionPrice() !== null;
+    }
 }

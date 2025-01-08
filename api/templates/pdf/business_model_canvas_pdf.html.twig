@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Business Model Canvas  {% endblock %}
+
+{% block body %}
+    <div class="body">
+        <div class="container container-left">
+            
+        </div>
+        <div class="container container-right">
+            <h1 class="main-title">Business Model Canvas</h1>
+            <p>{{ data.createdAt.getTimestamp() }}</p>
+        </div>
+    </div>
+
+    {% include 'includes/css/business_model_canvas_pdf_css.html.twig' %}
+
+{% endblock %}

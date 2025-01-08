@@ -151,12 +151,12 @@
       </q-list>
 
       <div class="h-15">
-        <SUbtn
+        <!-- <SUbtn
           :label="$t('nav.changePlan')"
           rounded
           color="gradient"
           class="w-100 q-mb-md"
-        />
+        /> -->
         <q-btn
           :label="$t('nav.minimize')"
           no-caps
@@ -181,7 +181,7 @@ export default {
   name: 'NavbarDesktop',
   emits: ['hideNav'],
   components: {
-    SUbtn
+    // SUbtn
   },
   data() {
     return {

@@ -1,5 +1,4 @@
-# Utiliser l'image PHP Alpine 8.2.15
-FROM php:8.2-alpine as api_php
+FROM php:8.2-alpine3.18 AS api_php
 LABEL maintainer="Mathis Gasparotto <mathis.gasparotto@hotmail.com>"
 
 ENV APP_ENV=dev XDEBUG_MODE=off
@@ -20,6 +19,36 @@ RUN apk update && apk add --no-cache autoconf g++ imagemagick-dev libtool make p
     pecl install imagick && \
     docker-php-ext-enable imagick && \
     apk del autoconf g++ libtool make pcre-dev
+
+# Installer wkhtmltopdf
+RUN apk add --no-cache \
+    libstdc++ \
+    libx11 \
+    libxrender \
+    libxext \
+    libssl1.1 \
+    libcrypto1.1 \
+    ca-certificates \
+    font-freefont \
+    fontconfig \
+    freetype \
+    ttf-dejavu \
+    ttf-droid \
+    ttf-freefont \
+    ttf-liberation \
+    && apk add --no-cache --virtual .build-deps \
+    msttcorefonts-installer \
+    # Install microsoft fonts
+    && update-ms-fonts \
+    && fc-cache -f \
+    # Clean up when done
+    && rm -rf /tmp/* \
+    && apk del .build-deps \
+    ;
+
+COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
+COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage
+COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/libwkhtmltox* /usr/local/bin/
 
 # Installer les extensions PDO MySQL et PostgreSQL
 # RUN apk add --no-cache \

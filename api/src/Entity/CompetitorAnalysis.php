@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                                 'properties' => [
                                     'project' => [
                                         'type' => 'string',
-                                        'example' =>'/projects/{id}'
+                                        'example' => '/projects/{id}'
                                     ],
                                 ],
                             ],
@@ -101,37 +101,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ApiResource(
     uriTemplate: '/projects/{id}/competitor_analyses',
-    operations: [new GetCollection()],
+    operations: [
+        new Get(
+            uriTemplate: '/projects/{id}/competitor_analyses/last',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetItem',
+                'groups' => [
+                    'competitor_analysis:read',
+                    'competitor_analysis:item:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: LastProjectDocumentByProjectGetDataProvider::class
+        ),
+        new GetCollection(
+            uriTemplate: '/projects/{id}/competitor_analyses',
+            normalizationContext: [
+                'openapi_definition_name' => 'GetCollection',
+                'groups' => [
+                    'competitor_analysis:read'
+                ]
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            provider: ProjectDocumentByProjectCollectionDataProvider::class
+        ),
+    ],
     uriVariables: [
         'id' => new Link(
             toProperty: 'project',
             fromClass: Project::class
         )
-    ],
-    normalizationContext: [
-        'groups' => [
-            'competitor_analysis:read'
-        ]
-    ],
-    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
-    provider: ProjectDocumentByProjectCollectionDataProvider::class
-)]
-#[ApiResource(
-    uriTemplate: '/projects/{id}/competitor_analyses/last',
-    operations: [new Get()],
-    uriVariables: [
-        'id' => new Link(
-            toProperty: 'project',
-            fromClass: Project::class
-        )
-    ],
-    normalizationContext: [
-        'groups' => [
-            'competitor_analysis:read'
-        ]
-    ],
-    security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
-    provider: LastProjectDocumentByProjectGetDataProvider::class
+    ]
 )]
 class CompetitorAnalysis implements TracingAwareInterface, OwnerAwareInterface
 {
@@ -160,6 +160,14 @@ class CompetitorAnalysis implements TracingAwareInterface, OwnerAwareInterface
     private ?Project $project = null;
 
     /**
+     * @var MediaObject|null
+     */
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Groups(['competitor_analysis:item:read'])]
+    private ?MediaObject $file = null;
+
+    /**
      * @return Uuid|null
      */
     public function getId(): ?Uuid
@@ -182,6 +190,25 @@ class CompetitorAnalysis implements TracingAwareInterface, OwnerAwareInterface
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return MediaObject|null
+     */
+    public function getFile(): ?MediaObject
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param MediaObject|null $file
+     * @return $this
+     */
+    public function setFile(?MediaObject $file): static
+    {
+        $this->file = $file;
 
         return $this;
     }

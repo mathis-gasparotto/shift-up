@@ -27,7 +27,6 @@ final class Version20241021165644 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('CREATE SEQUENCE refresh_tokens_id_seq');
         $this->addSql('SELECT setval(\'refresh_tokens_id_seq\', (SELECT MAX(id) FROM refresh_tokens))');
         $this->addSql('ALTER TABLE refresh_tokens ALTER id SET DEFAULT nextval(\'refresh_tokens_id_seq\')');
