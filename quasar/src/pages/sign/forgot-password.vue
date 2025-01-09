@@ -27,10 +27,10 @@
         {{ error }}
       </p>
       <p
-        v-if="successSessage"
+        v-if="successMessage"
         class="text-positive q-mb-none"
       >
-        {{ successSessage }}
+        {{ successMessage }}
       </p>
       <SUbtn
         :label="$t('forgotPassword.submit')"
@@ -66,8 +66,8 @@ export default {
     return {
       email: '',
       loading: false,
-      error: '',
-      successSessage: ''
+      error: null,
+      successMessage: null
     }
   },
   computed: {
@@ -84,10 +84,12 @@ export default {
       this.$resources.forgotPassword
         .create({ email: this.email })
         .then(() => {
-          this.successSessage = this.$t('forgotPassword.success', { email: this.email })
+          this.successMessage = this.$t('forgotPassword.success', { email: this.email })
+          this.error = null
         })
         .catch((error) => {
           this.error = translateError(error)
+          this.successMessage = null
         })
         .finally(() => {
           this.loading = false
