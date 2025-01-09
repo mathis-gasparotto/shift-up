@@ -41,7 +41,7 @@ class SendResetPasswordController extends AbstractController
         $user = $userRepository->findOneBy(['email' => $data->getEmail()]);
 
         if (!$user) {
-//            throw new BadRequestHttpException('Invalid email');
+            //            throw new BadRequestHttpException('Invalid email');
             return $this->json([
                 'success' => true
             ]);

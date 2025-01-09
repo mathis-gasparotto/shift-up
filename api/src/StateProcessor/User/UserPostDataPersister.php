@@ -34,8 +34,7 @@ class UserPostDataPersister implements ProcessorInterface
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $userPasswordEncoder,
         private EmailService $emailService
-    ) {
-    }
+    ) {}
 
     /**
      * @param mixed $data
@@ -67,7 +66,7 @@ class UserPostDataPersister implements ProcessorInterface
         $this->emailService->sendEmailService(
             $data->getEmail(),
             EmailHelper::EMAIL_TYPE_CONFIRM_EMAIL,
-            ['confirmation_link' => $confirmationLink]
+            ['user_first_name' => $data->getFirstName(), 'confirmation_link' => $confirmationLink]
         );
 
         // create default team to the user
