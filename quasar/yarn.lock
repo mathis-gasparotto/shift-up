@@ -3204,10 +3204,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.10.20":
-  version: 1.11.1
-  resolution: "libphonenumber-js@npm:1.11.1"
-  checksum: 10c0/003b0b39f9d4b246985723e93b744bafa0d6d12a6f393fe3b883add8db1c5189bad33d330550517aee0670c1c371573bda35a0950f0d0d54b6a7bab1a5f64466
+"libphonenumber-js@npm:^1.11.11":
+  version: 1.11.17
+  resolution: "libphonenumber-js@npm:1.11.17"
+  checksum: 10c0/102bc66f82b4fb86983f3c68d7b8eafd5e5f82be48bcd87c4c3a723b08e62d2deffa78a5d646698f2ba163f4e0d5722d99661ba9ec36f12b5a108fcdf8731059
   languageName: node
   linkType: hard
 
@@ -4425,7 +4425,7 @@ __metadata:
     vue: "npm:^3.4.18"
     vue-i18n: "npm:^10.0.0-beta.5"
     vue-router: "npm:^4.0.12"
-    vue3-q-tel-input: "npm:^1.1.7"
+    vue3-q-tel-input: "npm:^2"
   languageName: unknown
   linkType: soft
 
@@ -5078,15 +5078,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue3-q-tel-input@npm:^1.1.7":
-  version: 1.1.7
-  resolution: "vue3-q-tel-input@npm:1.1.7"
+"vue3-q-tel-input@npm:^2":
+  version: 2.0.4
+  resolution: "vue3-q-tel-input@npm:2.0.4"
   dependencies:
-    libphonenumber-js: "npm:^1.10.20"
+    libphonenumber-js: "npm:^1.11.11"
   peerDependencies:
     quasar: ^2.0.0
     vue: ^3.0.5
-  checksum: 10c0/4287619b0f3a5b0cd02ff42c624de51fa659ad395d58de3baa5e0bb2194618cf9ac6c2148f698316a655eddb4d18432e0287f444c03cbd8a3f5033e239c28fca
+  checksum: 10c0/f117e6d5aee3f51e78672d1f5cf08e3e225496f3f6f7c203fc27a5f13f52f98a0dbdedffdf5edd7279c21c566294f5dc7729121473c9c4e7a2a227f2d859fdc6
   languageName: node
   linkType: hard
 

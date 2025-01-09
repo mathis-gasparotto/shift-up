@@ -23,7 +23,7 @@
       height: $value;
     }
   }
-  .mh {
+  .max-h {
     @include bp-all {
       &-#{$key} {
         max-height: $value !important;
@@ -31,6 +31,36 @@
     }
     &-#{$key} {
       max-height: $value;
+    }
+  }
+  .min-h {
+    @include bp-all {
+      &-#{$key} {
+        min-height: $value !important;
+      }
+    }
+    &-#{$key} {
+      min-height: $value;
+    }
+  }
+  .max-w {
+    @include bp-all {
+      &-#{$key} {
+        max-width: $value !important;
+      }
+    }
+    &-#{$key} {
+      max-width: $value;
+    }
+  }
+  .min-w {
+    @include bp-all {
+      &-#{$key} {
+        min-width: $value !important;
+      }
+    }
+    &-#{$key} {
+      min-width: $value;
     }
   }
 }

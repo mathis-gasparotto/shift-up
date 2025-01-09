@@ -9,10 +9,10 @@
       v-if="inputType === 'tel'"
       v-model="value"
       outlined
-      for="phone"
+      :for="name"
       :default-country="defaultPhoneCountry"
       type="tel"
-      inputmode="tel"
+      :inputmode="inputmode"
       :placeholder="phoneNumberPlaceholder"
       @country="updatePhoneCountry"
       @error="(val) => (phoneError = val)"
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import 'vue3-q-tel-input/dist/vue3-q-tel-input.esm.css'
+import 'vue3-q-tel-input/dist/style.css'
 import Vue3QTelInput from 'vue3-q-tel-input'
 import { langsData } from 'src/helpers/langs'
 import { phoneNumberPlaceholders } from 'src/helpers/phone'
@@ -110,15 +110,17 @@ export default {
       default: undefined
     }
   },
-  setup() {
-    const $q = useQuasar()
+  setup(props) {
+    if (props.type === 'tel') {
+      const $q = useQuasar()
 
-    const defaultPhoneCountry = langsData[$q.lang.isoName].countryCode
-    const phoneNumberPlaceholder = ref(phoneNumberPlaceholders[defaultPhoneCountry])
+      const defaultPhoneCountry = langsData[$q.lang.isoName].countryCode
+      const phoneNumberPlaceholder = ref(phoneNumberPlaceholders[defaultPhoneCountry])
 
-    return {
-      defaultPhoneCountry,
-      phoneNumberPlaceholder
+      return {
+        defaultPhoneCountry,
+        phoneNumberPlaceholder
+      }
     }
   },
   data() {

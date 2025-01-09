@@ -1,4 +1,4 @@
-FROM node:20.12.2-alpine3.19 AS base
+FROM node:22.9.0-alpine3.19 AS base
 LABEL maintainer="Mathis Gasparotto <mathis.gasparotto@hotmail.com>"
 
 FROM base as dependencies
