@@ -1,4 +1,6 @@
 export default {
+  download: 'Download',
+  edit: 'Edit',
   error: {
     incorrectPassword: 'Incorrect password',
     invalidCredentials: 'Invalid credentials',
@@ -19,7 +21,8 @@ export default {
     chooseSubcriptionForTeam: 'You have to choose a subscription plan to create a team',
     incorrectReccurence: 'Invalid recurrence',
     alreadyChosenSubscription: 'You already chosen this subscription',
-    aleardyPlansChangeSchedule: 'You already initiated a plan change, please wait for the subscription to be effective'
+    aleardyPlansChangeSchedule: 'You already initiated a plan change, please wait for the subscription to be effective',
+    documentNotFound: 'Document not found'
   },
   breadcrumb: {
     home: 'Home',

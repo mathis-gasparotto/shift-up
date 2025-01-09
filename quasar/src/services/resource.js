@@ -87,13 +87,9 @@ export default ($axios /*, $sentry*/) => (resource) => ({
         throw e
       })
   },
-  childItem(id, subresource, filters = {}, page = 1) {
-    const query = {
-      page,
-      ...filters
-    }
+  childItem(id, subresource) {
     return $axios
-      .get(`/${resource}/${id}/${subresource}`, { params: query })
+      .get(`/${resource}/${id}/${subresource}`)
       .then((response) => response.data)
       .catch((e) => {
         if (e.response && e.response.status !== 404) {

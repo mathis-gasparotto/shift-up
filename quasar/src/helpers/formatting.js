@@ -17,3 +17,6 @@ export function durationFromDateTime(dateTime) {
   if (typeof dateTime === 'string') dateTime = new Date(dateTime)
   return moment(dateTime).fromNow()
 }
+export function snakeCaseToCamelCase(str) {
+  return str.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase())
+}

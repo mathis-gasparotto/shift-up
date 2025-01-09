@@ -1,11 +1,24 @@
 <template>
   <div class="q-pa-lg">
-    <q-card class="card cursor-pointer bg-grey-3" @click="$emit('cardClick')" flat>
+    <q-card
+      class="card cursor-pointer bg-grey-3"
+      @click="$emit('cardClick')"
+      flat
+    >
       <q-card-section class="h-100 flex items-center">
-        <q-icon name="ti-plus" size="60px" class="w-100" />
+        <q-icon
+          name="ti-plus"
+          size="60px"
+          class="w-100"
+        />
       </q-card-section>
     </q-card>
-    <p v-if="text" class="q-mb-none q-mt-md">{{ text }}</p>
+    <p
+      v-if="text"
+      class="q-mb-none q-mt-md"
+    >
+      {{ text }}
+    </p>
   </div>
 </template>
 

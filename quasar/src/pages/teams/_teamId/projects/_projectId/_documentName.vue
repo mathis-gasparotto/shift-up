@@ -11,6 +11,19 @@
         {{ title }}
       </h1>
       <q-btn
+        v-if="team.isPremium"
+        icon="download"
+        :label="$t('download')"
+        stack
+        no-caps
+        text-color="grey-9"
+        flat
+        @click="downloadDocument"
+        :loading="downloadLoading"
+        :disable="documentLoading"
+        class="q-no-hoverable q-pa-xs"
+      />
+      <!-- <q-btn
         icon="edit"
         label="Modifier"
         stack
@@ -20,7 +33,7 @@
         @click="editMode"
         :disable="documentLoading"
         class="q-no-hoverable q-pa-xs"
-      />
+      /> -->
     </div>
     <div class="w-100 q-mt-xl">Yoooo</div>
   </q-page>
@@ -30,7 +43,7 @@
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import { displayError } from 'src/helpers/translatting'
 import { errorNotify } from 'src/helpers/notifyHelper'
-
+import { snakeCaseToCamelCase } from 'src/helpers/formatting'
 export default {
   components: {
     MainBreadcrumps
@@ -43,7 +56,8 @@ export default {
       document: {},
       team: {},
       project: {},
-      documentNamesAccepted: ['business-model-canvas', 'buyer-persona', 'competitor-analysis', 'golden-triangle', 'marketing-mix-4', 'marketing-mix-5', 'pestel', 'smart', 'stp', 'swot']
+      documentNamesAccepted: ['business-model-canvas', 'buyer-persona', 'competitor-analysis', 'golden-triangle', 'marketing-mix-4', 'marketing-mix-5', 'pestel', 'smart', 'stp', 'swot'],
+      downloadLoading: false
     }
   },
   created() {
@@ -107,6 +121,32 @@ export default {
         default:
           return ''
       }
+    },
+    resourceName() {
+      switch (this.$route.params.documentName) {
+        case 'business-model-canvas':
+          return 'businessModelCanvas'
+        case 'buyer-persona':
+          return 'buyerPersonas'
+        case 'competitor-analysis':
+          return 'competitorAnalyses'
+        case 'golden-triangle':
+          return 'goldenTriangles'
+        case 'marketing-mix-4':
+          return 'marketingMix4s'
+        case 'marketing-mix-5':
+          return 'marketingMix5s'
+        case 'pestel':
+          return 'pestels'
+        case 'smart':
+          return 'smarts'
+        case 'stp':
+          return 'stps'
+        case 'swot':
+          return 'swots'
+        default:
+          return ''
+      }
     }
   },
   methods: {
@@ -141,7 +181,7 @@ export default {
           this.$router.push({ name: 'team', params: { teamId: this.$route.params.teamId } })
         })
       this.$resources.projects
-        .child(this.$route.params.projectId, this.apiRoute + '/last')
+        .childItem(this.$route.params.projectId, this.apiRoute + '/last')
         .then((document) => {
           this.document = document
           this.documentLoading = false
@@ -160,6 +200,20 @@ export default {
     },
     editMode() {
       console.log('editMode')
+    },
+    downloadDocument() {
+      this.downloadLoading = true
+      this.$resources[this.resourceName]
+        .createChild(this.document.id, 'download', {})
+        .then((response) => {
+          window.open(response.path, '_blank')
+        })
+        .catch((error) => {
+          displayError(error)
+        })
+        .finally(() => {
+          this.downloadLoading = false
+        })
     }
   }
 }

@@ -150,7 +150,7 @@
         </template>
       </q-list>
 
-      <div class="h-15">
+      <div class="h-15 column justify-end">
         <!-- <SUbtn
           :label="$t('nav.changePlan')"
           rounded
