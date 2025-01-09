@@ -239,7 +239,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
     #[ORM\JoinColumn(nullable: false)]
     #[
         Assert\NotBlank,
-        Groups(['project:read', 'project:write'])
+        Groups(['project:read', 'project:write', 'swot:item:read', 'business_model_canvas:item:read', 'smart:item:read', 'stp:item:read', 'pestel:item:read', 'marketing_mix_5:item:read', 'marketing_mix_4:item:read', 'golden_triangle:item:read', 'competitor_analysis:item:read'])
     ]
     private ?Team $team = null;
 

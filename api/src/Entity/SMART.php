@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\Project\ProjectDownloadDocumentController;
+use App\Controller\Project\ProjectDownloadSpecificDocumentController;
 use App\Controller\Project\ProjectGenerateDocumentController;
 use App\Helper\GlobalHelper;
 use App\Model\OwnerAwareInterface;
@@ -92,6 +93,18 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
             ],
             controller: ProjectDownloadDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
+        ),
+        new Post(
+            uriTemplate: '/smarts/{id}/download',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectDownloadSpecificDocumentController::class,
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],

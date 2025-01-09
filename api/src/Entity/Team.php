@@ -596,6 +596,10 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     /**
      * @return bool
      */
+    #[
+        SerializedName('isPremium'),
+        Groups(['team:read', 'project:item:read', 'swot:item:read', 'business_model_canvas:item:read', 'smart:item:read', 'stp:item:read', 'pestel:item:read', 'marketing_mix_5:item:read', 'marketing_mix_4:item:read', 'golden_triangle:item:read', 'competitor_analysis:item:read'])
+    ]
     public function isPremium(): bool
     {
         return $this->stripeSubscriptionId !== null && $this->subscriptionEndAt > new \DateTime() && $this->getSubscriptionPrice() !== null;

@@ -10,12 +10,11 @@ use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Vich\UploaderBundle\Storage\StorageInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  *
  */
-class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class MediaObjectNormalizer implements ContextAwareNormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -74,14 +73,6 @@ class MediaObjectNormalizer implements NormalizerInterface, NormalizerAwareInter
             return false;
         }
 
-
         return $data instanceof MediaObject;
-    }
-
-    public function getSupportedTypes(?string $format): array
-    {
-        return [
-            MediaObject::class => true, // true = supports normalization & denormalization
-        ];
     }
 }
