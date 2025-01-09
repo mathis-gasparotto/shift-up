@@ -422,7 +422,7 @@ class ProjectDocumentService
             return $mediaObject;
         }
 
-        return $document->getFile();
+        return $document->getFile()->setContentUrl($this->prefixUrl . '/' . $document->getFile()->getFilePath());
     }
 
     /**

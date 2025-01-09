@@ -200,8 +200,8 @@ class MediaObject implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getContentUrl(): ?string
     {
-        // return $this->contentUrl;
-        return '/media/uploads/' . $this->filePath;
+        return $this->contentUrl;
+        // return '/media/uploads/' . $this->filePath;
     }
 
     /**
