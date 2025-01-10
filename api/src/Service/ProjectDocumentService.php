@@ -47,9 +47,9 @@ class ProjectDocumentService
      * @return SWOT
      * @throws ORMException
      */
-    public function generateSWOT(Project $project): SWOT
+    public function generateSWOT(Project $project, ?User $author): SWOT
     {
-        ["Strengths" => $strengths, "Weaknesses" => $weaknesses, "Opportunities" => $opportunities, "Threats" => $threats] = AIHelper::getResultFromSWOTPrompt(
+        ["strengths" => $strengths, "weaknesses" => $weaknesses, "opportunities" => $opportunities, "threats" => $threats] = AIHelper::getResultFromSWOTPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForSWOT($project->getDescription())
             )
@@ -61,6 +61,7 @@ class ProjectDocumentService
         $swot->setOpportunities($opportunities);
         $swot->setThreats($threats);
         $swot->setProject($project);
+        $swot->setUser($author);
 
         $project->addSWOT($swot);
 
@@ -76,18 +77,18 @@ class ProjectDocumentService
      * @return BusinessModelCanvas
      * @throws ORMException
      */
-    public function generateBusinessModelCanvas(Project $project): BusinessModelCanvas
+    public function generateBusinessModelCanvas(Project $project, ?User $author): BusinessModelCanvas
     {
         [
-            "Key Partners" => $keyPartners,
-            "Key Activities" => $keyActivities,
-            "Key Resources" => $keyResources,
-            "Value Propositions" => $valuePropositions,
-            "Customer Relationships" => $customerRelationships,
-            "Channels" => $channels,
-            "Customer Segments" => $customerSegments,
-            "Cost Structure" => $costStructure,
-            "Revenue Streams" => $revenueStreams
+            "keyPartners" => $keyPartners,
+            "keyActivities" => $keyActivities,
+            "keyResources" => $keyResources,
+            "valuePropositions" => $valuePropositions,
+            "customerRelationships" => $customerRelationships,
+            "channels" => $channels,
+            "customerSegments" => $customerSegments,
+            "costStructure" => $costStructure,
+            "revenueStreams" => $revenueStreams
         ] = AIHelper::getResultFromBusinessModelCanvasPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForBusinessModelCanvas($project->getDescription())
@@ -105,6 +106,7 @@ class ProjectDocumentService
         $businessModelCanvas->setCostStructure($costStructure);
         $businessModelCanvas->setRevenueStreams($revenueStreams);
         $businessModelCanvas->setProject($project);
+        $businessModelCanvas->setUser($author);
 
         $project->addBusinessModelCanvas($businessModelCanvas);
 
@@ -120,15 +122,15 @@ class ProjectDocumentService
      * @return BuyerPersona
      * @throws ORMException
      */
-    public function generateBuyerPersona(Project $project): BuyerPersona
+    public function generateBuyerPersona(Project $project, ?User $author): BuyerPersona
     {
         [
-            "Personal Info" => $personalInfo,
-            "Professional Info" => $professionalInfo,
-            "Goals Challenges" => $goalsChallenges,
-            "Communication Channels" => $communicationChannels,
-            "Values Fears" => $valuesFears,
-            "Negative Info" => $negativeInfo
+            "personalInfo" => $personalInfo,
+            "professionalInfo" => $professionalInfo,
+            "goalsChallenges" => $goalsChallenges,
+            "communicationChannels" => $communicationChannels,
+            "valuesFears" => $valuesFears,
+            "negativeInfo" => $negativeInfo
         ] = AIHelper::getResultFromBuyerPersonaPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForBuyerPersona($project->getDescription())
@@ -143,7 +145,7 @@ class ProjectDocumentService
         $buyerPersona->setValuesFears($valuesFears);
         $buyerPersona->setNegativeInfo($negativeInfo);
         $buyerPersona->setProject($project);
-
+        $buyerPersona->setUser($author);
         $project->addBuyerPersona($buyerPersona);
 
         $this->entityManager->persist($buyerPersona);
@@ -158,14 +160,14 @@ class ProjectDocumentService
      * @return SMART
      * @throws ORMException
      */
-    public function generateSMART(Project $project, User $author): SMART
+    public function generateSMART(Project $project, ?User $author): SMART
     {
         [
-            "Specific" => $specific,
-            "Measurable" => $measurable,
-            "Achievable" => $achievable,
-            "Relevant" => $relevant,
-            "Timed" => $timed
+            "specific" => $specific,
+            "measurable" => $measurable,
+            "achievable" => $achievable,
+            "relevant" => $relevant,
+            "timed" => $timed
         ] = AIHelper::getResultFromSMARTPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForSMART($project->getDescription())
@@ -179,7 +181,6 @@ class ProjectDocumentService
         $smart->setKeyRelevant($relevant);
         $smart->setKeyTimed($timed);
         $smart->setProject($project);
-
         $smart->setUser($author);
 
         $project->addSMART($smart);
@@ -196,15 +197,15 @@ class ProjectDocumentService
      * @return PESTEL
      * @throws ORMException
      */
-    public function generatePESTEL(Project $project): PESTEL
+    public function generatePESTEL(Project $project, ?User $author): PESTEL
     {
         [
-            "Political" => $political,
-            "Economic" => $economic,
-            "Social" => $social,
-            "Technological" => $technological,
-            "Environmental" => $environmental,
-            "Legal" => $legal
+            "political" => $political,
+            "economic" => $economic,
+            "social" => $social,
+            "technological" => $technological,
+            "environmental" => $environmental,
+            "legal" => $legal
         ] = AIHelper::getResultFromPESTELPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForPESTEL($project->getDescription())
@@ -219,6 +220,7 @@ class ProjectDocumentService
         $pestel->setEnvironmental($environmental);
         $pestel->setLegal($legal);
         $pestel->setProject($project);
+        $pestel->setUser($author);
 
         $project->addPESTEL($pestel);
 
@@ -234,12 +236,12 @@ class ProjectDocumentService
      * @return STP
      * @throws ORMException
      */
-    public function generateSTP(Project $project): STP
+    public function generateSTP(Project $project, ?User $author): STP
     {
         [
-            "Segmentation" => $segmentation,
-            "Targeting" => $targeting,
-            "Positioning" => $positioning
+            "segmentation" => $segmentation,
+            "targeting" => $targeting,
+            "positioning" => $positioning
         ] = AIHelper::getResultFromSTPPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForSTP($project->getDescription())
@@ -251,6 +253,7 @@ class ProjectDocumentService
         $stp->setTargeting($targeting);
         $stp->setPositioning($positioning);
         $stp->setProject($project);
+        $stp->setUser($author);
 
         $project->addSTP($stp);
 
@@ -266,13 +269,13 @@ class ProjectDocumentService
      * @return MarketingMix4
      * @throws ORMException
      */
-    public function generateMarketingMix4(Project $project): MarketingMix4
+    public function generateMarketingMix4(Project $project, ?User $author): MarketingMix4
     {
         [
-            "Product" => $product,
-            "Price" => $price,
-            "Place" => $place,
-            "Promotion" => $promotion
+            "product" => $product,
+            "price" => $price,
+            "place" => $place,
+            "promotion" => $promotion
         ] = AIHelper::getResultFromMarketingMix4Prompt(
             $this->AIService->prompt(
                 AIHelper::promptForMarketingMix4($project->getDescription())
@@ -285,6 +288,7 @@ class ProjectDocumentService
         $marketingMix4->setPlace($place);
         $marketingMix4->setPromotion($promotion);
         $marketingMix4->setProject($project);
+        $marketingMix4->setUser($author);
 
         $project->addMarketingMix4($marketingMix4);
 
@@ -300,14 +304,14 @@ class ProjectDocumentService
      * @return MarketingMix5
      * @throws ORMException
      */
-    public function generateMarketingMix5(Project $project): MarketingMix5
+    public function generateMarketingMix5(Project $project, ?User $author): MarketingMix5
     {
         [
-            "Product" => $product,
-            "Price" => $price,
-            "Place" => $place,
-            "Promotion" => $promotion,
-            "People" => $people
+            "product" => $product,
+            "price" => $price,
+            "place" => $place,
+            "promotion" => $promotion,
+            "people" => $people
         ] = AIHelper::getResultFromMarketingMix5Prompt(
             $this->AIService->prompt(
                 AIHelper::promptForMarketingMix5($project->getDescription())
@@ -321,6 +325,7 @@ class ProjectDocumentService
         $marketingMix5->setPromotion($promotion);
         $marketingMix5->setPeople($people);
         $marketingMix5->setProject($project);
+        $marketingMix5->setUser($author);
 
         $project->addMarketingMix5($marketingMix5);
 
@@ -333,44 +338,116 @@ class ProjectDocumentService
 
     /**
      * @param Project $project
+     * @return CompetitorAnalysis
+     * @throws ORMException
+     */
+    public function generateCompetitorAnalysis(Project $project, ?User $author): CompetitorAnalysis
+    {
+        [
+            'xAxisLabel' => $xAxisLabel,
+            'yAxisLabel' => $yAxisLabel,
+            'competitors' => $competitors,
+            'ourPosition' => $ourPosition
+        ] = AIHelper::getResultFromCompetitorAnalysisPrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForCompetitorAnalysis($project->getDescription())
+            )
+        );
+
+        $competitorAnalysis = new CompetitorAnalysis();
+        $competitorAnalysis->setProject($project);
+        $competitorAnalysis->setXAxisLabel($xAxisLabel);
+        $competitorAnalysis->setYAxisLabel($yAxisLabel);
+        $competitorAnalysis->setCompetitors($competitors);
+        $competitorAnalysis->setOurPosition($ourPosition);
+        $competitorAnalysis->setUser($author);
+
+        $project->addCompetitorAnalysis($competitorAnalysis);
+
+        $this->entityManager->persist($competitorAnalysis);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $competitorAnalysis;
+    }
+
+    /**
+     * @param Project $project
+     * @return GoldenTriangle
+     * @throws ORMException
+     */
+    public function generateGoldenTriangle(Project $project, ?User $author): GoldenTriangle
+    {
+        [
+            'topLabel' => $topLabel,
+            'leftLabel' => $leftLabel,
+            'rightLabel' => $rightLabel,
+            'brands' => $brands,
+            'ourPosition' => $ourPosition
+        ] = AIHelper::getResultFromGoldenTrianglePrompt(
+            $this->AIService->prompt(
+                AIHelper::promptForGoldenTriangle($project->getDescription())
+            )
+        );
+
+        $goldenTriangle = new GoldenTriangle();
+        $goldenTriangle->setProject($project);
+        $goldenTriangle->setTopLabel($topLabel);
+        $goldenTriangle->setLeftLabel($leftLabel);
+        $goldenTriangle->setRightLabel($rightLabel);
+        $goldenTriangle->setBrands($brands);
+        $goldenTriangle->setOurPosition($ourPosition);
+        $goldenTriangle->setUser($author);
+
+        $project->addGoldenTriangle($goldenTriangle);
+
+        $this->entityManager->persist($goldenTriangle);
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
+
+        return $goldenTriangle;
+    }
+
+    /**
+     * @param Project $project
      * @param array $documents
      * @return array<BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP|SWOT>
      * @throws ORMException
      */
-    public function generateDocuments(Project $project, array $documents, User $author): array
+    public function generateDocuments(Project $project, array $documents, ?User $author): array
     {
         $toReturn = [];
         foreach ($documents as $document) {
             switch ($document) {
                 case ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS] = $this->generateBusinessModelCanvas($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS] = $this->generateBusinessModelCanvas($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN] = $this->generateBuyerPersona($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN] = $this->generateBuyerPersona($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS:
-                    //                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS] = $this->generateCompetitorAnalysis($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS] = $this->generateCompetitorAnalysis($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE:
-                    //                    TODO: $toReturn[ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE] = $this->generateGoldenTriangle($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE] = $this->generateGoldenTriangle($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P] = $this->generateMarketingMix4($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P] = $this->generateMarketingMix4($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P] = $this->generateMarketingMix5($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P] = $this->generateMarketingMix5($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_PESTEL:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_PESTEL] = $this->generatePESTEL($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_PESTEL] = $this->generatePESTEL($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_SMART:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_SMART] = $this->generateSMART($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_STP:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_STP] = $this->generateSTP($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_STP] = $this->generateSTP($project, $author);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_SWOT:
-                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_SWOT] = $this->generateSWOT($project);
+                    $toReturn[ProjectHelper::PROJECT_DOCUMENT_SWOT] = $this->generateSWOT($project, $author);
                     break;
             }
             sleep(5);

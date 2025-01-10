@@ -75,7 +75,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             processor: ProjectDocumentPostDataPersister::class
         ),
         new Post(

@@ -48,22 +48,37 @@ use Symfony\Component\Validator\Constraints as Assert;
                                         'example' => '/projects/{id}'
                                     ],
                                     'personalInfo' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'professionalInfo' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'goalsChallenges' => [
                                         'type' => 'string'
                                     ],
                                     'communicationChannels' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'valuesFears' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'negativeInfo' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                 ],
                             ],
@@ -74,7 +89,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             processor: ProjectDocumentPostDataPersister::class
         ),
         new Post(
@@ -207,24 +222,29 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     private ?Uuid $id = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
         Assert\NotBlank,
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?string $personalInfo = null;
+    private ?array $personalInfo = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?string $professionalInfo = null;
+    private ?array $professionalInfo = null;
 
     /**
      * @var string|null
@@ -237,34 +257,49 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     private ?string $goalsChallenges = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?string $communicationChannels = null;
+    private ?array $communicationChannels = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?string $valuesFears = null;
+    private ?array $valuesFears = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?string $negativeInfo = null;
+    private ?array $negativeInfo = null;
 
     /**
      * @var Project|null
@@ -294,18 +329,18 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getPersonalInfo(): ?string
+    public function getPersonalInfo(): ?array
     {
         return $this->personalInfo;
     }
 
     /**
-     * @param string $personalInfo
+     * @param array $personalInfo
      * @return $this
      */
-    public function setPersonalInfo(string $personalInfo): static
+    public function setPersonalInfo(array $personalInfo): static
     {
         $this->personalInfo = $personalInfo;
 
@@ -313,18 +348,18 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getProfessionalInfo(): ?string
+    public function getProfessionalInfo(): ?array
     {
         return $this->professionalInfo;
     }
 
     /**
-     * @param string $professionalInfo
+     * @param array $professionalInfo
      * @return $this
      */
-    public function setProfessionalInfo(string $professionalInfo): static
+    public function setProfessionalInfo(array $professionalInfo): static
     {
         $this->professionalInfo = $professionalInfo;
 
@@ -351,18 +386,18 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getCommunicationChannels(): ?string
+    public function getCommunicationChannels(): ?array
     {
         return $this->communicationChannels;
     }
 
     /**
-     * @param string $communicationChannels
+     * @param array $communicationChannels
      * @return $this
      */
-    public function setCommunicationChannels(string $communicationChannels): static
+    public function setCommunicationChannels(array $communicationChannels): static
     {
         $this->communicationChannels = $communicationChannels;
 
@@ -370,18 +405,18 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getValuesFears(): ?string
+    public function getValuesFears(): ?array
     {
         return $this->valuesFears;
     }
 
     /**
-     * @param string $valuesFears
+     * @param array $valuesFears
      * @return $this
      */
-    public function setValuesFears(string $valuesFears): static
+    public function setValuesFears(array $valuesFears): static
     {
         $this->valuesFears = $valuesFears;
 
@@ -389,18 +424,18 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getNegativeInfo(): ?string
+    public function getNegativeInfo(): ?array
     {
         return $this->negativeInfo;
     }
 
     /**
-     * @param string $negativeInfo
+     * @param array $negativeInfo
      * @return $this
      */
-    public function setNegativeInfo(string $negativeInfo): static
+    public function setNegativeInfo(array $negativeInfo): static
     {
         $this->negativeInfo = $negativeInfo;
 

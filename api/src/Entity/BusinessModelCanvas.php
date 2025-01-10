@@ -48,31 +48,58 @@ use Symfony\Component\Validator\Constraints as Assert;
                                         'example' => '/projects/{id}'
                                     ],
                                     'keyPartners' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'keyActivities' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'keyResources' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'valuePropositions' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'customerRelationships' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'channels' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'customerSegments' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'costStructure' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'revenueStreams' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                 ],
                             ],
@@ -83,7 +110,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             processor: ProjectDocumentPostDataPersister::class
         ),
         new Post(
@@ -216,94 +243,139 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     private ?Uuid $id = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $keyPartners = null;
+    private ?array $keyPartners = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $keyActivities = null;
+    private ?array $keyActivities = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $keyResources = null;
+    private ?array $keyResources = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $valuePropositions = null;
+    private ?array $valuePropositions = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $customerRelationships = null;
+    private ?array $customerRelationships = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $channels = null;
+    private ?array $channels = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $customerSegments = null;
+    private ?array $customerSegments = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $costStructure = null;
+    private ?array $costStructure = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?string $revenueStreams = null;
+    private ?array $revenueStreams = null;
 
     /**
      * @var Project|null
@@ -333,18 +405,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getKeyPartners(): ?string
+    public function getKeyPartners(): ?array
     {
         return $this->keyPartners;
     }
 
     /**
-     * @param string $keyPartners
+     * @param array $keyPartners
      * @return $this
      */
-    public function setKeyPartners(string $keyPartners): static
+    public function setKeyPartners(array $keyPartners): static
     {
         $this->keyPartners = $keyPartners;
 
@@ -352,18 +424,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getKeyActivities(): ?string
+    public function getKeyActivities(): ?array
     {
         return $this->keyActivities;
     }
 
     /**
-     * @param string $keyActivities
+     * @param array $keyActivities
      * @return $this
      */
-    public function setKeyActivities(string $keyActivities): static
+    public function setKeyActivities(array $keyActivities): static
     {
         $this->keyActivities = $keyActivities;
 
@@ -371,18 +443,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getKeyResources(): ?string
+    public function getKeyResources(): ?array
     {
         return $this->keyResources;
     }
 
     /**
-     * @param string $keyResources
+     * @param array $keyResources
      * @return $this
      */
-    public function setKeyResources(string $keyResources): static
+    public function setKeyResources(array $keyResources): static
     {
         $this->keyResources = $keyResources;
 
@@ -390,18 +462,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getValuePropositions(): ?string
+    public function getValuePropositions(): ?array
     {
         return $this->valuePropositions;
     }
 
     /**
-     * @param string $valuePropositions
+     * @param array $valuePropositions
      * @return $this
      */
-    public function setValuePropositions(string $valuePropositions): static
+    public function setValuePropositions(array $valuePropositions): static
     {
         $this->valuePropositions = $valuePropositions;
 
@@ -409,18 +481,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getCustomerRelationships(): ?string
+    public function getCustomerRelationships(): ?array
     {
         return $this->customerRelationships;
     }
 
     /**
-     * @param string $customerRelationships
+     * @param array $customerRelationships
      * @return $this
      */
-    public function setCustomerRelationships(string $customerRelationships): static
+    public function setCustomerRelationships(array $customerRelationships): static
     {
         $this->customerRelationships = $customerRelationships;
 
@@ -428,18 +500,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getChannels(): ?string
+    public function getChannels(): ?array
     {
         return $this->channels;
     }
 
     /**
-     * @param string $channels
+     * @param array $channels
      * @return $this
      */
-    public function setChannels(string $channels): static
+    public function setChannels(array $channels): static
     {
         $this->channels = $channels;
 
@@ -447,18 +519,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getCustomerSegments(): ?string
+    public function getCustomerSegments(): ?array
     {
         return $this->customerSegments;
     }
 
     /**
-     * @param string $customerSegments
+     * @param array $customerSegments
      * @return $this
      */
-    public function setCustomerSegments(string $customerSegments): static
+    public function setCustomerSegments(array $customerSegments): static
     {
         $this->customerSegments = $customerSegments;
 
@@ -466,18 +538,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getCostStructure(): ?string
+    public function getCostStructure(): ?array
     {
         return $this->costStructure;
     }
 
     /**
-     * @param string $costStructure
+     * @param array $costStructure
      * @return $this
      */
-    public function setCostStructure(string $costStructure): static
+    public function setCostStructure(array $costStructure): static
     {
         $this->costStructure = $costStructure;
 
@@ -485,18 +557,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getRevenueStreams(): ?string
+    public function getRevenueStreams(): ?array
     {
         return $this->revenueStreams;
     }
 
     /**
-     * @param string $revenueStreams
+     * @param array $revenueStreams
      * @return $this
      */
-    public function setRevenueStreams(string $revenueStreams): static
+    public function setRevenueStreams(array $revenueStreams): static
     {
         $this->revenueStreams = $revenueStreams;
 

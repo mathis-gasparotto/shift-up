@@ -91,4 +91,19 @@ final class GlobalHelper
         $resultArray = array_chunk($resultArray, 2);
         return array_combine(array_column($resultArray, 0), array_column($resultArray, 1));
     }
+
+    /**
+     * @param string $str
+     * @return array
+     */
+    public static function getArrayFromJSONPromptResult(string $str): array
+    {
+        if (preg_match('/\{[\s\S]*\}/m', $str, $jsonMatch)) {
+            $jsonData = json_decode($jsonMatch[0], true);
+
+            if (json_last_error() === JSON_ERROR_NONE && $jsonData) {
+                return $jsonData;
+            }
+        }
+    }
 }

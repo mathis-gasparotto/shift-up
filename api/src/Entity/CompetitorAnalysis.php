@@ -9,6 +9,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Project\ProjectDownloadDocumentController;
+use App\Controller\Project\ProjectDownloadSpecificDocumentController;
+use App\Controller\Project\ProjectGenerateDocumentController;
 use App\Helper\GlobalHelper;
 use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
@@ -18,6 +21,7 @@ use App\Repository\CompetitorAnalysisRepository;
 use App\StateProcessor\Project\ProjectDocumentPostDataPersister;
 use App\StateProviders\Project\LastProjectDocumentByProjectGetDataProvider;
 use App\StateProviders\Project\ProjectDocumentByProjectCollectionDataProvider;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -43,6 +47,44 @@ use Symfony\Component\Validator\Constraints as Assert;
                                         'type' => 'string',
                                         'example' => '/projects/{id}'
                                     ],
+                                    'xAxisLabel' => [
+                                        'type' => 'string',
+                                    ],
+                                    'yAxisLabel' => [
+                                        'type' => 'string',
+                                    ],
+                                    'competitors' => [
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'object',
+                                            'properties' => [
+                                                'name' => [
+                                                    'type' => 'string'
+                                                ],
+                                                'xPosition' => [
+                                                    'type' => 'number',
+                                                    'format' => 'float'
+                                                ],
+                                                'yPosition' => [
+                                                    'type' => 'number',
+                                                    'format' => 'float'
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    'ourPosition' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'xPosition' => [
+                                                'type' => 'number',
+                                                'format' => 'float'
+                                            ],
+                                            'yPosition' => [
+                                                'type' => 'number',
+                                                'format' => 'float'
+                                            ],
+                                        ],
+                                    ]
                                 ],
                             ],
                         ],
@@ -52,8 +94,44 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/projects/{id}/competitor_analyses/generate',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectGenerateDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
+        ),
+        new Post(
+            uriTemplate: '/projects/{id}/competitor_analyses/last/download',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectDownloadDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
+        ),
+        new Post(
+            uriTemplate: '/competitor_analyses/{id}/download',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectDownloadSpecificDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
         ),
         new Get(
             uriTemplate: '/competitor_analyses/{id}',
@@ -168,6 +246,63 @@ class CompetitorAnalysis implements TracingAwareInterface, OwnerAwareInterface
     private ?MediaObject $file = null;
 
     /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[Groups(['competitor_analysis:item:read'])]
+    private ?string $xAxisLabel = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    #[Groups(['competitor_analysis:item:read'])]
+    private ?string $yAxisLabel = null;
+
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    #[
+        Assert\Collection([
+            'name' => new Assert\NotBlank(),
+            'xPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: -10, max: 10)
+            ],
+            'yPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: -10, max: 10)
+            ],
+        ]),
+        Groups(['competitor_analysis:item:read', 'competitor_analysis:write'])
+    ]
+    private array $competitors = [];
+
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    #[
+        Assert\Collection([
+            'xPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: -10, max: 10)
+            ],
+            'yPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: -10, max: 10)
+            ],
+        ]),
+        Groups(['competitor_analysis:item:read', 'competitor_analysis:write'])
+    ]
+    private array $ourPosition = [];
+
+    /**
      * @return Uuid|null
      */
     public function getId(): ?Uuid
@@ -209,6 +344,82 @@ class CompetitorAnalysis implements TracingAwareInterface, OwnerAwareInterface
     public function setFile(?MediaObject $file): static
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getXAxisLabel(): ?string
+    {
+        return $this->xAxisLabel;
+    }
+
+    /**
+     * @param string $xAxisLabel
+     * @return $this
+     */
+    public function setXAxisLabel(string $xAxisLabel): static
+    {
+        $this->xAxisLabel = $xAxisLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getYAxisLabel(): ?string
+    {
+        return $this->yAxisLabel;
+    }
+
+    /**
+     * @param string $yAxisLabel
+     * @return $this
+     */
+    public function setYAxisLabel(string $yAxisLabel): static
+    {
+        $this->yAxisLabel = $yAxisLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCompetitors(): array
+    {
+        return $this->competitors;
+    }
+
+    /**
+     * @param array $competitors
+     * @return $this
+     */
+    public function setCompetitors(array $competitors): static
+    {
+        $this->competitors = $competitors;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOurPosition(): array
+    {
+        return $this->ourPosition;
+    }
+
+    /**
+     * @param array $ourPosition
+     * @return CompetitorAnalysis
+     */
+    public function setOurPosition(array $ourPosition): static
+    {
+        $this->ourPosition = $ourPosition;
 
         return $this;
     }

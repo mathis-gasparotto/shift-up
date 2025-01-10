@@ -41,7 +41,7 @@ class ProjectGenerateDocumentController extends AbstractController
         $class = GlobalHelper::getClassShortName($request->attributes->get('_api_resource_class'));
         $generateMethod = 'generate' . $class;
 
-        $document = $this->projectDocumentService->$generateMethod($project);
+        $document = $this->projectDocumentService->$generateMethod($project, $this->security->getUser());
 
         return $this->json($document, 201);
     }

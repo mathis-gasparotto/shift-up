@@ -49,16 +49,28 @@ use Symfony\Component\Validator\Constraints as Assert;
                                         'example' => '/projects/{id}'
                                     ],
                                     'strengths' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'weaknesses' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'opportunities' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ],
                                     'threats' => [
-                                        'type' => 'string'
+                                        'type' => 'array',
+                                        'items' => [
+                                            'type' => 'string'
+                                        ]
                                     ]
                                 ],
                             ],
@@ -69,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             processor: ProjectDocumentPostDataPersister::class
         ),
         new Post(
@@ -202,44 +214,64 @@ class SWOT implements TracingAwareInterface, OwnerAwareInterface
     private ?Uuid $id = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['swot:read', 'swot:write'])
     ]
-    private ?string $strengths = null;
+    private ?array $strengths = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['swot:read', 'swot:write'])
     ]
-    private ?string $weaknesses = null;
+    private ?array $weaknesses = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['swot:read', 'swot:write'])
     ]
-    private ?string $opportunities = null;
+    private ?array $opportunities = null;
 
     /**
-     * @var string|null
+     * @var array|null
      */
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::JSON)]
     #[
-        Assert\NotBlank,
+        Assert\Type(type: 'array'),
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['swot:read', 'swot:write'])
     ]
-    private ?string $threats = null;
+    private ?array $threats = null;
 
     /**
      * @var Project|null
@@ -247,7 +279,11 @@ class SWOT implements TracingAwareInterface, OwnerAwareInterface
     #[ORM\ManyToOne(inversedBy: 'SWOTs')]
     #[ORM\JoinColumn(nullable: false)]
     #[
-        Assert\NotBlank,
+        Assert\All(
+            constraints: [
+                new Assert\Type(type: 'string')
+            ]
+        ),
         Groups(['swot:read', 'swot:write'])
     ]
     private ?Project $project = null;
@@ -269,18 +305,18 @@ class SWOT implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getStrengths(): ?string
+    public function getStrengths(): ?array
     {
         return $this->strengths;
     }
 
     /**
-     * @param string $strengths
+     * @param array $strengths
      * @return $this
      */
-    public function setStrengths(string $strengths): static
+    public function setStrengths(array $strengths): static
     {
         $this->strengths = $strengths;
 
@@ -288,18 +324,18 @@ class SWOT implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getWeaknesses(): ?string
+    public function getWeaknesses(): ?array
     {
         return $this->weaknesses;
     }
 
     /**
-     * @param string $weaknesses
+     * @param array $weaknesses
      * @return $this
      */
-    public function setWeaknesses(string $weaknesses): static
+    public function setWeaknesses(array $weaknesses): static
     {
         $this->weaknesses = $weaknesses;
 
@@ -307,18 +343,18 @@ class SWOT implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getOpportunities(): ?string
+    public function getOpportunities(): ?array
     {
         return $this->opportunities;
     }
 
     /**
-     * @param string $opportunities
+     * @param array $opportunities
      * @return $this
      */
-    public function setOpportunities(string $opportunities): static
+    public function setOpportunities(array $opportunities): static
     {
         $this->opportunities = $opportunities;
 
@@ -326,18 +362,18 @@ class SWOT implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getThreats(): ?string
+    public function getThreats(): ?array
     {
         return $this->threats;
     }
 
     /**
-     * @param string $threats
+     * @param array $threats
      * @return $this
      */
-    public function setThreats(string $threats): static
+    public function setThreats(array $threats): static
     {
         $this->threats = $threats;
 

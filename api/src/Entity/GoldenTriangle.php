@@ -9,6 +9,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\Project\ProjectDownloadDocumentController;
+use App\Controller\Project\ProjectDownloadSpecificDocumentController;
+use App\Controller\Project\ProjectGenerateDocumentController;
 use App\Helper\GlobalHelper;
 use App\Model\OwnerAwareInterface;
 use App\Model\TracingAwareInterface;
@@ -76,6 +79,23 @@ use Symfony\Component\Validator\Constraints as Assert;
                                             ],
                                         ],
                                     ],
+                                    'ourPosition' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'topPosition' => [
+                                                'type' => 'number',
+                                                'format' => 'float'
+                                            ],
+                                            'leftPosition' => [
+                                                'type' => 'number',
+                                                'format' => 'float'
+                                            ],
+                                            'rightPosition' => [
+                                                'type' => 'number',
+                                                'format' => 'float'
+                                            ],
+                                        ],
+                                    ]
                                 ],
                             ],
                         ],
@@ -85,8 +105,44 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: [
                 'openapi_definition_name' => 'PostCollection'
             ],
-            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '")',
             processor: ProjectDocumentPostDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/projects/{id}/golden_triangles/generate',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectGenerateDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
+        ),
+        new Post(
+            uriTemplate: '/projects/{id}/golden_triangles/last/download',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectDownloadDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
+        ),
+        new Post(
+            uriTemplate: '/golden_triangles/{id}/download',
+            requirements: [
+                'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+            ],
+            controller: ProjectDownloadSpecificDocumentController::class,
+            normalizationContext: [
+                'openapi_definition_name' => 'PostCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            write: false
         ),
         new Get(
             uriTemplate: '/golden_triangles/{id}',
@@ -188,7 +244,7 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
     #[
         Assert\NotBlank,
         Assert\Length(max: 255),
-        Groups(['golden_triangle:read', 'golden_triangle:write'])
+        Groups(['golden_triangle:item:read', 'golden_triangle:write'])
     ]
     private ?string $topLabel = null;
 
@@ -199,7 +255,7 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
     #[
         Assert\NotBlank,
         Assert\Length(max: 255),
-        Groups(['golden_triangle:read', 'golden_triangle:write'])
+        Groups(['golden_triangle:item:read', 'golden_triangle:write'])
     ]
     private ?string $leftLabel = null;
 
@@ -210,7 +266,7 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
     #[
         Assert\NotBlank,
         Assert\Length(max: 255),
-        Groups(['golden_triangle:read', 'golden_triangle:write'])
+        Groups(['golden_triangle:item:read', 'golden_triangle:write'])
     ]
     private ?string $rightLabel = null;
 
@@ -239,7 +295,7 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
                 ]
             ])
         ]),
-        Groups(['golden_triangle:read', 'golden_triangle:write'])
+        Groups(['golden_triangle:item:read', 'golden_triangle:write'])
     ]
     private array $brands = [];
 
@@ -261,6 +317,33 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Groups(['golden_triangle:item:read'])]
     private ?MediaObject $file = null;
+
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    #[
+        Assert\Type(type: 'array'),
+        Assert\Collection([
+            'topPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: 0, max: 100)
+            ],
+            'leftPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: 0, max: 100)
+            ],
+            'rightPosition' => [
+                new Assert\NotBlank(),
+                new Assert\Type(type: 'float'),
+                new Assert\Range(min: 0, max: 100)
+            ]
+        ]),
+        Groups(['golden_triangle:item:read', 'golden_triangle:write'])
+    ]
+    private array $ourPosition = [];
 
     /**
      * @return Uuid|null
@@ -380,6 +463,25 @@ class GoldenTriangle implements TracingAwareInterface, OwnerAwareInterface
     public function setFile(?MediaObject $file): static
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOurPosition(): array
+    {
+        return $this->ourPosition;
+    }
+
+    /**
+     * @param array $ourPosition
+     * @return GoldenTriangle
+     */
+    public function setOurPosition(array $ourPosition): static
+    {
+        $this->ourPosition = $ourPosition;
 
         return $this;
     }
