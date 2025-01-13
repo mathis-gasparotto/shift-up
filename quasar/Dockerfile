@@ -1,7 +1,7 @@
 FROM node:22.9.0-alpine3.19 AS base
 LABEL maintainer="Mathis Gasparotto <mathis.gasparotto@hotmail.com>"
 
-FROM base as dependencies
+FROM base AS dependencies
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY . .
 ##
 # DEV LAYER
 ##
-FROM dependencies as development
+FROM dependencies AS development
 
 ENV NODE_ENV=development
 
@@ -25,7 +25,7 @@ CMD ["yarn" ,"dev"]
 ##
 # BUILDER LAYER
 ##
-FROM dependencies as builder
+FROM dependencies AS builder
 
 COPY . .
 
@@ -34,7 +34,7 @@ RUN yarn build --standalone
 # ##
 # # PRODUCTION LAYER
 # ##
-# FROM base as production
+# FROM base AS production
 
 # ENV NODE_ENV=production
 
