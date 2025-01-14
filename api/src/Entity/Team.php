@@ -269,6 +269,13 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     private ?string $stripeSubscriptionScheduleId = null;
 
     /**
+     * @var SubscriptionPrice|null
+     */
+    #[ORM\ManyToOne]
+    #[Groups(['team:item:read'])]
+    private ?SubscriptionPrice $scheduledSubscriptionPrice = null;
+
+    /**
      *
      */
     public function __construct()
@@ -603,5 +610,24 @@ class Team implements ManagerAwareInterface, TracingAwareInterface, OwnerAwareIn
     public function isPremium(): bool
     {
         return $this->stripeSubscriptionId !== null && $this->subscriptionEndAt > new \DateTime() && $this->getSubscriptionPrice() !== null;
+    }
+
+    /**
+     * @return SubscriptionPrice|null
+     */
+    public function getScheduledSubscriptionPrice(): ?SubscriptionPrice
+    {
+        return $this->scheduledSubscriptionPrice;
+    }
+
+    /**
+     * @param mixed $scheduledSubscriptionPrice
+     * @return Team
+     */
+    public function setScheduledSubscriptionPrice(?SubscriptionPrice $scheduledSubscriptionPrice): static
+    {
+        $this->scheduledSubscriptionPrice = $scheduledSubscriptionPrice;
+
+        return $this;
     }
 }

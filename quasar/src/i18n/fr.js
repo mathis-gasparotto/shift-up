@@ -22,7 +22,8 @@ export default {
     incorrectReccurence: 'Récurrence invalide',
     alreadyChosenSubscription: 'Vous avez déjà choisi cet abonnement',
     aleardyPlansChangeSchedule: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif',
-    documentNotFound: 'Document introuvable'
+    documentNotFound: 'Document introuvable',
+    subscriptionChangeAlreadyScheduled: "Ce changement d'abonnement est déjà programmé"
   },
   breadcrumb: {
     home: 'Accueil',
@@ -259,7 +260,8 @@ export default {
       choice: 'Choisir',
       monthlyPrice: 'Prix : {price} € /mois',
       yearlyPrice: 'Soit {price} € /an',
-      current: 'Actuel'
+      current: 'Actuel',
+      scheduled: 'Programmé pour le {date}'
     },
     choicePlanModal: {
       title: "Modifier l'offre de votre équipe",
@@ -270,7 +272,9 @@ export default {
       yearly: 'Annuel',
       changePlanWarning: "Le changement d'offre sera effectif à la fin de votre période actuelle",
       updateSuccess: 'Formule mise à jour avec succès',
-      changePlanAlreadyScheduledWarning: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif'
+      changePlanAlreadyScheduledWarning: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif',
+      changePlanAlreadyScheduled: 'Vous avez déjà initié un changement de plan.',
+      canModifyChange: "Vous pouvez cependant modifier ce changement avant sa prise d'effet."
     }
   },
   profile: {

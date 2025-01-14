@@ -13,6 +13,10 @@ export function dateTimeToDisplay(dateTime) {
   if (typeof dateTime === 'string') dateTime = new Date(dateTime)
   return new Date(dateTime).toLocaleString(lang)
 }
+export function dateToDisplay(date) {
+  if (typeof date === 'string') date = new Date(date)
+  return new Date(date).toLocaleDateString(lang)
+}
 export function durationFromDateTime(dateTime) {
   if (typeof dateTime === 'string') dateTime = new Date(dateTime)
   return moment(dateTime).fromNow()

@@ -8,7 +8,6 @@ use App\DTO\TeamChoiceSubscriptionDto;
 use App\Entity\Team;
 use App\Helper\TeamHelper;
 use App\Service\StripeService;
-use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -43,10 +42,23 @@ class TeamChoiceSubscriptionController extends AbstractController
     public function __invoke(Team $team, #[MapRequestPayload] TeamChoiceSubscriptionDto $data): JsonResponse
     {
         TeamHelper::checkIfUserIsTeamManager($this->security->getUser(), $team);
-        TeamHelper::checkIfPlanChangeIsNotAlreadyScheduled($team);
+        // TeamHelper::checkIfPlanChangeIsNotAlreadyScheduled($team);
 
-        if ($data->getSubscriptionPrice()->getId() === $team->getSubscriptionPrice()?->getId()) {
+        if ($data->getSubscriptionPrice()->getId() === $team->getSubscriptionPrice()?->getId() && !$team->getHasStripeSubscriptionSchedule()) {
             throw new UnprocessableEntityHttpException('You already chosen this subscription');
+        }
+
+        if ($team->getStripeSubscriptionId() && $team->getHasStripeSubscriptionSchedule()) {
+            if ($team->getScheduledSubscriptionPrice()?->getId() === $data->getSubscriptionPrice()->getId()) {
+                throw new UnprocessableEntityHttpException('This subscription change is already scheduled');
+            }
+
+            $this->stripeService->cancelScheduledSubscription($team);
+
+            if ($team->getSubscriptionPrice()?->getId() === $data->getSubscriptionPrice()->getId()) {
+                return $this->json($this->stripeService->reactivateCanceledSubscription($team));
+            }
+            return $this->json($this->stripeService->changeSubscription($this->security->getUser(), $team, $data->getSubscriptionPrice()));
         }
 
         if ($team->getStripeSubscriptionId()) {

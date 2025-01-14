@@ -22,7 +22,8 @@ export default {
     incorrectReccurence: 'Invalid recurrence',
     alreadyChosenSubscription: 'You already chosen this subscription',
     aleardyPlansChangeSchedule: 'You already initiated a plan change, please wait for the subscription to be effective',
-    documentNotFound: 'Document not found'
+    documentNotFound: 'Document not found',
+    subscriptionChangeAlreadyScheduled: 'This subscription change is already scheduled'
   },
   breadcrumb: {
     home: 'Home',
@@ -259,7 +260,8 @@ export default {
       choice: 'Choose',
       monthlyPrice: 'Price : {price}€ /month',
       yearlyPrice: 'Or {price}€ /year',
-      current: 'Current'
+      current: 'Current',
+      scheduled: 'Scheduled for {date}'
     },
     choicePlanModal: {
       title: 'Modify your team subscription plan',
@@ -270,7 +272,9 @@ export default {
       yearly: 'Yearly',
       changePlanWarning: 'Changing the plan will take effect at the end of the current period',
       updateSuccess: 'Plan updated successfully',
-      changePlanAlreadyScheduledWarning: 'You already initiated a plan change, please wait for the subscription to be effective'
+      changePlanAlreadyScheduledWarning: 'You already initiated a plan change, please wait for the subscription to be effective',
+      changePlanAlreadyScheduled: 'You already initiated a plan change.',
+      canModifyChange: 'You can however modify this change before it takes effect.'
     }
   },
   profile: {

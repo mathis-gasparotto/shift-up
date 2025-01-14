@@ -9,6 +9,12 @@
         >
           {{ $t('subscription.card.current') }}
         </span>
+        <span
+          v-if="scheduled"
+          class="text-caption text-accent"
+        >
+          {{ $t('subscription.card.scheduled', { date: dateToDisplay(scheduled) }) }}
+        </span>
       </p>
     </q-card-section>
     <q-card-section>
@@ -32,12 +38,18 @@
 </template>
 <script>
 import SUbtn from 'src/components/SUbtn.vue'
+import { dateToDisplay } from 'src/helpers/formatting'
 
 export default {
   name: 'SubscriptionCard',
   emits: ['choice'],
   components: {
     SUbtn
+  },
+  setup() {
+    return {
+      dateToDisplay
+    }
   },
   props: {
     subscription: {
@@ -58,6 +70,10 @@ export default {
     },
     current: {
       type: Boolean,
+      default: false
+    },
+    scheduled: {
+      type: [Boolean, Date],
       default: false
     }
   }

@@ -45,6 +45,8 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.aleardyPlansChangeSchedule')
     case 'Document not found':
       return $t('error.documentNotFound')
+    case 'This subscription change is already scheduled':
+      return $t('error.subscriptionChangeAlreadyScheduled')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

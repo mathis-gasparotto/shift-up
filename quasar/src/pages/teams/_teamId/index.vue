@@ -4,7 +4,7 @@
       :team="team"
       v-if="!teamLoading"
       ref="teamPlansModal"
-      @submit="reloadData"
+      @submited="reloadTeam"
     />
     <MainBreadcrumps
       :loading="teamLoading"
@@ -141,8 +141,21 @@ export default {
   },
   methods: {
     reloadData() {
-      this.teamLoading = true
       this.projectsLoading = true
+      this.reloadTeam()
+      this.$resources.teams
+        .child(this.$route.params.teamId, 'projects')
+        .then((res) => {
+          this.projects = res.data
+          this.projectsLoading = false
+        })
+        .catch((err) => {
+          displayError(err)
+          this.projectsLoading = false
+        })
+    },
+    reloadTeam() {
+      this.teamLoading = true
       this.$resources.teams
         .get(this.$route.params.teamId)
         .then((res) => {
@@ -156,16 +169,6 @@ export default {
             displayError(err)
           }
           this.$router.push({ name: 'home' })
-        })
-      this.$resources.teams
-        .child(this.$route.params.teamId, 'projects')
-        .then((res) => {
-          this.projects = res.data
-          this.projectsLoading = false
-        })
-        .catch((err) => {
-          displayError(err)
-          this.projectsLoading = false
         })
     },
     updateTeamName(name) {

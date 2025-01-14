@@ -276,6 +276,10 @@ class StripeService
         $team = $this->checkSubscriptionForSubscriptionScheduleCreated($event);
 
         $team->setStripeSubscriptionScheduleId($event->data->object->id);
+
+        $subscriptionPrice = $this->subscriptionPriceRepository->findOneBy(['stripePriceId' => $event->data->object->phases[0]->items[0]->price]);
+        $team->setScheduledSubscriptionPrice($subscriptionPrice);
+
         $team->setStripeCustomerId($event->data->object->customer);
         $this->entityManager->persist($team);
         $this->entityManager->flush();
@@ -312,6 +316,7 @@ class StripeService
         $subscriptionService->subscriptionUpdate($subscriptionPrice, $team, $endDate);
 
         $team->setStripeSubscriptionScheduleId(null);
+        $team->setScheduledSubscriptionPrice(null);
         $team->setStripeCustomerId($event->data->object->customer);
         $this->entityManager->persist($team);
         $this->entityManager->flush();
@@ -348,6 +353,7 @@ class StripeService
         $team = $this->checkSubscriptionForScheduleCanceled($event);
 
         $team->setStripeSubscriptionScheduleId(null);
+        $team->setScheduledSubscriptionPrice(null);
         $team->setStripeCustomerId($event->data->object->customer);
         $this->entityManager->persist($team);
         $this->entityManager->flush();
@@ -536,6 +542,7 @@ class StripeService
     }
 
     /**
+     * @param User|UserInterface $user
      * @param Team $team
      * @param SubscriptionPrice $newSubscription
      * @return StripeSubscription
@@ -587,5 +594,27 @@ class StripeService
     {
         $date = (new \DateTime())->setTimestamp($event->data->object->phases[0]->end_date);
         return $date->setTime(0, 0);
+    }
+
+    /**
+     * @param Team $team
+     * @return StripeSubscription
+     * @throws ApiErrorException
+     */
+    public function cancelScheduledSubscription(Team $team): SubscriptionSchedule
+    {
+        return $this->stripeClient->subscriptionSchedules->cancel($team->getStripeSubscriptionScheduleId());
+    }
+
+    /**
+     * @param Team $team
+     * @return StripeSubscription
+     * @throws ApiErrorException
+     */
+    public function reactivateCanceledSubscription(Team $team): StripeSubscription
+    {
+        return $this->stripeClient->subscriptions->update($team->getStripeSubscriptionId(), [
+            'cancel_at_period_end' => false
+        ]);
     }
 }

@@ -21,7 +21,6 @@
   "dependencies": {
     "@ionic/pwa-elements": "^3.2.2",
     "@quasar/extras": "^1.16.4",
-    "@vue-stripe/vue-stripe": "^4.5.0",
     "axios": "^1.2.1",
     "dotenv-flow": "^4.1.0",
     "mitt": "^3.0.1",
