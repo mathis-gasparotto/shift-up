@@ -12,7 +12,7 @@
       </h1>
       <q-btn
         v-if="team.isPremium"
-        icon="download"
+        icon="sym_o_download"
         :label="$t('download')"
         stack
         no-caps
