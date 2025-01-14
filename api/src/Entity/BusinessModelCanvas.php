@@ -72,10 +72,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                                         ]
                                     ],
                                     'customerRelationships' => [
-                                        'type' => 'array',
-                                        'items' => [
-                                            'type' => 'string'
-                                        ]
+                                        'type' => 'string'
                                     ],
                                     'channels' => [
                                         'type' => 'array',
@@ -303,19 +300,14 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     private ?array $valuePropositions = null;
 
     /**
-     * @var array|null
+     * @var string|null
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\Type(type: 'array'),
-        Assert\All(
-            constraints: [
-                new Assert\Type(type: 'string')
-            ]
-        ),
+        Assert\NotBlank,
         Groups(['business_model_canvas:read', 'business_model_canvas:write'])
     ]
-    private ?array $customerRelationships = null;
+    private ?string $customerRelationships = null;
 
     /**
      * @var array|null
@@ -481,18 +473,18 @@ class BusinessModelCanvas implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getCustomerRelationships(): ?array
+    public function getCustomerRelationships(): ?string
     {
         return $this->customerRelationships;
     }
 
     /**
-     * @param array $customerRelationships
+     * @param string $customerRelationships
      * @return $this
      */
-    public function setCustomerRelationships(array $customerRelationships): static
+    public function setCustomerRelationships(string $customerRelationships): static
     {
         $this->customerRelationships = $customerRelationships;
 

@@ -182,6 +182,9 @@ export default {
     errorNotFound: 'Team not found'
   },
   project: {
+    documentGeneration: {
+      loading: 'Generating documents...'
+    },
     create: {
       step1: 'Create your project',
       step2: 'Define your project',
@@ -213,7 +216,7 @@ export default {
     regenerateModal: {
       title: 'Re-generate your project',
       submit: 'Re-generate',
-      success: 'Project updated successfully',
+      success: 'Project re-generated successfully',
       documentsLabel: 'Documents to re-generate',
       generateDocumentsError: 'An error occurred while generating the documents',
       updateProjectError: 'An error occurred while updating the project'

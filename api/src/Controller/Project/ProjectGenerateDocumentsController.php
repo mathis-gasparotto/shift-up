@@ -35,17 +35,17 @@ class ProjectGenerateDocumentsController extends AbstractController
     {
         ProjectHelper::checkIfUserIsInProjectTeam($this->getUser(), $project);
 
-        // $documents = $projectDocumentService->generateDocuments($project, $data->getDocuments());
+        $documents = $projectDocumentService->generateDocuments($project, $data->getDocuments(), $this->getUser());
 
-        // return $this->json($documents);
+        return $this->json($documents);
 
 
         // Dispatch le message asynchrone
-        $messageBus->dispatch(new GenerateDocumentsMessage(
-            $project->getId(),
-            $data->getDocuments(),
-            $this->getUser()->getId()
-        ));
-        return $this->json(['status' => 'Document generation started']);
+        // $messageBus->dispatch(new GenerateDocumentsMessage(
+        //     $project->getId(),
+        //     $data->getDocuments(),
+        //     $this->getUser()->getId()
+        // ));
+        // return $this->json(['status' => 'Document generation started']);
     }
 }

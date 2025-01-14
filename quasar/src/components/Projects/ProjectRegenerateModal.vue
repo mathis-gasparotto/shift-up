@@ -49,6 +49,9 @@
         {{ error }}
       </p>
     </q-form>
+    <p v-if="documentGenerationLoading">
+      {{ $t('project.documentGeneration.loading') }}
+    </p>
     <template #buttons>
       <SUbtn
         :label="$t('project.regenerateModal.submit')"
@@ -93,6 +96,7 @@ export default {
       form: {},
       error: '',
       loading: false,
+      documentGenerationLoading: false,
       documents: []
     }
   },
@@ -105,8 +109,10 @@ export default {
       this.$resources.projects
         .update(this.project.id, this.form)
         .then(() => {
+          this.documentGenerationLoading = true
+          successNotify(this.$t('project.documentGeneration.loading'))
           this.$resources.projects
-            .generateDocuments(this.project.id, { documents: this.documents })
+            .postChild(this.project.id, 'generate_documents', { documents: this.documents }, { timeout: 10 * 60 * 1000 }) // 10 minutes
             .then(() => {
               this.$refs.modal.open = false
               successNotify(this.$t('project.regenerateModal.success'))
@@ -118,6 +124,7 @@ export default {
             })
             .finally(() => {
               this.loading = false
+              this.documentGenerationLoading = false
             })
         })
         .catch((error) => {
@@ -132,5 +139,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -157,11 +157,11 @@ export default ($axios /*, $sentry*/) => (resource) => ({
         throw e
       })
   },
-  generateDocuments(id, payload, config) {
+  postChild(id, subresource, payload, config) {
     config = config || {}
     payload = payload || {}
     return $axios
-      .post(`/${resource}/${id}/generate_documents`, payload, { ...config })
+      .post(`/${resource}/${id}/${subresource}`, payload, { ...config })
       .then((response) => response.data)
       .catch((e) => {
         // $sentry.captureException(e)

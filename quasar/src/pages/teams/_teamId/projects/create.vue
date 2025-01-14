@@ -76,7 +76,8 @@ export default {
         sellingObject: '',
         documents: []
       },
-      formLoading: false
+      formLoading: false,
+      documentGenerationLoading: false
     }
   },
   created() {
@@ -103,8 +104,10 @@ export default {
       this.$resources.projects
         .create(payload)
         .then((res) => {
+          this.documentGenerationLoading = true
+          successNotify(this.$t('project.documentGeneration.loading'))
           this.$resources.projects
-            .generateDocuments(res.id, { documents: this.form.documents })
+            .postChild(res.id, 'generate_documents', { documents: this.form.documents }, { timeout: 10 * 60 * 1000 }) // 10 minutes
             .then(() => {
               successNotify(this.$t('project.create.success'))
             })
@@ -112,6 +115,7 @@ export default {
               displayError(err, this.$t('project.create.generateDocumentsError'))
             })
             .finally(() => {
+              this.documentGenerationLoading = false
               this.formLoading = false
               this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
               this.$emitter.emit('reloadNavbar')

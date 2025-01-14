@@ -182,6 +182,9 @@ export default {
     errorNotFound: "L'équipe est introuvable"
   },
   project: {
+    documentGeneration: {
+      loading: 'Génération des documents en cours...'
+    },
     create: {
       step1: 'Créez votre projet',
       step2: 'Définissez votre projet',
@@ -189,7 +192,7 @@ export default {
       nextStep: "Passer à l'étape suivante",
       submit: 'Générer',
       back: 'Retour',
-      success: 'Projet créé avec succès',
+      success: 'Projet re-généré avec succès',
       generateDocumentsError: 'Une erreur est survenue lors de la génération des documents',
       createProjectError: 'Une erreur est survenue lors de la création du projet'
     },
