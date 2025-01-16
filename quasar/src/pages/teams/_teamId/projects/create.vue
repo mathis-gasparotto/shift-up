@@ -44,6 +44,7 @@
       @submit="onSubmit"
       v-model:form="form"
       :loading="formLoading"
+      :is-premium="team.isPremium"
     />
   </q-page>
 </template>

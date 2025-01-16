@@ -18,6 +18,10 @@ export default {
     documentsSelected: {
       type: Array,
       default: () => []
+    },
+    isPremium: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -39,9 +43,7 @@ export default {
   watch: {
     options: {
       handler() {
-        this.documents = this.options
-          .filter((option) => (this.isPro ? option.selected : !option.disabled && option.selected))
-          .map((option) => option.value)
+        this.documents = this.options.filter((option) => (this.isPremium ? option.selected : !option.disabled && option.selected)).map((option) => option.value)
       },
       deep: true
     },
@@ -50,7 +52,7 @@ export default {
     }
   },
   created() {
-    if (this.isPro) {
+    if (this.isPremium) {
       this.options = this.options.map((option) => ({
         ...option,
         selected: false,
@@ -63,9 +65,6 @@ export default {
     }))
   },
   computed: {
-    isPro() {
-      return false
-    },
     documents: {
       get() {
         return this.documentsSelected

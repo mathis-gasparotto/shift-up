@@ -70,6 +70,14 @@ final class ProjectHelper
         self::PROJECT_DOCUMENT_SWOT,
     ];
 
+    /** @var string[]  */
+    public const PROJECT_DOCUMENTS_PREMIUM = [
+        self::PROJECT_DOCUMENT_MARKETING_MIX_4P,
+        self::PROJECT_DOCUMENT_MARKETING_MIX_5P,
+        self::PROJECT_DOCUMENT_PESTEL,
+        self::PROJECT_DOCUMENT_STP,
+    ];
+
     /**
      * @param User|UserInterface $user
      * @param Project $project
@@ -106,6 +114,21 @@ final class ProjectHelper
 
         if (!$isAdmin && $project->getTeam()->getManager() !== $user && !$user->isInTeam($project->getTeam())) {
             throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * @param Team $team
+     * @param string|string[] $document
+     * @return void
+     * @throws AccessDeniedException
+     */
+    public static function checkIfTeamIsAllowedToGenerateDocuments(Team $team, string|array $documentOrDocuments): void
+    {
+        $documents = is_array($documentOrDocuments) ? $documentOrDocuments : [$documentOrDocuments];
+
+        if (!$team->isPremium() && !array_intersect($documents, self::PROJECT_DOCUMENTS_PREMIUM)) {
+            throw new AccessDeniedException('Your team avantages are not enough to do this action');
         }
     }
 }

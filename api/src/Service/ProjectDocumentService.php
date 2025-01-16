@@ -25,6 +25,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Exception;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  *
@@ -46,9 +47,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return SWOT
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateSWOT(Project $project, ?User $author): SWOT
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_SWOT);
+
         ["strengths" => $strengths, "weaknesses" => $weaknesses, "opportunities" => $opportunities, "threats" => $threats] = AIHelper::getResultFromSWOTPrompt(
             $this->AIService->prompt(
                 AIHelper::promptForSWOT($project->getDescription())
@@ -76,9 +80,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return BusinessModelCanvas
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateBusinessModelCanvas(Project $project, ?User $author): BusinessModelCanvas
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS);
+
         [
             "keyPartners" => $keyPartners,
             "keyActivities" => $keyActivities,
@@ -121,9 +128,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return BuyerPersona
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateBuyerPersona(Project $project, ?User $author): BuyerPersona
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN);
+
         [
             "personalInfo" => $personalInfo,
             "professionalInfo" => $professionalInfo,
@@ -159,9 +169,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return SMART
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateSMART(Project $project, ?User $author): SMART
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_SMART);
+
         [
             "specific" => $specific,
             "measurable" => $measurable,
@@ -196,9 +209,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return PESTEL
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generatePESTEL(Project $project, ?User $author): PESTEL
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_PESTEL);
+
         [
             "political" => $political,
             "economic" => $economic,
@@ -235,9 +251,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return STP
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateSTP(Project $project, ?User $author): STP
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_STP);
+
         [
             "segmentation" => $segmentation,
             "targeting" => $targeting,
@@ -268,9 +287,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return MarketingMix4
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateMarketingMix4(Project $project, ?User $author): MarketingMix4
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P);
+
         [
             "product" => $product,
             "price" => $price,
@@ -303,9 +325,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return MarketingMix5
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateMarketingMix5(Project $project, ?User $author): MarketingMix5
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P);
+
         [
             "product" => $product,
             "price" => $price,
@@ -340,9 +365,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return CompetitorAnalysis
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateCompetitorAnalysis(Project $project, ?User $author): CompetitorAnalysis
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS);
+
         [
             'xAxisLabel' => $xAxisLabel,
             'yAxisLabel' => $yAxisLabel,
@@ -375,9 +403,12 @@ class ProjectDocumentService
      * @param Project $project
      * @return GoldenTriangle
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateGoldenTriangle(Project $project, ?User $author): GoldenTriangle
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE);
+
         [
             'topLabel' => $topLabel,
             'leftLabel' => $leftLabel,
@@ -413,9 +444,12 @@ class ProjectDocumentService
      * @param array $documents
      * @return array<BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP|SWOT>
      * @throws ORMException
+     * @throws AccessDeniedException
      */
     public function generateDocuments(Project $project, array $documents, ?User $author): array
     {
+        ProjectHelper::checkIfTeamIsAllowedToGenerateDocuments($project->getTeam(), $documents);
+
         $toReturn = [];
         foreach ($documents as $document) {
             switch ($document) {

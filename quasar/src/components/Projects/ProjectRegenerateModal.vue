@@ -39,7 +39,10 @@
           required
         />
         <div>
-          <ChoiceDocumentsToGenerate v-model:documentsSelected="documents" />
+          <ChoiceDocumentsToGenerate
+            v-model:documentsSelected="documents"
+            :is-premium="project.team.isPremium"
+          />
         </div>
       </div>
       <p

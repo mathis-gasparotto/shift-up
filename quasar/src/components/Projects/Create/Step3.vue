@@ -7,6 +7,7 @@
           ref="choiceDocumentsToGenerate"
           v-model:documents-selected="_form.documents"
           @update:isValid="(value) => (isValid = value)"
+          :is-premium="isPremium"
         />
       </div>
 
@@ -35,6 +36,10 @@ export default {
       required: true
     },
     loading: {
+      type: Boolean,
+      default: false
+    },
+    isPremium: {
       type: Boolean,
       default: false
     }
