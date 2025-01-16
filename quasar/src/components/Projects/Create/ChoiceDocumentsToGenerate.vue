@@ -1,12 +1,31 @@
 <template>
   <div class="q-gutter-sm q-mt-xs column">
-    <q-checkbox
+    <q-card
       v-for="(option, index) in options"
+      @click="option.selected = !option.selected"
       :key="index"
-      v-model="option.selected"
-      :disable="option.disabled"
-      :label="$t('document.name.' + option.value)"
-    />
+      class="document-checkbox-card col-4 relative-position cursor-pointer bg-grey-2 shadow-0"
+      :class="{ selected: option.selected }"
+    >
+      <q-card-section>
+        <q-img
+          src="~assets/shift-up-logo.png"
+          class="document-checkbox-card-icon"
+        />
+      </q-card-section>
+      <q-card-section>
+        {{ $t('document.name.' + option.value) }}
+      </q-card-section>
+      <q-checkbox
+        v-model="option.selected"
+        :disable="option.disabled"
+        checked-icon="sym_o_check_circle"
+        unchecked-icon="radio_button_unchecked"
+        size="xl"
+        class="absolute check-icon"
+        color="secondary"
+      />
+    </q-card>
   </div>
 </template>
 
@@ -47,7 +66,7 @@ export default {
       },
       deep: true
     },
-    documentsSelected() {
+    documentsSelectegenerateBusinessModelCanvasd() {
       this.$emit('update:isValid', this.documentsSelected && this.documentsSelected.length > 0)
     }
   },
@@ -77,4 +96,24 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.document-checkbox-card {
+  border-radius: 32px;
+  // width: 328px;
+  // height: 242px;
+  &.selected {
+    border: 1px solid $secondary;
+    background-color: rgba($secondary, 0.1) !important;
+  }
+}
+.document-checkbox-card-icon {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  border-radius: 16px;
+}
+.check-icon {
+  right: 10px;
+  top: 10px;
+}
+</style>

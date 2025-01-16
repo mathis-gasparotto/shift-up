@@ -207,3 +207,8 @@ h6 {
     display: inline-flex !important;
   }
 }
+
+.q-checkbox__icon {
+  display: flex;
+  justify-content: end;
+}
