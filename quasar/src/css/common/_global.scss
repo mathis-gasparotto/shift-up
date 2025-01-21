@@ -212,3 +212,26 @@ h6 {
   display: flex;
   justify-content: end;
 }
+
+.grid {
+  display: grid;
+}
+
+$cols: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
+
+.grid {
+  @each $col in $cols {
+    &-cols-#{$col} {
+      grid-template-columns: repeat($col, minmax(0, 1fr));
+    }
+  }
+  &-cols {
+    @include bp-all {
+      @each $col in $cols {
+        &-#{$col} {
+          grid-template-columns: repeat($col, minmax(0, 1fr));
+        }
+      }
+    }
+  }
+}

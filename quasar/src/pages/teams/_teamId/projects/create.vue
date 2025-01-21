@@ -56,7 +56,7 @@ import SUbtn from 'src/components/SUbtn.vue'
 import Step1 from 'src/components/Projects/Create/Step1.vue'
 import Step2 from 'src/components/Projects/Create/Step2.vue'
 import Step3 from 'src/components/Projects/Create/Step3.vue'
-import { successNotify } from 'src/helpers/notifyHelper'
+import { successNotify, loadingNotify } from 'src/helpers/notifyHelper'
 
 export default {
   components: {
@@ -106,7 +106,8 @@ export default {
         .create(payload)
         .then((res) => {
           this.documentGenerationLoading = true
-          successNotify(this.$t('project.documentGeneration.loading'))
+          const dismissLoadingNotif = loadingNotify(this.$t('project.documentGeneration.loading'), 0)
+          this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
           this.$resources.projects
             .postChild(res.id, 'generate_documents', { documents: this.form.documents }, { timeout: 10 * 60 * 1000 }) // 10 minutes
             .then(() => {
@@ -116,9 +117,9 @@ export default {
               displayError(err, this.$t('project.create.generateDocumentsError'))
             })
             .finally(() => {
+              dismissLoadingNotif()
               this.documentGenerationLoading = false
               this.formLoading = false
-              this.$router.push({ name: 'project', params: { teamId: this.team.id, projectId: res.id } })
               this.$emitter.emit('reloadNavbar')
             })
         })

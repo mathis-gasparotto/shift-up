@@ -42,6 +42,7 @@
           <ChoiceDocumentsToGenerate
             v-model:documentsSelected="documents"
             :is-premium="project.team.isPremium"
+            inModal
           />
         </div>
       </div>
@@ -76,11 +77,11 @@ import SUlabel from 'src/components/SUlabel.vue'
 import SUinput from 'src/components/SUinput.vue'
 import ChoiceDocumentsToGenerate from 'src/components/Projects/Create/ChoiceDocumentsToGenerate.vue'
 import { displayError } from 'src/helpers/translatting'
-import { successNotify } from 'src/helpers/notifyHelper'
+import { successNotify, loadingNotify } from 'src/helpers/notifyHelper'
 
 export default {
   name: 'ProjectRegenerateModal',
-  emits: ['generated'],
+  emits: ['generated', 'generating'],
   components: {
     Modal,
     SUbtn,
@@ -113,7 +114,9 @@ export default {
         .update(this.project.id, this.form)
         .then(() => {
           this.documentGenerationLoading = true
-          successNotify(this.$t('project.documentGeneration.loading'))
+          const dismissLoadingNotif = loadingNotify(this.$t('project.documentGeneration.loading'), 0)
+          this.$emit('generating')
+          this.$refs.modal.open = false
           this.$resources.projects
             .postChild(this.project.id, 'generate_documents', { documents: this.documents }, { timeout: 10 * 60 * 1000 }) // 10 minutes
             .then(() => {
@@ -126,6 +129,7 @@ export default {
               this.loading = false
             })
             .finally(() => {
+              dismissLoadingNotif()
               this.loading = false
               this.documentGenerationLoading = false
             })

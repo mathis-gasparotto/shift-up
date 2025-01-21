@@ -1,5 +1,5 @@
 <template>
-  <div class="q-gutter-sm q-mt-xs column">
+  <div :class="`q-mt-xs grid grid-cols-${mobileColNumber} grid-cols-md-${inModal ? mobileColNumber : desktopColNumber} gap-15`">
     <q-card
       v-for="(option, index) in options"
       @click="option.selected = !option.selected"
@@ -9,7 +9,7 @@
     >
       <q-card-section>
         <q-img
-          src="~assets/shift-up-logo.png"
+          :src="`/project_documents/${option.value}.svg`"
           class="document-checkbox-card-icon"
         />
       </q-card-section>
@@ -39,6 +39,18 @@ export default {
       default: () => []
     },
     isPremium: {
+      type: Boolean,
+      default: false
+    },
+    mobileColNumber: {
+      type: Number,
+      default: 2
+    },
+    desktopColNumber: {
+      type: Number,
+      default: 3
+    },
+    inModal: {
       type: Boolean,
       default: false
     }
@@ -99,10 +111,11 @@ export default {
 <style lang="scss" scoped>
 .document-checkbox-card {
   border-radius: 32px;
+  border: 1px solid transparent;
   // width: 328px;
   // height: 242px;
   &.selected {
-    border: 1px solid $secondary;
+    border-color: $secondary;
     background-color: rgba($secondary, 0.1) !important;
   }
 }

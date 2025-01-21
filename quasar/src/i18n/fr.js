@@ -216,7 +216,7 @@ export default {
     regenerateModal: {
       title: 'Re-généner votre projet',
       submit: 'Re-générer',
-      success: 'Projet mis à jour avec succès',
+      success: 'Projet regénéré avec succès',
       documentsLabel: 'Documents à re-générer',
       generateDocumentsError: 'Une erreur est survenue lors de la génération des documents',
       updateProjectError: 'Une erreur est survenue lors de la mise à jour du projet'
