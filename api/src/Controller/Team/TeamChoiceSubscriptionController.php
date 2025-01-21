@@ -8,6 +8,7 @@ use App\DTO\TeamChoiceSubscriptionDto;
 use App\Entity\Team;
 use App\Helper\TeamHelper;
 use App\Service\StripeService;
+use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,10 +28,12 @@ class TeamChoiceSubscriptionController extends AbstractController
     /**
      * @param Security $security
      * @param StripeService $stripeService
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         private readonly Security $security,
-        private readonly StripeService $stripeService
+        private readonly StripeService $stripeService,
+        private readonly EntityManagerInterface $entityManager
     ) {}
 
     /**
@@ -43,6 +46,19 @@ class TeamChoiceSubscriptionController extends AbstractController
     {
         TeamHelper::checkIfUserIsTeamManager($this->security->getUser(), $team);
         // TeamHelper::checkIfPlanChangeIsNotAlreadyScheduled($team);
+
+        if (!$data->getSubscriptionPrice()->getStripePriceId()) {
+            if ($team->getHasStripeSubscription()) {
+                $this->stripeService->cancelStripeSubscription($team->getStripeSubscriptionId());
+            }
+            if ($team->getHasStripeSubscriptionSchedule() && $team->getStripeSubscriptionId()) {
+                $this->stripeService->cancelScheduledSubscription($team);
+            }
+            $team->setScheduledSubscriptionPrice(scheduledSubscriptionPrice: $data->getSubscriptionPrice());
+            $this->entityManager->persist($team);
+            $this->entityManager->flush();
+            return $this->json(['message' => 'Subscription canceled']);
+        }
 
         if ($data->getSubscriptionPrice()->getId() === $team->getSubscriptionPrice()?->getId() && !$team->getHasStripeSubscriptionSchedule()) {
             throw new UnprocessableEntityHttpException('You already chosen this subscription');

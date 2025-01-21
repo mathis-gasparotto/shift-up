@@ -131,7 +131,7 @@ class SubscriptionPrice implements TracingAwareInterface, OwnerAwareInterface
     #[
         Assert\NotBlank,
         Assert\Type(type: 'integer'),
-        Groups(['subscription:read', 'subscription_price:read', 'subscription_price:write'])
+        Groups(['subscription:read', 'subscription_price:read', 'subscription_price:write', 'team:item:read'])
     ]
     private ?int $price = null;
 
@@ -282,7 +282,7 @@ class SubscriptionPrice implements TracingAwareInterface, OwnerAwareInterface
     {
         if (!$this->teams->contains($team)) {
             $this->teams->add($team);
-            $team->setSubscription($this);
+            $team->setSubscriptionPrice($this);
         }
 
         return $this;
@@ -296,8 +296,8 @@ class SubscriptionPrice implements TracingAwareInterface, OwnerAwareInterface
     {
         if ($this->teams->removeElement($team)) {
             // set the owning side to null (unless already changed)
-            if ($team->getSubscription() === $this) {
-                $team->setSubscription(null);
+            if ($team->getSubscriptionPrice() === $this) {
+                $team->setSubscriptionPrice(null);
             }
         }
 

@@ -43,6 +43,7 @@
         :subscription="plan"
         :current="team.subscriptionPrice?.id === plan.price.id"
         :scheduled="plan.scheduled"
+        :canceled="plan.canceled"
       />
     </div>
     <template #buttons>
@@ -53,7 +54,7 @@
         class="w-100"
         :loading="stripeSessionLoading"
         @click="submit"
-        :disabled="!selectedPlanId || selectedPlanPrice?.id === (team.hasStripeSubscriptionSchedule ? team.scheduledSubscriptionPrice?.id : team.subscriptionPrice?.id)"
+        :disabled="!selectedPlanId || !selectedPlanPrice || selectedPlanPrice?.id === (team.hasStripeSubscriptionSchedule ? team.scheduledSubscriptionPrice?.id : team.subscriptionPrice?.id) || (selectedPlanPrice?.price <= 0 && team.scheduledSubscriptionPrice?.id === selectedPlanPrice?.id)"
       />
     </template>
   </Modal>
@@ -97,14 +98,18 @@ export default {
   },
   computed: {
     selectedPlans() {
-      return this.plans.map((plan) => {
+      let plans = []
+      this.plans.forEach((plan) => {
         const price = plan.prices?.find((p) => p.recurrence === this.recurrence)
-        return {
+        if (!price) return
+        plans.push({
           ...plan,
           price: price,
-          scheduled: this.team.scheduledSubscriptionPrice?.id === price.id ? new Date(this.team.subscriptionEndAt) : false
-        }
+          scheduled: this.team.scheduledSubscriptionPrice?.id === price.id && price.price > 0 ? new Date(this.team.subscriptionEndAt) : false,
+          canceled: this.team.scheduledSubscriptionPrice?.price <= 0 ? new Date(this.team.subscriptionEndAt) : false
+        })
       })
+      return plans
     },
     selectedPlanPrice() {
       return this.selectedPlans.find((p) => p.id === this.selectedPlanId)?.price
@@ -119,7 +124,7 @@ export default {
       this.$resources.subscriptions
         .list()
         .then((res) => {
-          this.plans = res.data
+          this.plans = res.data.sort((a, b) => a.prices.find((p) => p.recurrence === 'MONTH').price - b.prices.find((p) => p.recurrence === 'MONTH').price)
         })
         .catch((err) => {
           this.plans = []
@@ -138,7 +143,7 @@ export default {
         .then((res) => {
           if (res.object === 'checkout.session') {
             window.location.href = res.url
-          } else if (res.object === 'subscription' || res.object === 'subscription_schedule') {
+          } else {
             setTimeout(() => {
               successNotify(this.$t('subscription.choicePlanModal.updateSuccess'))
               this.selectedPlanId = this.team.subscriptionPrice?.subscription?.id

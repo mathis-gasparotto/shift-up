@@ -264,7 +264,8 @@ export default {
       monthlyPrice: 'Prix : {price} € /mois',
       yearlyPrice: 'Soit {price} € /an',
       current: 'Actuel',
-      scheduled: 'Programmé pour le {date}'
+      scheduled: 'Programmé pour le {date}',
+      canceled: 'Prend fin le {date}'
     },
     choicePlanModal: {
       title: "Modifier l'offre de votre équipe",

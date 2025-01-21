@@ -1,16 +1,22 @@
 <template>
   <q-card :class="{ selected: selected, 'cursor-pointer': clickable }">
     <q-card-section>
-      <p>
+      <p class="text-h6 text-weight-light">
         {{ subscription.label }}
         <span
-          v-if="current"
+          v-if="current && canceled"
+          class="text-caption text-accent"
+        >
+          {{ $t('subscription.card.canceled', { date: dateToDisplay(canceled) }) }}
+        </span>
+        <span
+          v-else-if="current"
           class="text-caption text-accent"
         >
           {{ $t('subscription.card.current') }}
         </span>
         <span
-          v-if="scheduled"
+          v-else-if="scheduled && !canceled"
           class="text-caption text-accent"
         >
           {{ $t('subscription.card.scheduled', { date: dateToDisplay(scheduled) }) }}
@@ -73,6 +79,10 @@ export default {
       default: false
     },
     scheduled: {
+      type: [Boolean, Date],
+      default: false
+    },
+    canceled: {
       type: [Boolean, Date],
       default: false
     }
