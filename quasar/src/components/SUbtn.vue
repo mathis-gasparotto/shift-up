@@ -6,8 +6,8 @@
     :to="to"
     :rounded="rounded"
     :outline="outline"
-    flat
-    :class="'btn-' + color + (reversed ? '-reversed' : '')"
+    :flat="!outline"
+    :class="'btn-' + color + (reversed || outline ? '-reversed' : '') + ' ' + btnClass"
     class="q-py-sm"
     no-caps
     :type="type"
@@ -64,6 +64,10 @@ export default {
     reversed: {
       type: Boolean,
       default: false
+    },
+    btnClass: {
+      type: String,
+      default: ''
     }
   }
 }

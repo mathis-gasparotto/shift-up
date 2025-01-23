@@ -62,6 +62,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
                                     'stripeYearPriceId' => [
                                         'type' => 'string'
                                     ],
+                                    'advantages' => [
+                                        'type' => 'array'
+                                    ],
                                 ],
                             ],
                         ],
@@ -185,6 +188,13 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
         Groups(['subscription:read', 'subscription:write'])
     ]
     private Collection $prices;
+
+    /**
+     * @var array|null
+     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    #[Groups(['subscription:read', 'subscription:write'])]
+    private ?array $advantages = null;
 
     /**
      *
@@ -312,6 +322,25 @@ class Subscription implements TracingAwareInterface, OwnerAwareInterface
                 $price->setSubscription(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getAdvantages(): ?array
+    {
+        return $this->advantages;
+    }
+
+    /**
+     * @param array|null $advantages
+     * @return $this
+     */
+    public function setAdvantages(?array $advantages): static
+    {
+        $this->advantages = $advantages;
 
         return $this;
     }

@@ -16,41 +16,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap');
 
 // Set the default font-family
-$typography-font-family : 'Onest', sans-serif !default;
+$typography-font-family: 'Onest', sans-serif !default;
 $body-font-size: 16px !default;
 
-$primary    : #4263D8;
-$grey-light : #DCDDE5;
-$grey       : #7F8190;
-$background : #fff;
-$navBackground : #F7F7FB;
-$secondary  : #7242D8;
-$accent     : #9C27B0;
+$primary: #4263d8;
+$grey-light: #dcdde5;
+$grey: #7f8190;
+$background: #fff;
+$navBackground: #f7f7fb;
+$secondary: #7242d8;
+$secondary-light: #f4f0fe;
+$accent: #9c27b0;
 
-$avatar-0   : #FFC107;
-$avatar-1   : #E91E63;
-$avatar-2   : #9C27B0;
-$avatar-3   : #673AB7;
-$avatar-4   : #3F51B5;
-$avatar-5   : #00BCD4;
-$avatar-6   : #009688;
-$avatar-7   : #4CAF50;
-$avatar-8   : #8BC34A;
+$avatar-0: #ffc107;
+$avatar-1: #e91e63;
+$avatar-2: #9c27b0;
+$avatar-3: #673ab7;
+$avatar-4: #3f51b5;
+$avatar-5: #00bcd4;
+$avatar-6: #009688;
+$avatar-7: #4caf50;
+$avatar-8: #8bc34a;
 
-$avatar-0-text   : #000;
-$avatar-1-text   : #fff;
-$avatar-2-text   : #fff;
-$avatar-3-text   : #fff;
-$avatar-4-text   : #fff;
-$avatar-5-text   : #000;
-$avatar-6-text   : #fff;
-$avatar-7-text   : #fff;
-$avatar-8-text   : #000;
+$avatar-0-text: #000;
+$avatar-1-text: #fff;
+$avatar-2-text: #fff;
+$avatar-3-text: #fff;
+$avatar-4-text: #fff;
+$avatar-5-text: #000;
+$avatar-6-text: #fff;
+$avatar-7-text: #fff;
+$avatar-8-text: #000;
 
-$dark       : #1D1D1D;
-$dark-page  : #121212;
+$dark: #1d1d1d;
+$dark-page: #121212;
 
-$positive   : #21BA45;
-$negative   : #C10015;
-$info       : #31CCEC;
-$warning    : #F2C037;
+$positive: #21ba45;
+$negative: #c10015;
+$info: #31ccec;
+$warning: #f2c037;

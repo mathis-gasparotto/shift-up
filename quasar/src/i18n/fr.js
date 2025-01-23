@@ -1,6 +1,7 @@
 export default {
   download: 'Télécharger',
   edit: 'Modifier',
+  price: '{price} €',
   error: {
     incorrectPassword: 'Mot de passe incorrect',
     invalidCredentials: 'Identifiants invalides',
@@ -260,21 +261,21 @@ export default {
   },
   subscription: {
     card: {
-      choice: 'Choisir',
-      monthlyPrice: 'Prix : {price} € /mois',
-      yearlyPrice: 'Soit {price} € /an',
+      choice: 'Choisir cet abonnement',
+      perMonth: '/mois',
+      perYear: '/an',
       current: 'Actuel',
       scheduled: 'Programmé pour le {date}',
       canceled: 'Prend fin le {date}'
     },
     choicePlanModal: {
-      title: "Modifier l'offre de votre équipe",
+      title: 'Passer à la vitesse supérieur',
       loadPlansError: 'Une erreur est survenue lors du chargement des offres',
       confirm: 'Confirmer',
       createStripeSessionError: 'Une erreur est survenue lors de la création de la session de paiement',
       monthly: 'Mensuel',
       yearly: 'Annuel',
-      changePlanWarning: "Le changement d'offre sera effectif à la fin de votre période actuelle",
+      changePlanWarning: "Le changement d'offre sera effectif à la fin de votre période actuelle ({date})",
       updateSuccess: 'Formule mise à jour avec succès',
       changePlanAlreadyScheduledWarning: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif',
       changePlanAlreadyScheduled: 'Vous avez déjà initié un changement de plan.',

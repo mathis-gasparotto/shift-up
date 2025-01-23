@@ -1,6 +1,7 @@
 export default {
   download: 'Download',
   edit: 'Edit',
+  price: '{price}$',
   error: {
     incorrectPassword: 'Incorrect password',
     invalidCredentials: 'Invalid credentials',
@@ -260,21 +261,21 @@ export default {
   },
   subscription: {
     choiceModal: {
-      choice: 'Choose',
-      monthlyPrice: 'Price : {price}€ /month',
-      yearlyPrice: 'Or {price}€ /year',
+      choice: 'Choose this subscription',
+      perMonth: '/month',
+      perYear: '/year',
       current: 'Current',
       scheduled: 'Scheduled for {date}',
       canceled: 'Ends on {date}'
     },
     choicePlanModal: {
-      title: 'Modify your team subscription plan',
+      title: 'Shift up your team!',
       loadPlansError: 'An error occurred while loading the plans',
       confirm: 'Confirm',
       createStripeSessionError: 'An error occurred while creating the payment session',
       monthly: 'Monthly',
       yearly: 'Yearly',
-      changePlanWarning: 'Changing the plan will take effect at the end of the current period',
+      changePlanWarning: 'Changing the plan will take effect at the end of the current period ({date})',
       updateSuccess: 'Plan updated successfully',
       changePlanAlreadyScheduledWarning: 'You already initiated a plan change, please wait for the subscription to be effective',
       changePlanAlreadyScheduled: 'You already initiated a plan change.',
