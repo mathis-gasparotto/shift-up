@@ -2,10 +2,16 @@
   <div :class="`q-mt-xs grid grid-cols-${mobileColNumber} grid-cols-md-${inModal ? mobileColNumber : desktopColNumber} gap-15`">
     <q-card
       v-for="(option, index) in options"
-      @click="option.selected = !option.selected"
+      @click="
+        () => {
+          if (!option.disabled) {
+            option.selected = !option.selected
+          }
+        }
+      "
       :key="index"
-      class="document-checkbox-card col-4 relative-position cursor-pointer bg-grey-2 shadow-0"
-      :class="{ selected: option.selected }"
+      class="document-checkbox-card col-4 relative-position cursor-pointer bg-grey-2 shadow-0 q-pa-sm"
+      :class="{ selected: option.selected, 'card-premium': option.disabled }"
     >
       <q-card-section>
         <q-img
@@ -128,5 +134,26 @@ export default {
 .check-icon {
   right: 10px;
   top: 10px;
+}
+.card-premium {
+  margin-top: calc((14px * 1.5) / 2 + 2px + 1px);
+  cursor: not-allowed !important;
+  & > * {
+    opacity: 0.6;
+  }
+  &::before {
+    content: 'Premium';
+    opacity: 1;
+    position: absolute;
+    background-color: $secondary-light;
+    border: 1px solid $secondary;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 14px;
+  }
 }
 </style>
