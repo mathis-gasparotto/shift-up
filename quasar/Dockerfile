@@ -27,15 +27,24 @@ CMD ["yarn" ,"dev"]
 ##
 FROM dependencies AS builder
 
-COPY . .
+CMD ["yarn" ,"build:web"]
+# CMD ["tail", "-f", "/dev/null"]
 
-RUN yarn build --standalone
+##
+# PRODUCTION LAYER
+##
+FROM base AS production
 
-# ##
-# # PRODUCTION LAYER
-# ##
-# FROM base AS production
+ENV NODE_ENV=production
 
-# ENV NODE_ENV=production
+RUN apk update && \
+  apk add --no-cache \
+  apache2
 
-# ## Copy the build from the builder layer
+## Copy the build from the builder layer
+# COPY --from=builder --chown=www-data:www-data /app/dist/pwa /var/www/localhost/htdocs
+COPY --from=builder /app/dist/pwa /var/www/localhost/htdocs
+
+EXPOSE 80
+
+CMD ["httpd", "-D", "FOREGROUND"]

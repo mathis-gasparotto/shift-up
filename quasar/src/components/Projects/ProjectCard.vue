@@ -7,7 +7,7 @@
     <q-card class="project-card q-pa-lg">
       <q-card-section class="q-pa-none q-mb-md">
         <q-img
-          :src="'/src/assets/projects/' + project.picture.contentUrl"
+          :src="`/project_illustrations/${project.picture.contentUrl}`"
           height="150px"
           fit="cover"
           rounded
