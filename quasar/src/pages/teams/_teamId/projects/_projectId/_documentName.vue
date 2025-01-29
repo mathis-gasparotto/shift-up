@@ -35,7 +35,17 @@
         class="q-no-hoverable q-pa-xs"
       /> -->
     </div>
-    <div class="w-100 q-mt-xl">Yoooo</div>
+    <q-skeleton
+      type="rect"
+      height="500px"
+      v-if="documentLoading || teamLoading || projectLoading"
+    />
+    <q-img
+      v-else
+      loading="lazy"
+      :alt="`project-document_${$route.params.documentName}`"
+      :src="`${documentImageFolderPath}/teams/${team.id}/documents/${document['@type'].toLowerCase()}-${document.id}.jpg`"
+    />
   </q-page>
 </template>
 
@@ -43,7 +53,6 @@
 import MainBreadcrumps from 'src/components/MainBreadcrumps.vue'
 import { displayError } from 'src/helpers/translatting'
 import { errorNotify } from 'src/helpers/notifyHelper'
-import { snakeCaseToCamelCase } from 'src/helpers/formatting'
 export default {
   components: {
     MainBreadcrumps
@@ -57,7 +66,8 @@ export default {
       team: {},
       project: {},
       documentNamesAccepted: ['business-model-canvas', 'buyer-persona', 'competitor-analysis', 'golden-triangle', 'marketing-mix-4', 'marketing-mix-5', 'pestel', 'smart', 'stp', 'swot'],
-      downloadLoading: false
+      downloadLoading: false,
+      documentImageFolderPath: ''
     }
   },
   created() {
@@ -67,6 +77,7 @@ export default {
         params: { teamId: this.$route.params.teamId, projectId: this.$route.params.projectId }
       })
     }
+    this.documentImageFolderPath = process.env.API_URL + process.env.API_TEAM_DOCUMENTS_PATH
     this.reloadData()
   },
   computed: {
