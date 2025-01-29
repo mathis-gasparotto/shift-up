@@ -73,6 +73,8 @@ class ProjectDocumentService
         $this->entityManager->persist($project);
         $this->entityManager->flush();
 
+        $this->generateDocumentImage($swot);
+
         return $swot;
     }
 
@@ -121,6 +123,8 @@ class ProjectDocumentService
         $this->entityManager->persist($project);
         $this->entityManager->flush();
 
+        $this->generateDocumentImage($businessModelCanvas);
+
         return $businessModelCanvas;
     }
 
@@ -162,6 +166,8 @@ class ProjectDocumentService
         $this->entityManager->persist($project);
         $this->entityManager->flush();
 
+        $this->generateDocumentImage($buyerPersona);
+
         return $buyerPersona;
     }
 
@@ -201,6 +207,8 @@ class ProjectDocumentService
         $this->entityManager->persist($smart);
         $this->entityManager->persist($project);
         $this->entityManager->flush();
+
+        $this->generateDocumentImage($smart);
 
         return $smart;
     }
@@ -244,6 +252,8 @@ class ProjectDocumentService
         $this->entityManager->persist($project);
         $this->entityManager->flush();
 
+        $this->generateDocumentImage($pestel);
+
         return $pestel;
     }
 
@@ -279,6 +289,8 @@ class ProjectDocumentService
         $this->entityManager->persist($stp);
         $this->entityManager->persist($project);
         $this->entityManager->flush();
+
+        $this->generateDocumentImage($stp);
 
         return $stp;
     }
@@ -317,6 +329,8 @@ class ProjectDocumentService
         $this->entityManager->persist($marketingMix4);
         $this->entityManager->persist($project);
         $this->entityManager->flush();
+
+        $this->generateDocumentImage($marketingMix4);
 
         return $marketingMix4;
     }
@@ -358,6 +372,8 @@ class ProjectDocumentService
         $this->entityManager->persist($project);
         $this->entityManager->flush();
 
+        $this->generateDocumentImage($marketingMix5);
+
         return $marketingMix5;
     }
 
@@ -395,6 +411,8 @@ class ProjectDocumentService
         $this->entityManager->persist($competitorAnalysis);
         $this->entityManager->persist($project);
         $this->entityManager->flush();
+
+        $this->generateDocumentImage($competitorAnalysis);
 
         return $competitorAnalysis;
     }
@@ -435,6 +453,8 @@ class ProjectDocumentService
         $this->entityManager->persist($goldenTriangle);
         $this->entityManager->persist($project);
         $this->entityManager->flush();
+
+        $this->generateDocumentImage($goldenTriangle);
 
         return $goldenTriangle;
     }
@@ -499,7 +519,7 @@ class ProjectDocumentService
     public function downloadDocument(SWOT|BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP $document): MediaObject
     {
         $fileDir = 'teams/' . $document->getProject()->getTeam()->getId() . '/documents';
-        $fileName = strtolower(GlobalHelper::getClassShortName($document)) . '-' . $document->getId();
+        $fileName = strtolower(GlobalHelper::getClassShortName($document)) . '-' . $document->getId() . '_' . uniqid();
         $filePath = $fileDir . '/' . $fileName . '.' . FileHelper::FILE_PDF_EXTENSION;
 
         try {
@@ -534,6 +554,35 @@ class ProjectDocumentService
         }
 
         return $document->getFile()->setContentUrl($this->prefixUrl . '/' . $document->getFile()->getFilePath());
+    }
+
+    /**
+     * @param Project $project
+     * @return MediaObject
+     * @throws ORMException
+     */
+    public function generateDocumentImage(SWOT|BusinessModelCanvas|BuyerPersona|CompetitorAnalysis|GoldenTriangle|MarketingMix4|MarketingMix5|PESTEL|SMART|STP $document): string
+    {
+        $fileDir = 'teams/' . $document->getProject()->getTeam()->getId() . '/documents';
+        $fileName = strtolower(GlobalHelper::getClassShortName($document)) . '-' . $document->getId();
+        $filePath = $fileDir . '/' . $fileName . '.' . FileHelper::FILE_JPG_EXTENSION;
+
+        $this->fileService->deleteFileIfExist($filePath);
+
+        try {
+            $jpg = $this->fileService->generateJpgToHtml($document);
+        } catch (Exception $e) {
+            // dd($e);
+            throw new Exception($e->getMessage());
+        }
+
+        try {
+            $this->fileService->uploadDestination($jpg, FileHelper::FILE_JPG_EXTENSION, $fileDir, $fileName);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+
+        return $filePath;
     }
 
     /**

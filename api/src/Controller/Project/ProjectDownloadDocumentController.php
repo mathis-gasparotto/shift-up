@@ -50,6 +50,6 @@ class ProjectDownloadDocumentController extends AbstractController
 
         $mediaObject = $this->projectDocumentService->downloadDocument($document);
 
-        return $this->json(['path' => $this->appBackUrl . $mediaObject->getContentUrl()], 201);
+        return $this->json(['path' => $this->appBackUrl . '/' . $mediaObject->getContentUrl()], 201);
     }
 }

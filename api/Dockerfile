@@ -50,6 +50,9 @@ COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/wkhtmltopdf /
 COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage
 COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/libwkhtmltox* /usr/local/bin/
 
+RUN chmod +x /usr/local/bin/wkhtmltopdf \
+    && chmod +x /usr/local/bin/wkhtmltoimage
+
 # Installer les extensions PDO MySQL et PostgreSQL
 # RUN apk add --no-cache \
 #     mariadb-client \

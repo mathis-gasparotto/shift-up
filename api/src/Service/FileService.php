@@ -14,6 +14,7 @@ use App\Entity\STP;
 use App\Entity\SWOT;
 use App\Helper\FileHelper;
 use App\Helper\TwigHelper;
+use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
 use League\Flysystem\Config;
 use League\Flysystem\FilesystemAdapter;
@@ -38,6 +39,7 @@ class FileService
      * @param string $appBackUrl
      * @param string $mediaStorage
      * @param Pdf $knpSnappyPdf
+     * @param Image $knpSnappyImage
      * @param FilesystemAdapter $mediaStorageLocal
      * @param Environment $twig
      */
@@ -45,6 +47,7 @@ class FileService
         private string $appBackUrl,
         private string $mediaStorage,
         private Pdf $knpSnappyPdf,
+        private Image $knpSnappyImage,
         private FilesystemAdapter $mediaStorageLocal,
         private Environment $twig
     ) {
@@ -154,6 +157,97 @@ class FileService
     }
 
     /**
+     * @param object $data
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function generateJpgToHtml(object $data): string
+    {
+        $fileParameters = match ($data::class) {
+            SWOT::class => [
+                'view' => TwigHelper::TWIG_VIEW_SWOT_PDF,
+                'options' => FileHelper::FILE_OPTIONS_SWOT_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            BusinessModelCanvas::class => [
+                'view' => TwigHelper::TWIG_VIEW_BUSINESS_MODEL_CANVAS_PDF,
+                'options' => FileHelper::FILE_OPTIONS_BUSINESS_MODEL_CANVAS_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            BuyerPersona::class => [
+                'view' => TwigHelper::TWIG_VIEW_BUYER_PERSONA_PDF,
+                'options' => FileHelper::FILE_OPTIONS_BUYER_PERSONA_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            CompetitorAnalysis::class => [
+                'view' => TwigHelper::TWIG_VIEW_COMPETITOR_ANALYSIS_PDF,
+                'options' => FileHelper::FILE_OPTIONS_COMPETITOR_ANALYSIS_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            GoldenTriangle::class => [
+                'view' => TwigHelper::TWIG_VIEW_GOLDEN_TRIANGLE_PDF,
+                'options' => FileHelper::FILE_OPTIONS_GOLDEN_TRIANGLE_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            MarketingMix4::class => [
+                'view' => TwigHelper::TWIG_VIEW_MARKETING_MIX_4_PDF,
+                'options' => FileHelper::FILE_OPTIONS_MARKETING_MIX_4_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            MarketingMix5::class => [
+                'view' => TwigHelper::TWIG_VIEW_MARKETING_MIX_5_PDF,
+                'options' => FileHelper::FILE_OPTIONS_MARKETING_MIX_5_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            PESTEL::class => [
+                'view' => TwigHelper::TWIG_VIEW_PESTEL_PDF,
+                'options' => FileHelper::FILE_OPTIONS_PESTEL_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            SMART::class => [
+                'view' => TwigHelper::TWIG_VIEW_SMART_PDF,
+                'options' => FileHelper::FILE_OPTIONS_SMART_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            STP::class => [
+                'view' => TwigHelper::TWIG_VIEW_STP_PDF,
+                'options' => FileHelper::FILE_OPTIONS_STP_HTML_TO_IMAGE,
+                'parameters' => [
+                    'data' => $data
+                ]
+            ],
+            default => throw new \LogicException('This data entity does not exist: ' . $data::class)
+        };
+
+        $fileTwigContent = $this->twig->render($fileParameters['view'], $fileParameters['parameters']);
+
+        return $this->knpSnappyImage->getOutputFromHtml(
+            $fileTwigContent,
+            $fileParameters['options'],
+        );
+    }
+
+    /**
      * @param string $file
      * @param string $fileExtension
      * @param string $fileDir
@@ -190,7 +284,11 @@ class FileService
 
         $dirDestination = str_split(substr($filePath, 0, 3));
 
-        $mediaStorage->delete($dirDestination[0] . '/' . $dirDestination[1] . '/' . $dirDestination[2] . '/' . $filePath);
+        if (preg_match('/^[a-zA-Z0-9]+$/', $filePath)) {
+            $mediaStorage->delete($dirDestination[0] . '/' . $dirDestination[1] . '/' . $dirDestination[2] . '/' . $filePath);
+        } else {
+            $mediaStorage->delete($filePath);
+        }
     }
 
     /**
