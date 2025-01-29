@@ -41,7 +41,7 @@
         @click="selectedPlanId = plan.id"
         :selected="selectedPlanId === plan.id"
         :subscription="plan"
-        :current="team.subscriptionPrice?.id === plan.price.id"
+        :current="team.subscriptionPrice?.id === plan.price.id || (plan.price.price <= 0 && !team.subscriptionPrice)"
         choice-btn
         :scheduled="plan.scheduled"
         :canceled="plan.canceled"

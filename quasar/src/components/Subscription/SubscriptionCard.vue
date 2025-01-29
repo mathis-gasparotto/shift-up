@@ -68,7 +68,7 @@
         rounded
         color="secondary"
         @click="$emit('choice', subscription)"
-        :disabled="btnDisabled"
+        :disabled="btnDisabled || current"
         :loading="btnLoading"
         :outline="!selected"
       />
