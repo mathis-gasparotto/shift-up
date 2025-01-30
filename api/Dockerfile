@@ -82,6 +82,13 @@ RUN set -eux; \
     install-php-extensions \
     amqp-1.11.0 \
     ;
+
+
+##
+# DEV LAYER
+##
+FROM api_php AS development
+
 RUN composer install --prefer-dist --no-scripts --no-progress; \
     composer clear-cache
 
@@ -90,6 +97,26 @@ COPY --link . .
 RUN rm -Rf docker/
 
 # Exposer le port 8000
+EXPOSE 80
+
+# Démarrer le serveur Symfony
+CMD ["php", "-S", "0.0.0.0:80", "-t", "/srv/api/public/"]
+
+##
+# PROD LAYER
+##
+FROM api_php AS production
+
+ENV APP_ENV=prod
+
+RUN composer install --prefer-dist --no-scripts --no-progress --no-dev \
+    && composer clear-cache
+
+# copy sources
+COPY --link . .
+RUN rm -Rf docker/
+
+# Exposer le port 80
 EXPOSE 80
 
 # Démarrer le serveur Symfony
