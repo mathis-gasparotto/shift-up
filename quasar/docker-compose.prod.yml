@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      target: development
+      target: production
       args:
         DOCKER_BUILDKIT: 1
     image: shift-up-app
@@ -10,8 +10,8 @@ services:
       - .env.local
       - .env
     container_name: shift-up_app_quasar
-    volumes:
-      - .:/app:rw
-      - /app/node_modules
+    # volumes:
+    #   - .:/app:rw
+    #   - /app/node_modules
     ports:
       - '9000:9000'

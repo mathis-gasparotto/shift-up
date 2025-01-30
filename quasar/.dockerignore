@@ -2,3 +2,5 @@ node_modules/
 .git
 .nuxt
 .env.example
+.yarnrc.yml
+.yarn/

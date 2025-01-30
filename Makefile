@@ -7,6 +7,24 @@ CONSOLE=php bin/console
 
 .DEFAULT_GOAL := help
 
+## —— Production :notes: ——————————————————————————————————————————————————————————————
+start-production:
+	$(COMPOSE) -f docker-compose.prod.yml up -d --remove-orphans
+
+start-production-no-cache:
+	$(COMPOSE) -f docker-compose.prod.yml up -d --remove-orphans --build
+
+yarn-install-production:
+	$(EXEC_FRONT) yarn install
+
+stop-production:
+	$(COMPOSE) -f docker-compose.prod.yml down
+
+clean-start-production: stop-production start-production-no-cache
+
+production-update: clean-start-production db-migrate
+
+## —— Development :notes: ——————————————————————————————————————————————————————————————
 start:
 	$(COMPOSE) up -d --remove-orphans
 
@@ -14,10 +32,10 @@ stop:
 	$(COMPOSE) down
 
 clean-start-front:
-	make stop && docker image rm  $(FRONT_IMAGE) && make start
+	make stop && docker image rm $(FRONT_IMAGE) && make start
 
 clean-start-api:
-	make stop && docker image rm  $(PHP_IMAGE) && make start
+	make stop && docker image rm $(PHP_IMAGE) && make start
 
 restart: stop start
 
@@ -41,9 +59,6 @@ log-app:
 
 log-api:
 	$(COMPOSE) logs php -f
-
-bin/console:
-	$(EXEC_PHP) $(CONSOLE) $(filter-out $@,$(MAKECMDGOALS))
 
 yarn-add: ## Add package yarn
 	$(EXEC_FRONT) yarn add $(filter-out $@,$(MAKECMDGOALS))

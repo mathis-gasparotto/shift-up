@@ -3,20 +3,22 @@ LABEL maintainer="Mathis Gasparotto <mathis.gasparotto@hotmail.com>"
 
 FROM base AS dependencies
 
+ENV NODE_ENV=development
+
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 RUN yarn global add @quasar/cli
-RUN yarn install --non-interactive
-
-COPY . .
+RUN yarn install
 
 ##
 # DEV LAYER
 ##
-FROM dependencies AS development
+FROM base AS development
+WORKDIR /app
 
-ENV NODE_ENV=development
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
 
 EXPOSE 9000
 #ENTRYPOINT ["yarn", "dev"]
@@ -25,26 +27,31 @@ CMD ["yarn" ,"dev"]
 ##
 # BUILDER LAYER
 ##
-FROM dependencies AS builder
+FROM base AS builder
 
-CMD ["yarn" ,"build:web"]
+WORKDIR /app
+
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+
+RUN yarn build:web
+# CMD ["yarn" ,"build:web"]
 # CMD ["tail", "-f", "/dev/null"]
 
 ##
 # PRODUCTION LAYER
 ##
-FROM base AS production
+FROM httpd:alpine AS production
 
-ENV NODE_ENV=production
-
-RUN apk update && \
-  apk add --no-cache \
-  apache2
+# RUN apk update && \
+#   apk add --no-cache \
+#   apache2
 
 ## Copy the build from the builder layer
 # COPY --from=builder --chown=www-data:www-data /app/dist/pwa /var/www/localhost/htdocs
-COPY --from=builder /app/dist/pwa /var/www/localhost/htdocs
+# COPY --from=builder /app/dist/pwa /var/www/localhost/htdocs
+COPY --from=builder /app/dist/pwa /usr/local/apache2/htdocs/
 
 EXPOSE 80
 
-CMD ["httpd", "-D", "FOREGROUND"]
+# CMD ["httpd", "-D", "FOREGROUND"]
