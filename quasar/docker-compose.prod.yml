@@ -14,4 +14,4 @@ services:
     #   - .:/app:rw
     #   - /app/node_modules
     ports:
-      - '9000:9000'
+      - '80:80'

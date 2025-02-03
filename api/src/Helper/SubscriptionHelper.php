@@ -22,29 +22,51 @@ final class SubscriptionHelper
     /** @var array  */
     public const SUBSCRIPTION_OBJECT_FREE = [
         'label' => 'Free',
-        'price' => 0,
-        'recurrence' => self::SUBSCRIPTION_RECURRENCE_MONTH,
+        'prices' => [
+            [
+                'price' => 0,
+                'recurrence' => self::SUBSCRIPTION_RECURRENCE_MONTH,
+            ],
+        ],
         'description' => 'Abonnement gratuit',
     ];
 
     /** @var array  */
     public const SUBSCRIPTION_OBJECT_PREMIUM = [
         'label' => 'Premium',
-        'price' => 999,
-        'recurrence' => self::SUBSCRIPTION_RECURRENCE_MONTH,
+        'prices' => [
+            [
+                'price' => 999,
+                'recurrence' => self::SUBSCRIPTION_RECURRENCE_MONTH,
+                'stripePriceId' => 'price_1QITrJRqJSF5LE3iBAY99q4W',
+            ],
+            [
+                'price' => 9999,
+                'recurrence' => self::SUBSCRIPTION_RECURRENCE_YEAR,
+                'stripePriceId' => 'price_1QRzuTRqJSF5LE3ijfJlqXbJ',
+            ],
+        ],
         'description' => 'Abonnement premium pour indépendants',
         'stripeProductId' => 'prod_RApWpatdruBwcS',
-        'stripePriceId' => 'price_1QITrJRqJSF5LE3iBAY99q4W',
     ];
 
     /** @var array  */
     public const SUBSCRIPTION_OBJECT_ENTERPRISE = [
         'label' => 'Enterprise',
-        'price' => 1999,
-        'recurrence' => self::SUBSCRIPTION_RECURRENCE_MONTH,
+        'prices' => [
+            [
+                'price' => 1999,
+                'recurrence' => self::SUBSCRIPTION_RECURRENCE_MONTH,
+                'stripePriceId' => 'price_1QITsvRqJSF5LE3inDgXRcGr',
+            ],
+            [
+                'price' => 19999,
+                'recurrence' => self::SUBSCRIPTION_RECURRENCE_YEAR,
+                'stripePriceId' => 'price_1QRzx5RqJSF5LE3ifapvGJmz',
+            ],
+        ],
         'description' => 'Abonnement entreprise pour les entreprises',
         'stripeProductId' => 'prod_RApYvg0Vdst10c',
-        'stripePriceId' => 'price_1QITsvRqJSF5LE3inDgXRcGr',
     ];
 
     /** @var array[]  */
@@ -62,5 +84,4 @@ final class SubscriptionHelper
     {
         return 'Souscription à l\'abonnement "' . $label . '"';
     }
-
 }

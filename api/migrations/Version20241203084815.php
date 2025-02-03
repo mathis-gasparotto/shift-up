@@ -28,6 +28,7 @@ final class Version20241203084815 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_30F023AAA76ED395 ON subscription_price (user_id)');
         $this->addSql('ALTER TABLE team ALTER subscription_price_id TYPE UUID');
         $this->addSql('COMMENT ON COLUMN team.subscription_price_id IS \'(DC2Type:uuid)\'');
+        $this->addSql('ALTER TABLE subscription DROP recurrence');
     }
 
     public function down(Schema $schema): void
@@ -40,5 +41,6 @@ final class Version20241203084815 extends AbstractMigration
         $this->addSql('ALTER TABLE subscription_price DROP user_id');
         $this->addSql('ALTER TABLE subscription_price DROP created_at');
         $this->addSql('ALTER TABLE subscription_price DROP updated_at');
+        $this->addSql('ALTER TABLE subscription ADD recurrence VARCHAR(255) NOT NULL');
     }
 }

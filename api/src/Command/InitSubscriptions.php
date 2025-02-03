@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\MediaObject;
 use App\Entity\Subscription;
+use App\Entity\SubscriptionPrice;
 use App\Helper\MediaObjectHelper;
 use App\Helper\SubscriptionHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,17 +28,14 @@ class InitSubscriptions extends Command
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
     /**
      * @return void
      */
-    protected function configure(): void
-    {
-    }
+    protected function configure(): void {}
 
     /**
      * @param InputInterface $input
@@ -47,24 +45,26 @@ class InitSubscriptions extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
-        $subscriptions = [];
         foreach (SubscriptionHelper::SUBSCRIPTION_OBJECTS as $subscription) {
             $newSub = (new Subscription())
                 ->setLabel($subscription['label'])
-                ->setPrice($subscription['price'])
-                ->setRecurrence($subscription['recurrence'])
                 ->setDescription($subscription['description']);
             if (isset($subscription['stripeProductId'])) {
                 $newSub->setStripeProductId($subscription['stripeProductId']);
             }
-            if (isset($subscription['stripePriceId'])) {
-                $newSub->setStripePriceId($subscription['stripePriceId']);
+            $this->entityManager->persist($newSub);
+            foreach ($subscription['prices'] as $price) {
+                $newPrice = (new SubscriptionPrice())
+                    ->setPrice($price['price'])
+                    ->setRecurrence($price['recurrence'])
+                    ->setSubscription($newSub);
+                if (isset($price['stripePriceId'])) {
+                    $newPrice->setStripePriceId($price['stripePriceId']);
+                }
+                // $newSub->addPrice($newPrice);
+                $this->entityManager->persist($newPrice);
             }
-            $subscriptions[] = $newSub;
-        }
-
-        foreach ($subscriptions as $subscription) {
-            $this->entityManager->persist($subscription);
+            // $this->entityManager->persist($newSub);
         }
 
         $this->entityManager->flush();
