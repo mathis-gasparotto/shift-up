@@ -7,11 +7,16 @@ services:
         DOCKER_BUILDKIT: 1
     image: shift-up-app
     env_file:
-      - .env.local
       - .env
+      - .env.local
     container_name: shift-up_app_quasar
     volumes:
       - .:/app:rw
       - /app/node_modules
-    ports:
-      - '80:80'
+    # ports:
+    #   - '80:80'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.app.rule=Host(`${FRONT_URL}`)'
+      - 'traefik.http.routers.app.entrypoints=web'
+      # - 'traefik.http.services.app.loadbalancer.server.port=9000'

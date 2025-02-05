@@ -15,8 +15,15 @@ services:
       - db
     volumes:
       - .:/srv/api:rw
-    ports:
-      - "8080:80"
+    env_file:
+      - .env
+      - .env.local
+    # ports:
+    #   - "8080:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.${FRONT_URL}`)"
+      - "traefik.http.routers.api.entrypoints=web"
   db:
     #    image: mysql:5.7
     #    container_name: shift-up_app_api_db
@@ -61,8 +68,16 @@ services:
   smtp:
     image: mailhog/mailhog:latest
     container_name: root_app_api_smtp
-    ports:
-      - "8025:8025"
+    env_file:
+      - .env
+      - .env.local
+    # ports:
+    #   - "8025:8025"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.smtp.rule=Host(`mail.${FRONT_URL}`)"
+      - "traefik.http.routers.smtp.entrypoints=web"
+      - "traefik.http.services.smtp.loadbalancer.server.port=8025"
 
   # rabbitmq:
   #   image: rabbitmq:3.8-management-alpine
