@@ -64,15 +64,15 @@ services:
     ports:
       - "8025:8025"
 
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    container_name: "shift-up_rabbitmq"
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-    hostname: "shift-up"
-    volumes:
-      - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/mnesia/:rw
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+  # rabbitmq:
+  #   image: rabbitmq:3.8-management-alpine
+  #   container_name: "shift-up_rabbitmq"
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER=guest
+  #     - RABBITMQ_DEFAULT_PASS=guest
+  #   hostname: "shift-up"
+  #   volumes:
+  #     - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/mnesia/:rw
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
