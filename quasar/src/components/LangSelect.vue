@@ -20,7 +20,6 @@ export default {
 
     return { lang, langOptions }
   },
-  name: 'AvatarMenu',
   watch: {
     lang(val) {
       updateLang(val)

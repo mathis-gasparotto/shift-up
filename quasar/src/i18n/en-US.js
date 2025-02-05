@@ -61,7 +61,7 @@ export default {
       placeholder: {
         firstName: 'John',
         lastName: 'Doe',
-        email: 'john.doe@gmail.com',
+        email: 'john.doe{at}gmail.com',
         password: 'Your password',
         confirmPassword: 'Once again',
         currentPassword: 'Your current password',

@@ -10,8 +10,8 @@ services:
       - .env.local
       - .env
     container_name: shift-up_app_quasar
-    # volumes:
-    #   - .:/app:rw
-    #   - /app/node_modules
+    volumes:
+      - .:/app:rw
+      - /app/node_modules
     ports:
       - '80:80'

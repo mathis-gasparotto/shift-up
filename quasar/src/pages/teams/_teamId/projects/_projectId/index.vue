@@ -73,7 +73,7 @@
         v-if="!projectLoading && (!project.lastDocuments || project.lastDocuments.length <= 0)"
       >
         <q-avatar size="150px">
-          <img :src="'/src/assets/projects/' + project.picture.contentUrl" />
+          <img :src="'/project_illustrations/' + project.picture.contentUrl" />
         </q-avatar>
         <h2 class="text-h6 text-center">{{ $t('project.details.voidProjectTitle') }}</h2>
         <p class="text-subtitle2 text-weight-regular text-center">

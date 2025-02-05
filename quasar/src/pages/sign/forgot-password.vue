@@ -16,7 +16,7 @@
           :label="$t('form.user.label.email')"
           name="email"
           type="email"
-          :placeholder="$t('form.user.placeholder.email')"
+          :placeholder="$t('form.user.placeholder.email', { at: '@' })"
           required
         />
       </div>

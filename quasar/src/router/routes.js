@@ -16,9 +16,14 @@ function beforeNoSign(to, from, next) {
   const auth = useAuthStore()
 
   if (!auth.isAuthenticated) {
+    if (to.fullPath && to.fullPath != '/' && to.fullPath != '') {
+      return next({
+        name: 'signin',
+        query: { redirect: to.fullPath }
+      })
+    }
     return next({
-      name: 'signin',
-      query: { redirect: to.fullPath }
+      name: 'signin'
     })
   } else {
     return next()

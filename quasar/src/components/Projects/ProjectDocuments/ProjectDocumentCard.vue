@@ -6,7 +6,7 @@
   >
     <q-card class="project-document-card q-pa-lg">
       <q-card-section class="q-pa-none q-mb-md">
-        <!-- <q-img :src="'/src/assets/projects/' + project.picture.contentUrl" height="150px" fit="cover" rounded
+        <!-- <q-img :src="'/project_illustrations/' + project.picture.contentUrl" height="150px" fit="cover" rounded
         class="project-document-img w-100" /> -->
         <q-skeleton
           type="rect"

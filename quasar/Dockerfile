@@ -17,8 +17,8 @@ RUN yarn install
 FROM base AS development
 WORKDIR /app
 
-COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
 
 EXPOSE 9000
 #ENTRYPOINT ["yarn", "dev"]
@@ -31,8 +31,8 @@ FROM base AS builder
 
 WORKDIR /app
 
-COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
 
 RUN yarn build:web
 # CMD ["yarn" ,"build:web"]
