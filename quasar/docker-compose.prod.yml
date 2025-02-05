@@ -13,10 +13,10 @@ services:
     volumes:
       - .:/app:rw
       - /app/node_modules
-    # ports:
-    #   - '80:80'
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.app.rule=Host(`${FRONT_URL}`)'
-      - 'traefik.http.routers.app.entrypoints=web'
-      # - 'traefik.http.services.app.loadbalancer.server.port=9000'
+    ports:
+      - '9000:80'
+    # labels:
+    #   - 'traefik.enable=true'
+    #   - 'traefik.http.routers.app.rule=Host(`app.shift-up.ai`)'
+    #   - 'traefik.http.routers.app.entrypoints=web'
+    #   # - 'traefik.http.services.app.loadbalancer.server.port=9000'

@@ -20,6 +20,8 @@ yarn-install-production:
 stop-production:
 	$(COMPOSE) -f docker-compose.prod.yml down
 
+restart-production: stop-production start-production
+
 clean-start-production: stop-production start-production-no-cache
 
 production-update: clean-start-production db-migrate
