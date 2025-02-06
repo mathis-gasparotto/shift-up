@@ -43,6 +43,10 @@ RUN yarn build:web
 ##
 FROM httpd:alpine AS production
 
+# add the certificate
+ADD ~/ssl/localhost.crt /usr/local/apache2/conf/server.crt
+ADD ~/ssl/localhost.key /usr/local/apache2/conf/server.key
+
 # RUN apk update && \
 #   apk add --no-cache \
 #   apache2
