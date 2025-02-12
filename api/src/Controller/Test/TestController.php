@@ -24,7 +24,9 @@ use Symfony\Component\Routing\Annotation\Route;
 )]
 class TestController extends AbstractController
 {
-    public function __construct(private OpenAIService $openAIService) {}
+    public function __construct(private OpenAIService $openAIService)
+    {
+    }
 
     /**
      * @param Request $request
@@ -32,6 +34,10 @@ class TestController extends AbstractController
      */
     public function __invoke(Request $request, MistralAIService $mistralAIService): JsonResponse
     {
+        return $this->json([
+            "message" => "Hello World"
+        ]);
+
         $promptResult = $mistralAIService->prompt(AIHelper::promptForSWOT("Application de billetterie basée sur la les NFTs"));
 
         //         $promptResult = "# Strengths

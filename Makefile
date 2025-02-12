@@ -12,7 +12,7 @@ start-production:
 	$(COMPOSE) -f docker-compose.prod.yml up -d --remove-orphans
 
 start-production-no-cache:
-	$(COMPOSE) -f docker-compose.prod.yml up -d --remove-orphans --build
+	$(COMPOSE) -f docker-compose.prod.yml up -d --remove-orphans --build && docker image prune -f
 
 yarn-install-production:
 	$(EXEC_FRONT) yarn install
@@ -22,7 +22,10 @@ stop-production:
 
 restart-production: stop-production start-production
 
-clean-start-production: stop-production start-production-no-cache
+clean-start-production: stop-production start-production-no-cache && make build-front
+
+build-front:
+	$(EXEC_FRONT) yarn build:web
 
 production-update: clean-start-production db-migrate
 

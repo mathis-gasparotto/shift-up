@@ -36,26 +36,4 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 RUN yarn build:web
 # CMD ["yarn" ,"build:web"]
-# CMD ["tail", "-f", "/dev/null"]
-
-##
-# PRODUCTION LAYER
-##
-FROM httpd:alpine AS production
-
-# add the certificate
-ADD ~/ssl/localhost.crt /usr/local/apache2/conf/server.crt
-ADD ~/ssl/localhost.key /usr/local/apache2/conf/server.key
-
-# RUN apk update && \
-#   apk add --no-cache \
-#   apache2
-
-## Copy the build from the builder layer
-# COPY --from=builder --chown=www-data:www-data /app/dist/pwa /var/www/localhost/htdocs
-# COPY --from=builder /app/dist/pwa /var/www/localhost/htdocs
-COPY --from=builder /app/dist/pwa /usr/local/apache2/htdocs/
-
-EXPOSE 80
-
-# CMD ["httpd", "-D", "FOREGROUND"]
+CMD ["tail", "-f", "/dev/null"]

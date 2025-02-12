@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      target: production
+      target: builder
       args:
         DOCKER_BUILDKIT: 1
     image: shift-up-app
@@ -12,11 +12,5 @@ services:
     container_name: shift-up_app_quasar
     volumes:
       - .:/app:rw
+      - /var/www/html/front:/app/dist:rw
       - /app/node_modules
-    ports:
-      - '9000:80'
-    # labels:
-    #   - 'traefik.enable=true'
-    #   - 'traefik.http.routers.app.rule=Host(`app.shift-up.ai`)'
-    #   - 'traefik.http.routers.app.entrypoints=web'
-    #   # - 'traefik.http.services.app.loadbalancer.server.port=9000'
