@@ -34,6 +34,6 @@ WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 
-RUN yarn build:web
+# RUN yarn build:web
 # CMD ["yarn" ,"build:web"]
 CMD ["tail", "-f", "/dev/null"]

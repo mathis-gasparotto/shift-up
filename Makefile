@@ -22,7 +22,12 @@ stop-production:
 
 restart-production: stop-production start-production
 
-clean-start-production: stop-production start-production-no-cache && make build-front
+clean-start-production:
+	make stop-production
+	docker volume prune -f
+	rm -rf /var/www/html/front/pwa
+	make start-production-no-cache
+	make build-front
 
 build-front:
 	$(EXEC_FRONT) yarn build:web

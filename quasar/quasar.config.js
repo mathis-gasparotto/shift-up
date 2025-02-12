@@ -167,11 +167,11 @@ module.exports = configure(function (/* ctx */) {
       // extendPWACustomSWConf (esbuildConf) {}
     },
 
-    sourceFiles: {
-      pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
-      pwaServiceWorker: 'src-pwa/custom-service-worker',
-      pwaManifestFile: 'src-pwa/manifest.json'
-    },
+    // sourceFiles: {
+    //   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+    //   pwaServiceWorker: 'src-pwa/custom-service-worker',
+    //   pwaManifestFile: 'src-pwa/manifest.json'
+    // },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
     cordova: {

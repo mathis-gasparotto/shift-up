@@ -61,4 +61,4 @@ jobs:
           ssh-keyscan -H ${{ secrets.HOSTING_SSH_HOST }} >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/id_rsa
           sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" scp -o StrictHostKeyChecking=no -r ./ root@${{ secrets.HOSTING_SSH_HOST }}:${{ secrets.HOSTING_PATH }}
-          sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.HOSTING_SSH_HOST }} "cd ${{ secrets.HOSTING_PATH }} && make clean-start-production && docker image prune -f && exit"
+          sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.HOSTING_SSH_HOST }} "cd ${{ secrets.HOSTING_PATH }} && make clean-start-production && exit"
