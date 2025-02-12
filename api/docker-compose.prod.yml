@@ -11,7 +11,7 @@ services:
     environment:
       TZ: "Europe/Paris"
     depends_on:
-      - smtp
+      # - smtp
       - db
     volumes:
       - .:/srv/api:rw
@@ -66,19 +66,14 @@ services:
   #      - db
   #    ports:
   #      - 8085:80
-  smtp:
-    image: mailhog/mailhog:latest
-    container_name: root_app_api_smtp
-    # env_file:
-    #   - .env
-    #   - .env.local
-    ports:
-      - "8025:8025"
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.smtp.rule=Host(`mail.${DOMAIN_NAME}`)"
-    #   - "traefik.http.routers.smtp.entrypoints=web"
-    #   # - "traefik.http.services.smtp.loadbalancer.server.port=8025"
+  # smtp:
+  #   image: mailhog/mailhog:latest
+  #   container_name: root_app_api_smtp
+  #   # env_file:
+  #   #   - .env
+  #   #   - .env.local
+  #   ports:
+  #     - "8025:8025"
 
   # rabbitmq:
   #   image: rabbitmq:3.8-management-alpine

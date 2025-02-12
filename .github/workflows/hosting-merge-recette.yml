@@ -33,6 +33,7 @@ jobs:
           echo STRIPE_SECRET_KEY=${{ secrets.API_STRIPE_SECRET_KEY }} >> .env.local
           echo STRIPE_API_VERSION=${{ secrets.API_STRIPE_API_VERSION }} >> .env.local
           echo CORS_ALLOW_ORIGIN=${{ secrets.API_CORS_ALLOW_ORIGIN }} >> .env.local
+          echo MAILER_DSN=${{ secrets.API_MAILER_DSN }} >> .env.local
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
