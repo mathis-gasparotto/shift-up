@@ -9,7 +9,7 @@
       @submit.prevent="submit"
     >
       <div class="row w-100 gap-15 no-wrap">
-        <div>
+        <div class="w-100">
           <SUinput
             v-model="firstName"
             :label="$t('form.user.label.firstName')"
@@ -20,7 +20,7 @@
             :minLength="3"
           />
         </div>
-        <div>
+        <div class="w-100">
           <SUinput
             v-model="lastName"
             :label="$t('form.user.label.lastName')"

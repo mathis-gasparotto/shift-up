@@ -20,7 +20,8 @@ class EmailService
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $loggerEmail
-    ) {}
+    ) {
+    }
 
     /**
      * @param string $to
@@ -47,7 +48,7 @@ class EmailService
     {
         if (!$to) {
             $this->loggerEmail->error('[EmailService] Missing email');
-            throw new Exception('Failed to send email (ES#01)');
+            throw new Exception('Failed to send email (ES#01): Missing email');
         }
 
         $email = (new Email())
@@ -60,7 +61,7 @@ class EmailService
         try {
             $this->mailer->send($email);
         } catch (TransportException $exception) {
-            throw new Exception('Failed to send email (ES#02)', 500);
+            throw new Exception('Failed to send email (ES#02): ' . $exception->getMessage(), 500);
         }
     }
 }

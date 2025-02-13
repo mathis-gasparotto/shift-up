@@ -26,6 +26,12 @@
   }
 }
 
+@mixin bp-xl {
+  @media screen and (min-width: calc(#{map-get($bps, xl)} )) {
+    @include responsive-transition;
+    @content;
+  }
+}
 @mixin bp($key) {
   @media screen and (min-width: calc(#{map-get($bps, $key)} )) {
     @include responsive-transition;

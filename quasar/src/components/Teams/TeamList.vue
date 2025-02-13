@@ -2,7 +2,7 @@
   <div>
     <TeamCardSkeleton v-if="loading" />
     <div
-      class="teams-list flex gap-20"
+      class="teams-list flex column row-sm items-center gap-20"
       v-else-if="teams.length > 0"
     >
       <TeamCard

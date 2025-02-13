@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="project-document-list flex gap-20">
+    <div class="project-document-list flex column row-sm items-center gap-20">
       <ProjectDocumentCardSkeleton v-if="loading" />
       <template v-else-if="documents.length > 0">
         <ProjectDocumentCard

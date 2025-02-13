@@ -1,14 +1,16 @@
 // Breakpoints --------------------------------------
-$breakpoint-xs: 599px !default;
-$breakpoint-sm: 1023px !default;
-$breakpoint-md: 1439px !default;
-$breakpoint-lg: 1919px !default;
+$breakpoint-xs: 640px !important !default;
+$breakpoint-sm: 768px !important !default;
+$breakpoint-md: 1024px !important !default;
+$breakpoint-lg: 1280px !important !default;
+$breakpoint-xl: 1536px !important !default;
 
 $bps: (
-  'xs': $breakpoint-xs,
-  'sm': $breakpoint-sm,
-  'md': $breakpoint-md,
-  'lg': $breakpoint-lg
+  'xs': 640px,
+  'sm': 768px,
+  'md': 1024px,
+  'lg': 1280px,
+  'xl': 1536px
 );
 
 // Spaces -------------------------------------------

@@ -6,7 +6,7 @@
     buttonsAlign="full"
     width="1000px"
   >
-    <div class="text-left q-mb-md">
+    <div class="text-center q-mb-md text-sm-left">
       <p class="d-inline q-mb-none">{{ $t('subscription.choicePlanModal.monthly') }}</p>
       <q-toggle
         v-model="recurrence"
