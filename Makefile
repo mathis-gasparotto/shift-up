@@ -25,6 +25,7 @@ restart-production: stop-production start-production
 clean-start-production:
 	make stop-production
 	docker volume prune -f
+	docker buildx prune -f
 	rm -rf /var/www/html/front/pwa
 	make start-production-no-cache
 	make build-front
