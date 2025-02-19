@@ -25,13 +25,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_SWOT_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -40,13 +41,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_BUSINESS_MODEL_CANVAS_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -55,13 +57,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_BUYER_PERSONA_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -70,13 +73,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_COMPETITOR_ANALYSIS_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -85,13 +89,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_GOLDEN_TRIANGLE_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -100,13 +105,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_MARKETING_MIX_4_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -115,13 +121,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_MARKETING_MIX_5_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -130,13 +137,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_PESTEL_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -145,13 +153,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_SMART_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */
@@ -160,13 +169,14 @@ final class FileHelper
         'margin-right' => 0,
         'margin-bottom' => 0,
         'margin-left' => 0,
-        'page-size' => 'A4'
+        'page-size' => 'A4',
+        'orientation' => 'Landscape'
     ];
 
     /** @var array  */
     public const FILE_OPTIONS_STP_HTML_TO_IMAGE = [
-        'width' => 1024,
-        'height' => 768
+        'width' => 1404,
+        'height' => 979
     ];
 
     /** @var array  */

@@ -84,25 +84,25 @@ export default {
     title() {
       switch (this.$route.params.documentName) {
         case 'business-model-canvas':
-          return 'Business Model Canvas'
+          return this.$t('document.name.business_model_canvas')
         case 'buyer-persona':
-          return 'Buyer Persona'
+          return this.$t('document.name.buyer_persona')
         case 'competitor-analysis':
-          return 'Analyse de la concurrence'
+          return this.$t('document.name.competitor_analysis')
         case 'golden-triangle':
-          return "Triangle d'or"
+          return this.$t('document.name.golden_triangle')
         case 'marketing-mix-4':
-          return '4P'
+          return this.$t('document.name.marketing_mix4')
         case 'marketing-mix-5':
-          return '5P'
+          return this.$t('document.name.marketing_mix5')
         case 'pestel':
-          return 'PESTEL'
+          return this.$t('document.name.pestel')
         case 'smart':
-          return 'SMART'
+          return this.$t('document.name.smart')
         case 'stp':
-          return 'STP'
+          return this.$t('document.name.stp')
         case 'swot':
-          return 'SWOT'
+          return this.$t('document.name.swot')
         default:
           return ''
       }

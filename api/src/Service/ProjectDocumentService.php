@@ -41,7 +41,8 @@ class ProjectDocumentService
         private MistralAIService $AIService,
         private EntityManagerInterface $entityManager,
         private FileService $fileService,
-    ) {}
+    ) {
+    }
 
     /**
      * @param Project $project
@@ -99,10 +100,10 @@ class ProjectDocumentService
             "costStructure" => $costStructure,
             "revenueStreams" => $revenueStreams
         ] = AIHelper::getResultFromBusinessModelCanvasPrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForBusinessModelCanvas($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForBusinessModelCanvas($project->getDescription())
+                    )
+                );
 
         $businessModelCanvas = new BusinessModelCanvas();
         $businessModelCanvas->setKeyPartners($keyPartners);
@@ -146,10 +147,10 @@ class ProjectDocumentService
             "valuesFears" => $valuesFears,
             "negativeInfo" => $negativeInfo
         ] = AIHelper::getResultFromBuyerPersonaPrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForBuyerPersona($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForBuyerPersona($project->getDescription())
+                    )
+                );
 
         $buyerPersona = new BuyerPersona();
         $buyerPersona->setPersonalInfo($personalInfo);
@@ -188,10 +189,10 @@ class ProjectDocumentService
             "relevant" => $relevant,
             "timed" => $timed
         ] = AIHelper::getResultFromSMARTPrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForSMART($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForSMART($project->getDescription())
+                    )
+                );
 
         $smart = new SMART();
         $smart->setKeySpecific($specific);
@@ -231,10 +232,10 @@ class ProjectDocumentService
             "environmental" => $environmental,
             "legal" => $legal
         ] = AIHelper::getResultFromPESTELPrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForPESTEL($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForPESTEL($project->getDescription())
+                    )
+                );
 
         $pestel = new PESTEL();
         $pestel->setPolitical($political);
@@ -272,10 +273,10 @@ class ProjectDocumentService
             "targeting" => $targeting,
             "positioning" => $positioning
         ] = AIHelper::getResultFromSTPPrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForSTP($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForSTP($project->getDescription())
+                    )
+                );
 
         $stp = new STP();
         $stp->setSegmentation($segmentation);
@@ -311,10 +312,10 @@ class ProjectDocumentService
             "place" => $place,
             "promotion" => $promotion
         ] = AIHelper::getResultFromMarketingMix4Prompt(
-            $this->AIService->prompt(
-                AIHelper::promptForMarketingMix4($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForMarketingMix4($project->getDescription())
+                    )
+                );
 
         $marketingMix4 = new MarketingMix4();
         $marketingMix4->setProduct($product);
@@ -352,10 +353,10 @@ class ProjectDocumentService
             "promotion" => $promotion,
             "people" => $people
         ] = AIHelper::getResultFromMarketingMix5Prompt(
-            $this->AIService->prompt(
-                AIHelper::promptForMarketingMix5($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForMarketingMix5($project->getDescription())
+                    )
+                );
 
         $marketingMix5 = new MarketingMix5();
         $marketingMix5->setProduct($product);
@@ -393,10 +394,10 @@ class ProjectDocumentService
             'competitors' => $competitors,
             'ourPosition' => $ourPosition
         ] = AIHelper::getResultFromCompetitorAnalysisPrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForCompetitorAnalysis($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForCompetitorAnalysis($project->getDescription())
+                    )
+                );
 
         $competitorAnalysis = new CompetitorAnalysis();
         $competitorAnalysis->setProject($project);
@@ -434,10 +435,10 @@ class ProjectDocumentService
             'brands' => $brands,
             'ourPosition' => $ourPosition
         ] = AIHelper::getResultFromGoldenTrianglePrompt(
-            $this->AIService->prompt(
-                AIHelper::promptForGoldenTriangle($project->getDescription())
-            )
-        );
+                    $this->AIService->prompt(
+                        AIHelper::promptForGoldenTriangle($project->getDescription())
+                    )
+                );
 
         $goldenTriangle = new GoldenTriangle();
         $goldenTriangle->setProject($project);
@@ -475,36 +476,45 @@ class ProjectDocumentService
             switch ($document) {
                 case ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUSINESS_MODEL_CANVAS] = $this->generateBusinessModelCanvas($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_BUYER_PLAN] = $this->generateBuyerPersona($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_COMPETITOR_ANALYSIS] = $this->generateCompetitorAnalysis($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_GOLDEN_TRIANGLE] = $this->generateGoldenTriangle($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_4P] = $this->generateMarketingMix4($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_MARKETING_MIX_5P] = $this->generateMarketingMix5($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_PESTEL:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_PESTEL] = $this->generatePESTEL($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_SMART:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_SMART] = $this->generateSMART($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_STP:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_STP] = $this->generateSTP($project, $author);
+                    sleep(5);
                     break;
                 case ProjectHelper::PROJECT_DOCUMENT_SWOT:
                     $toReturn[ProjectHelper::PROJECT_DOCUMENT_SWOT] = $this->generateSWOT($project, $author);
+                    sleep(5);
                     break;
             }
-            sleep(5);
         }
 
         return $toReturn;
@@ -542,7 +552,7 @@ class ProjectDocumentService
 
             $mediaObject = (new MediaObject())
                 ->setFilePath($filePath)
-                ->setContentUrl($this->prefixUrl . $filePath);
+                ->setContentUrl($this->prefixUrl . '/' . $filePath);
 
             $this->entityManager->persist($mediaObject);
 

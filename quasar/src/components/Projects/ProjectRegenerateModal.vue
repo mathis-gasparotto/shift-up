@@ -64,6 +64,7 @@
         class="w-100"
         type="submit"
         :loading="loading"
+        :disabled="!documents.length"
         @click="submit"
       />
     </template>

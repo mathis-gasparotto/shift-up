@@ -1,18 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - SWOT  {% endblock %}
+{% block title %}
+  {{ parent() }} - S.W.O.T.
+{% endblock %}
 
 {% block body %}
-    <div class="body">
-        <div class="container container-left">
-            
-        </div>
-        <div class="container container-right">
-            <h1 class="main-title">SWOT</h1>
-            <p>{{ data.strengths }}</p>
-        </div>
+  <div style="width: 100vw; display: inline-flex; font-family: Manrope; font-size: 18px" class="container column align-center w-full h-full gap-10">
+    <div style="padding-top: 30px; padding-bottom: 30px; background: #F8F6F8; border-radius: 8px" class="row justify-center align-center w-full">
+      <h1 style="color: black; font-size: 30px; font-weight: 600; word-wrap: break-word">S.W.O.T.</h1>
     </div>
 
-    {% include 'includes/css/swot_pdf_css.html.twig' %}
+    <div class="row justify-center gap-10 w-full">
+      <div style="box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); justify-content: flex-start; align-items: flex-start" class="column card">
+        <div style="align-self: stretch; padding-top: 20px; padding-bottom: 20px; background: #DFE8FA; border-top-left-radius: 8px; border-top-right-radius: 8px" class="row justify-center align-center w-full">
+          <div style="color: #4F79E2; font-size: 24px; font-weight: 500; word-wrap: break-word">Forces</div>
+        </div>
+        <div style="padding: 20px; background: white; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px" class="w-full">
+          <ul style="color: black; font-weight: 400; line-height: 25px; word-wrap: break-word; margin: 0">
+            {% for strength in data.strengths %}
+              <li>{{ strength }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div style="box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); justify-content: flex-start; align-items: flex-start" class="column card">
+        <div style="align-self: stretch; padding-top: 20px; padding-bottom: 20px; background: #F4F0FE; border-top-left-radius: 8px; border-top-right-radius: 8px" class="row justify-center align-center">
+          <div style="color: #7242D8; font-size: 24px; font-weight: 500; word-wrap: break-word">Faiblesses</div>
+        </div>
+        <div style="padding: 20px; background: white; border-top-left-radius: 8px; border-top-right-radius: 8px" class="w-full">
+          <ul style="color: black; font-weight: 400; line-height: 25px; word-wrap: break-word; margin: 0">
+            {% for weakness in data.weaknesses %}
+              <li>{{ weakness }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-center gap-10 w-full">
+      <div style="box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); justify-content: flex-start; align-items: flex-start" class="column card">
+        <div style="align-self: stretch; padding-top: 20px; padding-bottom: 20px; background: #F4F0FE; border-top-left-radius: 8px; border-top-right-radius: 8px" class="row justify-center align-center">
+          <div style="color: #7242D8; font-size: 24px; font-weight: 500; word-wrap: break-word">Oppotunités</div>
+        </div>
+        <div style="padding: 20px; background: white; border-top-left-radius: 8px; border-top-right-radius: 8px" class="w-full">
+          <ul style="color: black; font-weight: 400; line-height: 25px; word-wrap: break-word; margin: 0">
+            {% for opportunity in data.opportunities %}
+              <li>{{ opportunity }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div style="box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); justify-content: flex-start; align-items: flex-start" class="column card">
+        <div style="align-self: stretch; padding-top: 20px; padding-bottom: 20px; background: #DFE8FA; border-top-left-radius: 8px; border-top-right-radius: 8px" class="row justify-center align-center">
+          <div style="color: #4F79E2; font-size: 24px; font-weight: 500; word-wrap: break-word">Menaces</div>
+        </div>
+        <div style="padding: 20px; background: white; border-top-left-radius: 8px; border-top-right-radius: 8px" class="w-full">
+          <ul style="color: black; font-weight: 400; line-height: 25px; word-wrap: break-word; margin: 0">
+            {% for threat in data.threats %}
+              <li>{{ threat }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  {% include 'includes/css/document_pdf_css.html.twig' %}
+  {% include 'includes/css/swot_pdf_css.html.twig' %}
 {% endblock %}

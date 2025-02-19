@@ -1,0 +1,72 @@
+<style>
+    * {
+        font-family: sans-serif;
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+    }
+    .body {
+        display: -webkit-inline-box;
+    }
+    .container {
+        padding: 30px;
+    }
+    .row {
+        display: -webkit-box; /* wkhtmltopdf uses this one */
+        display: -webkit-flex; /* wkhtmltopdf uses this one */
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        /*display: flex;
+        flex-direction: row;*/
+    }
+    .column {
+        display: -webkit-box; /* wkhtmltopdf uses this one */
+        display: -webkit-flex; /* wkhtmltopdf uses this one */
+        -webkit-box-orient: vertical; /* wkhtmltopdf uses this one */
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        /*display: flex;
+        flex-direction: column;*/
+    }
+    .justify-center {
+        -webkit-box-pack: center; /* wkhtmltopdf uses this one */
+        justify-content: center;
+    }
+    .align-center {
+        -webkit-box-align: center; /* wkhtmltopdf uses this one */
+        -webkit-align-items: center; /* wkhtmltopdf uses this one */
+        align-items: center;
+    }
+    .w-full {
+        width: 100%;
+    }
+    .max-w-full {
+        max-width: 100%;
+    }
+    .w-available {
+        width: -webkit-fill-available;
+    }
+    .h-full {
+        height: 100vh;
+    }
+    .row.gap-10 > * {
+        margin-left: 10px;
+    }
+    .row.gap-10 > *:first-of-type {
+        margin-left: 0;
+    }
+    .column.gap-10 > * {
+        margin-top: 10px;
+    }
+    .column.gap-10 > *:first-of-type {
+        margin-top: 0;
+    }
+    ul > li {
+        margin-bottom: 10px;
+    }
+    h1 {
+        margin: 0;
+    }
+</style>

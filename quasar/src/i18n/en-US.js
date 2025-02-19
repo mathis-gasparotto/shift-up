@@ -249,10 +249,10 @@ export default {
       golden_triangle: 'Golden triangle',
       marketing_mix4: '4P',
       marketing_mix5: '5P',
-      pestel: 'PESTEL',
-      smart: 'SMART',
-      stp: 'STP',
-      swot: 'SWOT'
+      pestel: 'P.E.S.T.E.L.',
+      smart: 'S.M.A.R.T.',
+      stp: 'S.T.P.',
+      swot: 'S.W.O.T.'
     },
     list: {
       noDocument: 'No document available',

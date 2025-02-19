@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - Buyer Persona  {% endblock %}
+{% block title %}
+  {{ parent() }} - Buyer Persona
+{% endblock %}
 
 {% block body %}
-    <div class="body">
-        <div class="container container-left">
-            
-        </div>
-        <div class="container container-right">
-            <h1 class="main-title">Buyer Persona</h1>
-            <p>{{ data.createdAt.getTimestamp() }}</p>
-        </div>
+  <div style="width: 100vw; display: inline-flex; font-family: Manrope; font-size: 18px" class="container column align-center w-full h-full gap-10">
+    <div style="padding-top: 30px; padding-bottom: 30px; background: #F8F6F8; border-radius: 8px" class="row justify-center align-center w-full">
+      <h1 style="color: black; font-size: 30px; font-weight: 600; word-wrap: break-word">Buyer Persona</h1>
     </div>
 
-    {% include 'includes/css/buyer_persona_pdf_css.html.twig' %}
+    <div class="row justify-center gap-10 w-full"></div>
+  </div>
 
+  {% include 'includes/css/document_pdf_css.html.twig' %}
+  {% include 'includes/css/buyer_persona_pdf_css.html.twig' %}
 {% endblock %}

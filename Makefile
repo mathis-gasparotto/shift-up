@@ -207,7 +207,7 @@ stripe-cli-install: ## Install stripe-cli
 stripe-run: ## Run Stripe Webhook
 	stripe listen --forward-to http://127.0.0.1:8080/webhook/confirmation_stripe_payment
 stripe-events: ## Add Stripe events
-	stripe trigger checkout.session.completed
+	stripe trigger customer.subscription.updated customer.subscription.deleted subscription_schedule.released customer.subscription.created subscription_schedule.created subscription_schedule.canceled
 ## —— Chmod ———————————————————————————————————————————————————————————————
 chmod-public-media: ## Chmod public media
 	sudo chmod -R 777 api/public/media

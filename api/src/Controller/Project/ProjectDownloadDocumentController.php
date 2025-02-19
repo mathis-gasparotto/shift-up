@@ -24,10 +24,11 @@ class ProjectDownloadDocumentController extends AbstractController
      * @param ProjectDocumentService $projectDocumentService
      */
     public function __construct(
-        private readonly string                 $appBackUrl,
-        private readonly Security               $security,
+        private readonly string $appBackUrl,
+        private readonly Security $security,
         private readonly ProjectDocumentService $projectDocumentService,
-    ) {}
+    ) {
+    }
 
     /**
      * @param Request $request
@@ -50,6 +51,6 @@ class ProjectDownloadDocumentController extends AbstractController
 
         $mediaObject = $this->projectDocumentService->downloadDocument($document);
 
-        return $this->json(['path' => $this->appBackUrl . '/' . $mediaObject->getContentUrl()], 201);
+        return $this->json(['path' => $this->appBackUrl . $mediaObject->getContentUrl()], 201);
     }
 }

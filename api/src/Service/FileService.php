@@ -59,7 +59,7 @@ class FileService
      */
     private function getMediaStorage()
     {
-        return  match ($this->mediaStorage) {
+        return match ($this->mediaStorage) {
             FileHelper::MEDIA_STORAGE_LOCAL => $this->mediaStorageLocal,
             default => throw new \LogicException('This storage location does not exist: ' . $this->mediaStorage)
         };

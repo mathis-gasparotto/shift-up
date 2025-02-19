@@ -44,8 +44,8 @@ class ProjectDownloadSpecificDocumentController extends AbstractController
      * @param ProjectDocumentService $projectDocumentService
      */
     public function __construct(
-        private readonly string                 $appBackUrl,
-        private readonly Security               $security,
+        private readonly string $appBackUrl,
+        private readonly Security $security,
         private readonly ProjectDocumentService $projectDocumentService,
         private readonly BusinessModelCanvasRepository $businessModelCanvasRepository,
         private readonly BuyerPersonaRepository $buyerPersonaRepository,
@@ -57,7 +57,8 @@ class ProjectDownloadSpecificDocumentController extends AbstractController
         private readonly SMARTRepository $smartRepository,
         private readonly STPRepository $stpRepository,
         private readonly SWOTRepository $swotRepository,
-    ) {}
+    ) {
+    }
 
     /**
      * @param Request $request
@@ -91,6 +92,6 @@ class ProjectDownloadSpecificDocumentController extends AbstractController
 
         $mediaObject = $this->projectDocumentService->downloadDocument($document);
 
-        return $this->json(['path' => $this->appBackUrl . '/' . $mediaObject->getContentUrl()], 201);
+        return $this->json(['path' => $this->appBackUrl . $mediaObject->getContentUrl()], 201);
     }
 }
