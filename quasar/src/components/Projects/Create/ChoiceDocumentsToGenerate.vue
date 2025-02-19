@@ -20,7 +20,8 @@
         />
       </q-card-section>
       <q-card-section>
-        {{ $t('document.name.' + option.value) }}
+        <h3 class="text-h6 q-my-none">{{ $t('document.name.' + option.value) }}</h3>
+        <p class="text-body2 q-my-none">{{ $t('document.description.' + option.value) }}</p>
       </q-card-section>
       <q-checkbox
         v-model="option.selected"

@@ -242,6 +242,18 @@ export default {
   document: {
     errorNotFound: 'Document introuvable',
     defaultError: 'Impossible de charger le document',
+    description: {
+      business_model_canvas: "Visualisez votre modèle économique en un coup d'œil.",
+      buyer_persona: 'Identifiez le profil type de vos clients pour affiner vos stratégies.',
+      competitor_analysis: 'Étudiez vos concurrents pour mieux positionner votre offre.',
+      golden_triangle: 'Mettez en équilibre qualité, coût et délai dans vos projets.',
+      marketing_mix4: 'Explorez les piliers fondamentaux du marketing : Produit, Prix, Place, Promotion.',
+      marketing_mix5: 'Ajoutez une dimension stratégique au modèle des 4P avec le facteur Personnel.',
+      pestel: 'Analysez les facteurs macro-environnementaux influençant votre marché.',
+      smart: 'Fixez des objectifs précis, mesurables, atteignables, réalistes et temporels.',
+      stp: 'Identifier et atteindre les bons clients en adaptant l’offre à leurs besoins.',
+      swot: 'Analysez les forces, faiblesses, opportunités et menaces de votre projet.'
+    },
     name: {
       business_model_canvas: 'Business Model Canvas',
       buyer_persona: 'Buyer Persona',

@@ -242,6 +242,18 @@ export default {
   document: {
     errorNotFound: 'Document not found',
     defaultError: 'Unable to load the document',
+    description: {
+      business_model_canvas: 'Visualize your business model in one glance.',
+      buyer_persona: 'Identify the type of clients for your project.',
+      competitor_analysis: 'Study your competitors to better position your offer.',
+      golden_triangle: 'Balance quality, cost and time in your projects.',
+      marketing_mix4: 'Explore the fundamental pillars of marketing: Product, Price, Place, Promotion.',
+      marketing_mix5: 'Add a strategic dimension to the 4P model with the Personal factor.',
+      pestel: 'Analyze the macro-environmental factors influencing your market.',
+      smart: 'Set precise, measurable, achievable, realistic and time-bound goals.',
+      stp: 'Identify and reach the right clients by adapting the offer to their needs.',
+      swot: 'Analyze the strengths, weaknesses, opportunities and threats of your project.'
+    },
     name: {
       business_model_canvas: 'Business Model Canvas',
       buyer_persona: 'Buyer Persona',
