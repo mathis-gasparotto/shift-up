@@ -20,6 +20,7 @@
       />
       <div class="flex gap-10 q-mt-lg q-mt-xs-none items-center">
         <SUbtn
+          v-if="false"
           :label="$t('team.details.changePlan')"
           rounded
           color="gradient"
