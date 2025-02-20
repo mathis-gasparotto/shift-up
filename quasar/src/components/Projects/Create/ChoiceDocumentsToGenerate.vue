@@ -39,7 +39,7 @@
 <script>
 export default {
   name: 'ChoiceDocumentsToGenerate',
-  emits: ['update:documentsSelected', 'update:isValid'],
+  emits: ['update:documentsSelected'],
   props: {
     documentsSelected: {
       type: Array,
@@ -84,9 +84,6 @@ export default {
         this.documents = this.options.filter((option) => (this.isPremium ? option.selected : !option.disabled && option.selected)).map((option) => option.value)
       },
       deep: true
-    },
-    documentsSelectegenerateBusinessModelCanvasd() {
-      this.$emit('update:isValid', this.documentsSelected && this.documentsSelected.length > 0)
     }
   },
   created() {

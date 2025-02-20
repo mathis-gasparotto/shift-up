@@ -6,7 +6,6 @@
         <ChoiceDocumentsToGenerate
           ref="choiceDocumentsToGenerate"
           v-model:documents-selected="_form.documents"
-          @update:isValid="(value) => (isValid = value)"
           :is-premium="isPremium"
         />
       </div>
@@ -44,11 +43,6 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      isValid: false
-    }
-  },
   components: {
     SUbtn,
     ChoiceDocumentsToGenerate
@@ -61,6 +55,9 @@ export default {
       get() {
         return this.form
       }
+    },
+    isValid() {
+      return this._form.documents.length > 0
     }
   },
   methods: {
