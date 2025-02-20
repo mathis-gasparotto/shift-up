@@ -1,72 +1,132 @@
 <style>
-    * {
-        font-family: sans-serif;
-        box-sizing: border-box;
-    }
-    body {
-        margin: 0;
-    }
-    .body {
-        display: -webkit-inline-box;
-    }
-    .container {
-        padding: 30px;
-    }
-    .row {
-        display: -webkit-box; /* wkhtmltopdf uses this one */
-        display: -webkit-flex; /* wkhtmltopdf uses this one */
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: row;
-        /*display: flex;
-        flex-direction: row;*/
-    }
-    .column {
-        display: -webkit-box; /* wkhtmltopdf uses this one */
-        display: -webkit-flex; /* wkhtmltopdf uses this one */
-        -webkit-box-orient: vertical; /* wkhtmltopdf uses this one */
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-        /*display: flex;
-        flex-direction: column;*/
-    }
-    .justify-center {
-        -webkit-box-pack: center; /* wkhtmltopdf uses this one */
-        justify-content: center;
-    }
-    .align-center {
-        -webkit-box-align: center; /* wkhtmltopdf uses this one */
-        -webkit-align-items: center; /* wkhtmltopdf uses this one */
-        align-items: center;
-    }
-    .w-full {
-        width: 100%;
-    }
-    .max-w-full {
-        max-width: 100%;
-    }
-    .w-available {
-        width: -webkit-fill-available;
-    }
-    .h-full {
-        height: 100vh;
-    }
-    .row.gap-10 > * {
-        margin-left: 10px;
-    }
-    .row.gap-10 > *:first-of-type {
-        margin-left: 0;
-    }
-    .column.gap-10 > * {
-        margin-top: 10px;
-    }
-    .column.gap-10 > *:first-of-type {
-        margin-top: 0;
-    }
-    ul > li {
-        margin-bottom: 10px;
-    }
-    h1 {
-        margin: 0;
-    }
+  * {
+    font-family: sans-serif;
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+  }
+  .body {
+    display: -webkit-inline-box;
+  }
+  .container {
+    padding: 30px;
+  }
+  .row {
+    display: -webkit-box; /* wkhtmltopdf uses this one */
+    /*display: -webkit-flex;*/ /* wkhtmltopdf uses this one */
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+  }
+  .row-justify {
+    -webkit-box-pack: justify;
+    -webkit-box-align: stretch;
+  }
+  .row-justify > * {
+    -webkit-box-flex: 1;
+    box-sizing: border-box;
+  }
+  .column {
+    display: -webkit-box; /* wkhtmltopdf uses this one */
+    /*display: -webkit-flex;*/ /* wkhtmltopdf uses this one */
+    -webkit-box-orient: vertical; /* wkhtmltopdf uses this one */
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+  }
+  .justify-center {
+    -webkit-box-pack: center; /* wkhtmltopdf uses this one */
+    justify-content: center;
+  }
+  .justify-start {
+    -webkit-box-pack: start; /* wkhtmltopdf uses this one */
+    justify-content: start;
+  }
+  .justify-end {
+    -webkit-box-pack: end; /* wkhtmltopdf uses this one */
+    justify-content: end;
+  }
+  .justify-between {
+    -webkit-box-pack: justify; /* wkhtmltopdf uses this one */
+    justify-content: space-between;
+  }
+  .justify-around {
+    -webkit-box-pack: distribute; /* wkhtmltopdf uses this one */
+    justify-content: space-around;
+  }
+  .justify-evenly {
+    -webkit-box-pack: space-evenly; /* wkhtmltopdf uses this one */
+    justify-content: space-evenly;
+  }
+  .align-center {
+    -webkit-box-align: center; /* wkhtmltopdf uses this one */
+    -webkit-align-items: center; /* wkhtmltopdf uses this one */
+    align-items: center;
+  }
+  .align-start {
+    -webkit-box-align: start; /* wkhtmltopdf uses this one */
+    -webkit-align-items: start; /* wkhtmltopdf uses this one */
+    align-items: start;
+  }
+  .w-full {
+    width: 100%;
+  }
+  .max-w-full {
+    max-width: 100%;
+  }
+  .w-available {
+    width: -webkit-fill-available;
+  }
+  .h-full {
+    height: 100vh;
+  }
+  
+  .row.gap-10 > * {
+    margin-left: 10px;
+  }
+  .row.gap-10 > *:first-of-type {
+    margin-left: 0;
+  }
+  .column.gap-10 > * {
+    margin-top: 10px;
+  }
+  .column.gap-10 > *:first-of-type {
+    margin-top: 0;
+  }
+  
+  .row.gap-20 > * {
+    margin-left: 20px;
+  }
+  .row.gap-20 > *:first-of-type {
+    margin-left: 0;
+  }
+  .column.gap-20 > * {
+    margin-top: 20px;
+  }
+  .column.gap-20 > *:first-of-type {
+    margin-top: 0;
+  }
+  
+  .row.gap-40 > * {
+    margin-left: 40px;
+  }
+  .row.gap-40 > *:first-of-type {
+    margin-left: 0;
+  }
+  .column.gap-40 > * {
+    margin-top: 40px;
+  }
+  .column.gap-40 > *:first-of-type {
+    margin-top: 0;
+  }
+  
+  ul {
+    margin: 0;
+  }
+  ul > li {
+    margin-bottom: 10px;
+  }
+  h1 {
+    margin: 0;
+  }
 </style>

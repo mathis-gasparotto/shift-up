@@ -141,11 +141,10 @@ class ProjectDocumentService
 
         [
             "personalInfo" => $personalInfo,
-            "professionalInfo" => $professionalInfo,
             "goalsChallenges" => $goalsChallenges,
             "communicationChannels" => $communicationChannels,
             "valuesFears" => $valuesFears,
-            "negativeInfo" => $negativeInfo
+            "motivation" => $motivation,
         ] = AIHelper::getResultFromBuyerPersonaPrompt(
                     $this->AIService->prompt(
                         AIHelper::promptForBuyerPersona($project->getDescription())
@@ -154,11 +153,10 @@ class ProjectDocumentService
 
         $buyerPersona = new BuyerPersona();
         $buyerPersona->setPersonalInfo($personalInfo);
-        $buyerPersona->setProfessionalInfo($professionalInfo);
         $buyerPersona->setGoalsChallenges($goalsChallenges);
         $buyerPersona->setCommunicationChannels($communicationChannels);
         $buyerPersona->setValuesFears($valuesFears);
-        $buyerPersona->setNegativeInfo($negativeInfo);
+        $buyerPersona->setMotivation($motivation);
         $buyerPersona->setProject($project);
         $buyerPersona->setUser($author);
         $project->addBuyerPersona($buyerPersona);
@@ -533,7 +531,7 @@ class ProjectDocumentService
         $filePath = $fileDir . '/' . $fileName . '.' . FileHelper::FILE_PDF_EXTENSION;
 
         try {
-            $pdf = $this->fileService->generatePdfToHtml($document);
+            $pdf = $this->fileService->generatePdfFromHtml($document);
         } catch (Exception $e) {
             // dd($e);
             throw new Exception($e->getMessage());
@@ -580,7 +578,7 @@ class ProjectDocumentService
         $this->fileService->deleteFileIfExist($filePath);
 
         try {
-            $jpg = $this->fileService->generateJpgToHtml($document);
+            $jpg = $this->fileService->generateJpgFromHtml($document);
         } catch (Exception $e) {
             // dd($e);
             throw new Exception($e->getMessage());

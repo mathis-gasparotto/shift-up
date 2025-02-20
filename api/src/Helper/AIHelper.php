@@ -88,12 +88,15 @@ final class AIHelper
     {
         return "Fait moi un Buyer Persona, en Français.
         Le format en json souhaité est le suivant :
-        - personalInfo (object)
-        - professionalInfo (array of string)
+        - personalInfo :
+            - first_name (string)
+            - age (int)
+            - location (string)
+            - job (string)
         - goalsChallenges (string)
         - communicationChannels (array of string)
-        - valuesFears (array of string)
-        - negativeInfo (array of string)
+        - valuesFears (string)
+        - motivation (string)
         Le projet suivant : $projectDescription";
     }
 
@@ -107,11 +110,10 @@ final class AIHelper
         if ($jsonData) {
             return [
                 'personalInfo' => $jsonData['personalInfo'],
-                'professionalInfo' => $jsonData['professionalInfo'],
                 'goalsChallenges' => $jsonData['goalsChallenges'],
                 'communicationChannels' => $jsonData['communicationChannels'],
                 'valuesFears' => $jsonData['valuesFears'],
-                'negativeInfo' => $jsonData['negativeInfo'],
+                'motivation' => $jsonData['motivation'],
             ];
         }
         throw new \Exception('Something went wrong with the Buyer Persona prompt');
@@ -326,13 +328,13 @@ final class AIHelper
                 'competitors' => array_map(function ($competitor) {
                     return [
                         'name' => $competitor['name'],
-                        'xPosition' => (float)$competitor['xPosition'],
-                        'yPosition' => (float)$competitor['yPosition']
+                        'xPosition' => (float) $competitor['xPosition'],
+                        'yPosition' => (float) $competitor['yPosition']
                     ];
                 }, $jsonData['competitors']),
                 'ourPosition' => [
-                    'xPosition' => (float)$jsonData['ourPosition']['xPosition'],
-                    'yPosition' => (float)$jsonData['ourPosition']['yPosition']
+                    'xPosition' => (float) $jsonData['ourPosition']['xPosition'],
+                    'yPosition' => (float) $jsonData['ourPosition']['yPosition']
                 ]
             ];
         }
@@ -378,15 +380,15 @@ final class AIHelper
                 'brands' => array_map(function ($brand) {
                     return [
                         'name' => $brand['name'],
-                        'topPosition' => (float)$brand['topPosition'],
-                        'leftPosition' => (float)$brand['leftPosition'],
-                        'rightPosition' => (float)$brand['rightPosition']
+                        'topPosition' => (float) $brand['topPosition'],
+                        'leftPosition' => (float) $brand['leftPosition'],
+                        'rightPosition' => (float) $brand['rightPosition']
                     ];
                 }, $jsonData['brands']),
                 'ourPosition' => [
-                    'topPosition' => (float)$jsonData['ourPosition']['topPosition'],
-                    'leftPosition' => (float)$jsonData['ourPosition']['leftPosition'],
-                    'rightPosition' => (float)$jsonData['ourPosition']['rightPosition']
+                    'topPosition' => (float) $jsonData['ourPosition']['topPosition'],
+                    'leftPosition' => (float) $jsonData['ourPosition']['leftPosition'],
+                    'rightPosition' => (float) $jsonData['ourPosition']['rightPosition']
                 ]
             ];
         }

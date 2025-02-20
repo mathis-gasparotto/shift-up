@@ -72,7 +72,7 @@ class FileService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function generatePdfToHtml(object $data): string
+    public function generatePdfFromHtml(object $data): string
     {
         $fileParameters = match ($data::class) {
             SWOT::class => [
@@ -163,7 +163,7 @@ class FileService
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function generateJpgToHtml(object $data): string
+    public function generateJpgFromHtml(object $data): string
     {
         $fileParameters = match ($data::class) {
             SWOT::class => [

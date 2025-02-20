@@ -5,12 +5,60 @@
 {% endblock %}
 
 {% block body %}
-  <div style="width: 100vw; display: inline-flex; font-family: Manrope; font-size: 18px" class="container column align-center w-full h-full gap-10">
+  <div style="width: 100vw; display: inline-flex; font-family: Manrope; color: black; font-size: 18px" class="container column align-center w-full h-full gap-20">
     <div style="padding-top: 30px; padding-bottom: 30px; background: #F8F6F8; border-radius: 8px" class="row justify-center align-center w-full">
-      <h1 style="color: black; font-size: 30px; font-weight: 600; word-wrap: break-word">Buyer Persona</h1>
+      <h1 style="font-size: 30px; font-weight: 600; white-space: nowrap">Buyer Persona</h1>
     </div>
 
-    <div class="row justify-center gap-10 w-full"></div>
+    <div class="column gap-20 w-full">
+      <div class="row gap-40">
+        <div>
+          <img style="border-radius: 10px" width="200" height="200" src="{{ absolute_url('/media/persona_avatar.png') }}" alt="Buyer Persona avatar" />
+        </div>
+        <div class="column">
+          <div style="padding-left: 10px; padding-right: 10px; padding-top: 15px; padding-bottom: 15px" class="row">
+            <span style="font-weight: 400">Prénom</span>
+            <span style="margin-left: 20px; font-weight: 700">{{ data.personalInfo.first_name }}</span>
+          </div>
+          <div style="padding-left: 10px; padding-right: 10px; padding-top: 15px; padding-bottom: 15px" class="row">
+            <span style="font-weight: 400">Age</span>
+            <span style="margin-left: 20px; font-weight: 700">{{ data.personalInfo.age }}</span>
+          </div>
+          <div style="padding-left: 10px; padding-right: 10px; padding-top: 15px; padding-bottom: 15px" class="row">
+            <span style="font-weight: 400">Localisation</span>
+            <span style="margin-left: 20px; font-weight: 700">{{ data.personalInfo.location }}</span>
+          </div>
+          <div style="padding-left: 10px; padding-right: 10px; padding-top: 15px; padding-bottom: 15px" class="row">
+            <span style="font-weight: 400">Emploi</span>
+            <span style="margin-left: 20px; font-weight: 700">{{ data.personalInfo.job }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="row gap-20 w-full row-justify">
+        <div style="background: #DFE8FA; box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); border-radius: 8px" class="column gap-20 card">
+          <div style="font-size: 24px; font-weight: 700">Motivation</div>
+          <div style="font-weight: 400">{{ data.motivation }}</div>
+        </div>
+        <div style="background: #F4F0FE; box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); border-radius: 8px" class="column gap-20 card">
+          <div style="font-size: 24px; font-weight: 700">Objectifs</div>
+          <div style="font-weight: 400">{{ data.goalsChallenges }}</div>
+        </div>
+      </div>
+      <div style="background: #EDE9EF; box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); border-radius: 8px" class="column gap-20 card">
+        <div style="font-size: 24px; font-weight: 700">Frustrations</div>
+        <div style="font-weight: 400">{{ data.valuesFears }}</div>
+      </div>
+      <div style="background: #EDE9EF; box-shadow: 2px 6px 16px rgba(18.42, 17.58, 59.92, 0.03); border-radius: 8px" class="column gap-20 card">
+        <div style="font-size: 24px; font-weight: 700">Communications</div>
+        <div>
+          <ul style="font-weight: 400">
+            {% for channel in data.communicationChannels %}
+              <li>{{ channel }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 
   {% include 'includes/css/document_pdf_css.html.twig' %}

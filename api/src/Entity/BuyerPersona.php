@@ -53,12 +53,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                                             'type' => 'string'
                                         ]
                                     ],
-                                    'professionalInfo' => [
-                                        'type' => 'array',
-                                        'items' => [
-                                            'type' => 'string'
-                                        ]
-                                    ],
                                     'goalsChallenges' => [
                                         'type' => 'string'
                                     ],
@@ -74,11 +68,8 @@ use Symfony\Component\Validator\Constraints as Assert;
                                             'type' => 'string'
                                         ]
                                     ],
-                                    'negativeInfo' => [
-                                        'type' => 'array',
-                                        'items' => [
-                                            'type' => 'string'
-                                        ]
+                                    'motivation' => [
+                                        'type' => 'string'
                                     ],
                                 ],
                             ],
@@ -232,21 +223,6 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     private ?array $personalInfo = null;
 
     /**
-     * @var array|null
-     */
-    #[ORM\Column(type: Types::JSON)]
-    #[
-        Assert\Type(type: 'array'),
-        Assert\All(
-            constraints: [
-                new Assert\Type(type: 'string')
-            ]
-        ),
-        Groups(['buyer_persona:read', 'buyer_persona:write'])
-    ]
-    private ?array $professionalInfo = null;
-
-    /**
      * @var string|null
      */
     #[ORM\Column(type: Types::TEXT)]
@@ -263,43 +239,33 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     #[
         Assert\Type(type: 'array'),
         Assert\All(
-            constraints: [
-                new Assert\Type(type: 'string')
-            ]
-        ),
+        constraints: [
+            new Assert\Type(type: 'string')
+        ]
+    ),
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
     private ?array $communicationChannels = null;
 
     /**
-     * @var array|null
+     * @var string|null
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\Type(type: 'array'),
-        Assert\All(
-            constraints: [
-                new Assert\Type(type: 'string')
-            ]
-        ),
+        Assert\NotBlank,
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?array $valuesFears = null;
+    private ?string $valuesFears = null;
 
     /**
-     * @var array|null
+     * @var string|null
      */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::TEXT)]
     #[
-        Assert\Type(type: 'array'),
-        Assert\All(
-            constraints: [
-                new Assert\Type(type: 'string')
-            ]
-        ),
+        Assert\NotBlank,
         Groups(['buyer_persona:read', 'buyer_persona:write'])
     ]
-    private ?array $negativeInfo = null;
+    private ?string $motivation = null;
 
     /**
      * @var Project|null
@@ -348,25 +314,6 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return array|null
-     */
-    public function getProfessionalInfo(): ?array
-    {
-        return $this->professionalInfo;
-    }
-
-    /**
-     * @param array $professionalInfo
-     * @return $this
-     */
-    public function setProfessionalInfo(array $professionalInfo): static
-    {
-        $this->professionalInfo = $professionalInfo;
-
-        return $this;
-    }
-
-    /**
      * @return string|null
      */
     public function getGoalsChallenges(): ?string
@@ -405,18 +352,18 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getValuesFears(): ?array
+    public function getValuesFears(): ?string
     {
         return $this->valuesFears;
     }
 
     /**
-     * @param array $valuesFears
+     * @param string $valuesFears
      * @return $this
      */
-    public function setValuesFears(array $valuesFears): static
+    public function setValuesFears(string $valuesFears): static
     {
         $this->valuesFears = $valuesFears;
 
@@ -424,20 +371,20 @@ class BuyerPersona implements TracingAwareInterface, OwnerAwareInterface
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
-    public function getNegativeInfo(): ?array
+    public function getMotivation(): ?string
     {
-        return $this->negativeInfo;
+        return $this->motivation;
     }
 
     /**
-     * @param array $negativeInfo
+     * @param string $motivation
      * @return $this
      */
-    public function setNegativeInfo(array $negativeInfo): static
+    public function setMotivation(string $motivation): static
     {
-        $this->negativeInfo = $negativeInfo;
+        $this->motivation = $motivation;
 
         return $this;
     }

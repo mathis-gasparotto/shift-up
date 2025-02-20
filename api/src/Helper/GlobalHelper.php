@@ -38,7 +38,7 @@ final class GlobalHelper
         );
 
         $arrayToken = str_split($token);
-        $arrayNoAuthoriseChar = ['/','+','='];
+        $arrayNoAuthoriseChar = ['/', '+', '='];
 
         foreach ($arrayToken as $index => $character) {
             foreach ($arrayNoAuthoriseChar as $noAuthorizeChar) {
@@ -76,6 +76,20 @@ final class GlobalHelper
         }
 
         return (new \ReflectionClass($class))->getShortName();
+    }
+
+    /**
+     * @param string|object $class
+     * @return string
+     * @throws \ReflectionException
+     */
+    public static function getClassShortNameSnakeCase(string|object $class): string
+    {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
+
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', (new \ReflectionClass($class))->getShortName()));
     }
 
     /**
