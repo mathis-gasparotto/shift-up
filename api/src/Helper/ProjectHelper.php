@@ -72,10 +72,10 @@ final class ProjectHelper
 
     /** @var string[]  */
     public const PROJECT_DOCUMENTS_PREMIUM = [
-        self::PROJECT_DOCUMENT_MARKETING_MIX_4P,
-        self::PROJECT_DOCUMENT_MARKETING_MIX_5P,
-        self::PROJECT_DOCUMENT_PESTEL,
-        self::PROJECT_DOCUMENT_STP,
+        // self::PROJECT_DOCUMENT_MARKETING_MIX_4P,
+        // self::PROJECT_DOCUMENT_MARKETING_MIX_5P,
+        // self::PROJECT_DOCUMENT_PESTEL,
+        // self::PROJECT_DOCUMENT_STP,
     ];
 
     /**

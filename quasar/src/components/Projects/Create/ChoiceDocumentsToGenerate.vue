@@ -69,11 +69,11 @@ export default {
         { value: 'buyer_persona', selected: false },
         { value: 'competitor_analysis', selected: false },
         { value: 'golden_triangle', selected: false },
-        { value: 'marketing_mix4', selected: false, disabled: true },
-        { value: 'marketing_mix5', selected: false, disabled: true },
-        { value: 'pestel', selected: false, disabled: true },
+        { value: 'marketing_mix4', selected: false },
+        { value: 'marketing_mix5', selected: false },
+        { value: 'pestel', selected: false },
         { value: 'smart', selected: false },
-        { value: 'stp', selected: false, disabled: true },
+        { value: 'stp', selected: false },
         { value: 'swot', selected: false }
       ]
     }
