@@ -63,4 +63,4 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" scp -o StrictHostKeyChecking=no ./quasar/.env.local root@${{ secrets.HOSTING_SSH_HOST }}:${{ secrets.HOSTING_PATH }}/quasar/
           sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" scp -o StrictHostKeyChecking=no ./api/.env.local root@${{ secrets.HOSTING_SSH_HOST }}:${{ secrets.HOSTING_PATH }}/api/
-          sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.HOSTING_SSH_HOST }} "cd ${{ secrets.HOSTING_PATH }} && git checkout . && git reset --hard && git pull --rebase && make clean-start-production && exit"
+          sshpass -p "${{ secrets.HOSTING_SSH_ROOT_PASSWORD }}" ssh -o StrictHostKeyChecking=no root@${{ secrets.HOSTING_SSH_HOST }} "cd ${{ secrets.HOSTING_PATH }} && git checkout . && git reset --hard && git pull --rebase && make production-update && exit"

@@ -33,7 +33,7 @@ clean-start-production:
 build-front:
 	$(EXEC_FRONT) yarn build:web
 
-production-update: clean-start-production db-migrate
+production-update: clean-start-production db-migrate-no-interaction cc
 
 ## —— Development :notes: ——————————————————————————————————————————————————————————————
 start:
@@ -187,6 +187,8 @@ chown-migration: ## Chown migration
 	sudo chown -R $(USER):$(USER) api/migrations
 db-migrate: ## Doctrine migrations migrate
 	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate
+db-migrate-no-interaction: ## Doctrine migrations migrate
+	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate --no-interaction
 db-rollback: ## Doctrine migrations rollback
 #	$(EXEC_PHP) $(CONSOLE) doctrine:migration:execute --down $(filter-out $@,$(MAKECMDGOALS))
 	$(EXEC_PHP) $(CONSOLE) doctrine:migration:migrate prev
