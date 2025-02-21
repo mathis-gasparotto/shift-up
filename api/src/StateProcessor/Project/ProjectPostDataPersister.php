@@ -25,10 +25,11 @@ class ProjectPostDataPersister implements ProcessorInterface
      * @param ProjectService $projectService
      */
     public function __construct(
-        private readonly Security               $security,
+        private readonly Security $security,
         private readonly EntityManagerInterface $entityManager,
-        private readonly ProjectService         $projectService
-    ) {}
+        private readonly ProjectService $projectService
+    ) {
+    }
 
     /**
      * @param mixed $data
@@ -41,6 +42,7 @@ class ProjectPostDataPersister implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): mixed
     {
         ProjectHelper::checkIfUserIsProjectTeamManager($this->security->getUser(), $data);
+        ProjectHelper::checkIfTeamIsAllowedToCreateNewProject($data->getTeam());
         $data->setPicture($this->projectService->getRandomProjectPicture());
 
         $data->getTeam()->addProject($data);

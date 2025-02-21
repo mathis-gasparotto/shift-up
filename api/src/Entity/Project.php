@@ -218,9 +218,9 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
     #[ORM\Column(length: 255)]
     #[
         Assert\Choice(
-            choices: ProjectHelper::STATUS,
-            message: 'Invalid status, valid status are: {{ choices }}'
-        ),
+        choices: ProjectHelper::STATUS,
+        message: 'Invalid status, valid status are: {{ choices }}'
+    ),
         Groups(['project:read'])
     ]
     private ?string $status = null;
@@ -477,7 +477,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastSWOT(): SWOT|null
     {
-        $data =  $this->SWOTs->last();
+        $data = $this->SWOTs->last();
         return $data ?: null;
         //        $array = $this->SWOTs->toArray();
         //        if (count($array) === 0) {
@@ -532,7 +532,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastBusinessModelCanvas(): BusinessModelCanvas|null
     {
-        $data =  $this->businessModelCanvases->last();
+        $data = $this->businessModelCanvases->last();
         return $data ?: null;
     }
 
@@ -579,7 +579,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastSMART(): SMART|null
     {
-        $data =  $this->SMARTs->last();
+        $data = $this->SMARTs->last();
         return $data ?: null;
     }
 
@@ -626,7 +626,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastBuyerPersona(): BuyerPersona|null
     {
-        $data =  $this->buyerPersonas->last();
+        $data = $this->buyerPersonas->last();
         return $data ?: null;
     }
 
@@ -673,7 +673,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastPESTEL(): PESTEL|null
     {
-        $data =  $this->PESTELs->last();
+        $data = $this->PESTELs->last();
         return $data ?: null;
     }
 
@@ -720,7 +720,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastMarketingMix5(): MarketingMix5|null
     {
-        $data =  $this->marketingMix5s->last();
+        $data = $this->marketingMix5s->last();
         return $data ?: null;
     }
 
@@ -767,7 +767,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastSTP(): STP|null
     {
-        $data =  $this->STPs->last();
+        $data = $this->STPs->last();
         return $data ?: null;
     }
 
@@ -814,7 +814,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastMarketingMix4(): MarketingMix4|null
     {
-        $data =  $this->marketingMix4s->last();
+        $data = $this->marketingMix4s->last();
         return $data ?: null;
     }
 
@@ -861,7 +861,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastGoldenTriangle(): GoldenTriangle|null
     {
-        $data =  $this->goldenTriangles->last();
+        $data = $this->goldenTriangles->last();
         return $data ?: null;
     }
 
@@ -908,7 +908,7 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
      */
     public function getLastCompetitorAnalysis(): CompetitorAnalysis|null
     {
-        $data =  $this->competitorAnalyses->last();
+        $data = $this->competitorAnalyses->last();
         return $data ?: null;
     }
 
@@ -971,16 +971,26 @@ class Project implements TracingAwareInterface, OwnerAwareInterface
     public function getLastDocuments(): ArrayCollection
     {
         $documents = new ArrayCollection();
-        if ($this->getLastSWOT()) $documents->add($this->getLastSWOT());
-        if ($this->getLastBusinessModelCanvas()) $documents->add($this->getLastBusinessModelCanvas());
-        if ($this->getLastSMART()) $documents->add($this->getLastSMART());
-        if ($this->getLastBuyerPersona()) $documents->add($this->getLastBuyerPersona());
-        if ($this->getLastPESTEL()) $documents->add($this->getLastPESTEL());
-        if ($this->getLastMarketingMix5()) $documents->add($this->getLastMarketingMix5());
-        if ($this->getLastSTP()) $documents->add($this->getLastSTP());
-        if ($this->getLastMarketingMix4()) $documents->add($this->getLastMarketingMix4());
-        if ($this->getLastGoldenTriangle()) $documents->add($this->getLastGoldenTriangle());
-        if ($this->getLastCompetitorAnalysis()) $documents->add($this->getLastCompetitorAnalysis());
+        if ($this->getLastSWOT())
+            $documents->add($this->getLastSWOT());
+        if ($this->getLastBusinessModelCanvas())
+            $documents->add($this->getLastBusinessModelCanvas());
+        if ($this->getLastSMART())
+            $documents->add($this->getLastSMART());
+        if ($this->getLastBuyerPersona())
+            $documents->add($this->getLastBuyerPersona());
+        if ($this->getLastPESTEL())
+            $documents->add($this->getLastPESTEL());
+        if ($this->getLastMarketingMix5())
+            $documents->add($this->getLastMarketingMix5());
+        if ($this->getLastSTP())
+            $documents->add($this->getLastSTP());
+        if ($this->getLastMarketingMix4())
+            $documents->add($this->getLastMarketingMix4());
+        if ($this->getLastGoldenTriangle())
+            $documents->add($this->getLastGoldenTriangle());
+        if ($this->getLastCompetitorAnalysis())
+            $documents->add($this->getLastCompetitorAnalysis());
         return $documents;
     }
 }

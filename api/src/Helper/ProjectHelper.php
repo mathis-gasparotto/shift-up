@@ -128,7 +128,20 @@ final class ProjectHelper
         $documents = is_array($documentOrDocuments) ? $documentOrDocuments : [$documentOrDocuments];
 
         if (!$team->isPremium() && array_intersect($documents, self::PROJECT_DOCUMENTS_PREMIUM)) {
-            throw new AccessDeniedException('Your team avantages are not enough to do this action');
+            throw new AccessDeniedException('You need to be a premium team to generate these documents');
+        }
+    }
+
+    /**
+     * @param Team $team
+     * @param string|string[] $document
+     * @return void
+     * @throws AccessDeniedException
+     */
+    public static function checkIfTeamIsAllowedToCreateNewProject(Team $team): void
+    {
+        if (!$team->isPremium() && $team->getProjects()->count() >= 1) {
+            throw new AccessDeniedException('You need to be a premium team to create a new project');
         }
     }
 }
