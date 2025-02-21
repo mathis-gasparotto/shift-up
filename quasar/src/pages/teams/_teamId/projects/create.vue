@@ -125,6 +125,7 @@ export default {
         })
         .catch((err) => {
           displayError(err, this.$t('project.create.createProjectError'))
+          this.formLoading = false
         })
     },
     reloadData() {

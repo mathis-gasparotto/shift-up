@@ -49,6 +49,10 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.subscriptionChangeAlreadyScheduled')
     case 'Your team avantages are not enough to do this action':
       return $t('error.teamNotEnoughAvantages')
+    case 'You need to be a premium team to generate these documents':
+      return $t('error.teamNotPremiumForDocuments')
+    case 'You need to be a premium team to create a new project':
+      return $t('error.teamNotPremiumForProject')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

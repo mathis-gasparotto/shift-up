@@ -25,7 +25,9 @@ export default {
     aleardyPlansChangeSchedule: 'You already initiated a plan change, please wait for the subscription to be effective',
     documentNotFound: 'Document not found',
     subscriptionChangeAlreadyScheduled: 'This subscription change is already scheduled',
-    teamNotEnoughAvantages: 'Your team has not enough advantages to do this action'
+    teamNotEnoughAvantages: 'Your team has not enough advantages to do this action',
+    teamNotPremiumForDocuments: 'You need to be a premium team to generate these documents',
+    teamNotPremiumForProject: 'You need to be a premium team to have more than one active project'
   },
   breadcrumb: {
     home: 'Home',

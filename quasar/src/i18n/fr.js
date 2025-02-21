@@ -25,7 +25,9 @@ export default {
     aleardyPlansChangeSchedule: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif',
     documentNotFound: 'Document introuvable',
     subscriptionChangeAlreadyScheduled: "Ce changement d'abonnement est déjà programmé",
-    teamNotEnoughAvantages: "Votre équipe n'a pas assez d'avantages pour effectuer cette action"
+    teamNotEnoughAvantages: "Votre équipe n'a pas assez d'avantages pour effectuer cette action",
+    teamNotPremiumForDocuments: 'Vous devez être une équipe premium pour générer ces documents',
+    teamNotPremiumForProject: "Vous devez être une équipe premium pour avoir plus d'un projet actif"
   },
   breadcrumb: {
     home: 'Accueil',
