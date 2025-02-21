@@ -24,7 +24,8 @@ export default {
     alreadyChosenSubscription: 'You already chosen this subscription',
     aleardyPlansChangeSchedule: 'You already initiated a plan change, please wait for the subscription to be effective',
     documentNotFound: 'Document not found',
-    subscriptionChangeAlreadyScheduled: 'This subscription change is already scheduled'
+    subscriptionChangeAlreadyScheduled: 'This subscription change is already scheduled',
+    teamNotEnoughAvantages: 'Your team has not enough advantages to do this action'
   },
   breadcrumb: {
     home: 'Home',

@@ -47,6 +47,8 @@ export function translateError(error, defaultMessage = null) {
       return $t('error.documentNotFound')
     case 'This subscription change is already scheduled':
       return $t('error.subscriptionChangeAlreadyScheduled')
+    case 'Your team avantages are not enough to do this action':
+      return $t('error.teamNotEnoughAvantages')
     default:
       if (/.*This value should be greater than.*/gm.test(errorMessage)) {
         return $t('error.pleaseChooseAFutureDate')

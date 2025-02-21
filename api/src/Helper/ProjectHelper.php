@@ -127,7 +127,7 @@ final class ProjectHelper
     {
         $documents = is_array($documentOrDocuments) ? $documentOrDocuments : [$documentOrDocuments];
 
-        if (!$team->isPremium() && !array_intersect($documents, self::PROJECT_DOCUMENTS_PREMIUM)) {
+        if (!$team->isPremium() && array_intersect($documents, self::PROJECT_DOCUMENTS_PREMIUM)) {
             throw new AccessDeniedException('Your team avantages are not enough to do this action');
         }
     }

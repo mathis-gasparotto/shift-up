@@ -24,7 +24,8 @@ export default {
     alreadyChosenSubscription: 'Vous avez déjà choisi cet abonnement',
     aleardyPlansChangeSchedule: 'Vous avez déjà initié un changement de plan, veuillez attendre que le abonnement soit effectif',
     documentNotFound: 'Document introuvable',
-    subscriptionChangeAlreadyScheduled: "Ce changement d'abonnement est déjà programmé"
+    subscriptionChangeAlreadyScheduled: "Ce changement d'abonnement est déjà programmé",
+    teamNotEnoughAvantages: "Votre équipe n'a pas assez d'avantages pour effectuer cette action"
   },
   breadcrumb: {
     home: 'Accueil',
