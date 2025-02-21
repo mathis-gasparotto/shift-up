@@ -2,7 +2,7 @@
   <q-page class="column">
     <TeamPlansModal
       :team="team"
-      v-if="!teamLoading"
+      v-if="!teamLoading && false"
       ref="teamPlansModal"
       @submited="reloadTeam"
     />
