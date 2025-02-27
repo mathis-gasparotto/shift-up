@@ -35,7 +35,7 @@ class TeamPostDataPersister implements ProcessorInterface
     {
         $isAdmin = GlobalHelper::isAdmin($this->security->getUser());
 
-        if (!$data->getSubscription() && !$isAdmin) {
+        if (!$data->getSubscriptionPrice() && !$isAdmin) {
             throw new UnprocessableEntityHttpException('You have to choose a subscription to create a team');
         }
 
