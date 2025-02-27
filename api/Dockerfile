@@ -50,6 +50,11 @@ COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/wkhtmltopdf /
 COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage
 COPY --from=surnet/alpine-wkhtmltopdf:3.10-0.12.5-full --link /bin/libwkhtmltox* /usr/local/bin/
 
+# wkhtmltopdf 0.12.6 (BREAKING CHANGE: block local filesystem access by default => fail on generating with images)
+# COPY --from=surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full --link /bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
+# COPY --from=surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full --link /bin/wkhtmltoimage /usr/local/bin/wkhtmltoimage
+# COPY --from=surnet/alpine-wkhtmltopdf:3.21.2-0.12.6-full --link /bin/libwkhtmltox* /usr/local/bin/
+
 RUN chmod +x /usr/local/bin/wkhtmltopdf \
     && chmod +x /usr/local/bin/wkhtmltoimage
 
@@ -96,7 +101,7 @@ RUN composer install --prefer-dist --no-scripts --no-progress; \
 COPY --link . .
 RUN rm -Rf docker/
 
-# Exposer le port 8000
+# Exposer le port 80
 EXPOSE 80
 
 # Démarrer le serveur Symfony

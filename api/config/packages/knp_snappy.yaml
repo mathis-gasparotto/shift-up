@@ -1,8 +1,11 @@
 knp_snappy:
+  process_timeout: 30 # In seconds
   pdf:
     enabled: true
     binary: "%env(WKHTMLTOPDF_PATH)%"
-    options: []
+    options:
+      - { name: "viewport-size", value: "1024x768" }
+      - { name: "page-size", value: "A4" }
   image:
     enabled: true
     binary: "%env(WKHTMLTOIMAGE_PATH)%"
