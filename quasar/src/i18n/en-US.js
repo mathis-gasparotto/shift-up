@@ -135,6 +135,13 @@ export default {
     signup: 'Sign up',
     success: 'You have been successfully logged in!'
   },
+  deleteAccount: {
+    title: 'Delete your account',
+    content: 'Please enter your password to confirm the deletion of your account.',
+    submit: 'Delete my account',
+    success: 'Your account has been deleted successfully.',
+    error: 'An error occurred while deleting your account'
+  },
   emailConfirmation: {
     successTitle: 'Your email has been successfully confirmed!',
     action: 'Back to login page'
@@ -303,6 +310,12 @@ export default {
     resetPassword: {
       title: 'Reset your password',
       content: 'Please enter your new password.'
+    },
+    deleteAccount: {
+      title: 'Delete your account',
+      content: 'Please enter your password to confirm the deletion of your account.',
+      submit: 'Delete my account',
+      success: 'Your account has been deleted successfully.'
     }
   }
 }

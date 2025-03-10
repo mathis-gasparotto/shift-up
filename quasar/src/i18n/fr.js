@@ -111,6 +111,13 @@ export default {
     back: 'Retour à la page de connexion',
     success: 'Votre mot de passe a bien été réinitialisé.'
   },
+  deleteAccount: {
+    title: 'Suppression de votre compte',
+    content: 'Veuillez saisir votre mot de passe pour confirmer la suppression de votre compte.',
+    submit: 'Supprimer mon compte',
+    success: 'Votre compte a bien été supprimé.',
+    error: 'Une erreur est survenue lors de la suppression de votre compte'
+  },
   signup: {
     title: 'Inscription',
     content: 'Veuillez saisir vos informations pour vous inscrire.',
@@ -303,6 +310,11 @@ export default {
     resetPassword: {
       title: 'Réinitialisation de votre mot de passe',
       content: 'Veuillez saisir votre nouveau mot de passe.'
+    },
+    deleteAccount: {
+      title: 'Suppression de votre compte',
+      content: 'Veuillez saisir votre mot de passe pour confirmer la suppression de votre compte.',
+      submit: 'Supprimer mon compte'
     }
   }
 }

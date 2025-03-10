@@ -18,6 +18,7 @@ export default function resources(axios /*, sentry*/) {
     pestels: axiosResource('pestels'),
     smarts: axiosResource('smarts'),
     stps: axiosResource('stps'),
-    swots: axiosResource('swots')
+    swots: axiosResource('swots'),
+    checkUsers: axiosResource('check_users')
   }
 }

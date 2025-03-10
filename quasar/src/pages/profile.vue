@@ -3,7 +3,14 @@
     <h1 class="q-mb-xl q-mt-none">{{ $t('profile.title') }}</h1>
     <div class="items-center column page-wrapper">
       <div class="page-content">
-        <ProfileResetPassword />
+        <div class="column gap-100">
+          <div>
+            <ProfileResetPassword />
+          </div>
+          <div>
+            <ProfileDeleteAccount />
+          </div>
+        </div>
       </div>
     </div>
   </q-page>
@@ -11,10 +18,12 @@
 
 <script>
 import ProfileResetPassword from 'src/components/Profile/ProfileResetPassword.vue'
+import ProfileDeleteAccount from 'src/components/Profile/ProfileDeleteAccount.vue'
 
 export default {
   components: {
-    ProfileResetPassword
+    ProfileResetPassword,
+    ProfileDeleteAccount
   }
 }
 </script>
