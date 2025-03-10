@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\User\CheckUsersController;
 use App\Controller\User\GetMeAction;
 use App\Controller\User\ResetPasswordController;
 use App\Controller\User\SendResetPasswordController;
@@ -202,7 +203,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             read: false,
             name: 'app_reset_password'
         ),
-        new Delete (
+        new Delete(
             uriTemplate: '/users/{id}',
             requirements: [
                 'id' => '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
@@ -212,8 +213,33 @@ use Symfony\Component\Validator\Constraints as Assert;
                 'openapi_definition_name' => 'DeleteItem'
             ],
             security: 'is_granted("' . GlobalHelper::ROLE_ADMIN . '") or (is_granted("' . GlobalHelper::ROLE_USER . '") and object.getId() === user.getId())',
-            write: false,
             processor: UserDeleteDataPersister::class
+        ),
+        new Post(
+            uriTemplate: '/check_users',
+            status: 200,
+            controller: CheckUsersController::class,
+            openapiContext: [
+                'requestBody' => [
+                    'content' => [
+                        'application/ld+json' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'password' => [
+                                        'type' => 'string'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            normalizationContext: [
+                'openapi_definition_name' => 'CheckUserCollection'
+            ],
+            security: 'is_granted("' . GlobalHelper::ROLE_USER . '")',
+            name: 'app_check_user_password'
         )
 
     ]
