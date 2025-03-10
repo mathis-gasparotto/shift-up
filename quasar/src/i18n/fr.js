@@ -245,6 +245,7 @@ export default {
   document: {
     errorNotFound: 'Document introuvable',
     defaultError: 'Impossible de charger le document',
+    teamNotPremiumForDowloadDocuments: 'Vous devez être une équipe premium pour télécharger des documents',
     description: {
       business_model_canvas: "Visualisez votre modèle économique en un coup d'œil.",
       buyer_persona: 'Identifiez le profil type de vos clients pour affiner vos stratégies.',

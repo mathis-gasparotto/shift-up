@@ -26,7 +26,7 @@ export default {
     documentNotFound: 'Document not found',
     subscriptionChangeAlreadyScheduled: 'This subscription change is already scheduled',
     teamNotEnoughAvantages: 'Your team has not enough advantages to do this action',
-    teamNotPremiumForDocuments: 'You need to be a premium team to generate these documents',
+    teamNotPremiumForDocuments: 'You need to be a premium team to generate documents',
     teamNotPremiumForProject: 'You need to be a premium team to have more than one active project'
   },
   breadcrumb: {
@@ -245,6 +245,7 @@ export default {
   document: {
     errorNotFound: 'Document not found',
     defaultError: 'Unable to load the document',
+    teamNotPremiumForDowloadDocuments: 'You need to be a premium team to download documents',
     description: {
       business_model_canvas: 'Visualize your business model in one glance.',
       buyer_persona: 'Identify the type of clients for your project.',

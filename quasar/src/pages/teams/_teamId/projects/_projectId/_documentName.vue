@@ -10,19 +10,26 @@
       <h1 class="text-h2 q-my-none">
         {{ title }}
       </h1>
-      <q-btn
-        v-if="team.isPremium"
-        icon="sym_o_download"
-        :label="$t('download')"
-        stack
-        no-caps
-        text-color="grey-9"
-        flat
-        @click="downloadDocument"
-        :loading="downloadLoading"
-        :disable="documentLoading"
-        class="q-no-hoverable q-pa-xs"
-      />
+      <div class="q-pa-xs column items-center">
+        <q-btn
+          icon="sym_o_download"
+          :label="$t('download')"
+          stack
+          no-caps
+          text-color="grey-9"
+          flat
+          @click="downloadDocument"
+          :loading="downloadLoading"
+          :disable="documentLoading || !team.isPremium"
+          class="q-no-hoverable"
+        />
+        <p
+          v-if="team && !team.isPremium"
+          class="q-mt-none q-mb-none text-caption text-grey-6"
+        >
+          {{ $t('document.teamNotPremiumForDowloadDocuments') }}
+        </p>
+      </div>
       <!-- <q-btn
         icon="edit"
         label="Modifier"
@@ -63,7 +70,7 @@ export default {
       teamLoading: true,
       projectLoading: true,
       document: {},
-      team: {},
+      team: null,
       project: {},
       documentNamesAccepted: ['business-model-canvas', 'buyer-persona', 'competitor-analysis', 'golden-triangle', 'marketing-mix-4', 'marketing-mix-5', 'pestel', 'smart', 'stp', 'swot'],
       downloadLoading: false,
