@@ -11,7 +11,7 @@
         />
       </template>
       <AddCard
-        v-if="addCard"
+        v-if="addCard && !loading"
         :text="$t('project.list.newProject')"
         @cardClick="createNewProject"
       />

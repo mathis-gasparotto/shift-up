@@ -59,7 +59,7 @@
     <ProjectList
       :loading="projectsLoading"
       :projects="projects"
-      add-card
+      :add-card="team.isPremium || projects.length < 1"
     />
     <TeamDeleteModal
       v-if="!teamLoading && team.deletable"
