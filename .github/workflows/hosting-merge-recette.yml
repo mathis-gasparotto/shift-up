@@ -24,6 +24,7 @@ jobs:
           touch .env.local
           echo APP_ENV=prod >> .env.local
           echo APP_SECRET=${{ secrets.API_APP_SECRET }} >> .env.local
+          echo APP_BACK_URL=${{ vars.APP_BACK_URL }} >> .env.local
           echo APP_FRONT_URL=${{ vars.APP_FRONT_URL }} >> .env.local
           echo JWT_PASSPHRASE=${{ secrets.API_JWT_PASSPHRASE }} >> .env.local
           echo MISTRAL_API_KEY=${{ secrets.API_MISTRAL_API_KEY }} >> .env.local
