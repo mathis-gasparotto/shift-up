@@ -8,8 +8,7 @@ ENV NODE_ENV=development
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn global add @quasar/cli
-RUN yarn install
+RUN yarn install --production=false
 
 ##
 # DEV LAYER
@@ -22,7 +21,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 EXPOSE 9000
 #ENTRYPOINT ["yarn", "dev"]
-CMD ["yarn" ,"dev"]
+CMD ["npx" ,"quasar" ,"dev"]
 
 ##
 # BUILDER LAYER
