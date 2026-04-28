@@ -1,0 +1,33 @@
+services:
+  mysql_client:
+    image: joseluisq/mysql-client
+    container_name: shift-up_app_quasar_mysql_client
+    restart: "no"
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        mysql -h "$$MYSQL_HOST" -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS beetogreen_mr_$$COOLIFY_BRANCH;"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      COOLIFY_BRANCH: ${COOLIFY_BRANCH}
+
+  app:
+    build:
+      context: .
+      target: development
+      args:
+        DOCKER_BUILDKIT: 1
+    image: shift-up-app
+    env_file:
+      - .env.local
+      - .env
+    container_name: shift-up_app_quasar
+    ports:
+      - '9000:9000'
+    depends_on:
+      mysql_client:
+        condition: service_completed_successfully
+
