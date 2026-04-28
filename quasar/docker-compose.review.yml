@@ -1,0 +1,38 @@
+services:
+  mysql_client:
+    image: joseluisq/mysql-client
+    container_name: shift-up_app_quasar_mysql_client
+    restart: "no"
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        PR_NUM=$$(echo ${SERVICE_NAME_APP} | grep -oE '[0-9]+$')
+        if [ -z "$$PR_NUM" ]; then
+          DB="beetogreen"
+        else
+          DB="beetogreen_mr_$$PR_NUM"
+        fi
+        mysql -h "$$MYSQL_HOST" -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`$$DB\`;"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  app:
+    build:
+      context: .
+      target: development
+      args:
+        DOCKER_BUILDKIT: 1
+    image: shift-up-app
+    env_file:
+      - .env.local
+      - .env
+    container_name: shift-up_app_quasar
+    ports:
+      - '9000:9000'
+    depends_on:
+      mysql_client:
+        condition: service_completed_successfully
+
