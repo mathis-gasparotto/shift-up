@@ -1,4 +1,9 @@
 services:
+  mysql_client:
+    image: joseluisq/mysql-client
+    container_name: shift-up_app_quasar_mysql_client
+    command: mysql -h $MYSQL_HOST -u $MYSQL_USER -p$MYSQL_PASSWORD <<EOF CREATE DATABASE IF NOT EXISTS beetogreen_mr_${COOLIFY_BRANCH}; EOF
+
   app:
     build:
       context: .
@@ -12,4 +17,6 @@ services:
     container_name: shift-up_app_quasar
     ports:
       - '9000:9000'
+    depends_on:
+      - mysql_client
 
