@@ -7,7 +7,7 @@ services:
     command:
       - -c
       - |
-        mysql -h "$$MYSQL_HOST" -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS beetogreen_mr_${COOLIFY_BRANCH};"
+        mysql -h "$$MYSQL_HOST" -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS beetogreen_mr_${SERVICE_NAME_APP};"
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_USER: ${MYSQL_USER}
