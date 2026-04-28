@@ -17,6 +17,7 @@
           :placeholder="$t('form.user.placeholder.email', {at: '@'})"
           required
         />
+        TEST
       </div>
       <div class="w-100 q-mb-sm">
         <SUinput
