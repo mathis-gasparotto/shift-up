@@ -12,3 +12,5 @@ services:
     container_name: shift-up_app_quasar
     ports:
       - '9000:9000'
+    environment:
+      COOLIFY_PR_ID: ${COOLIFY_PR_ID}
